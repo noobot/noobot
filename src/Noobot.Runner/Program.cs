@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Topshelf;
 
 namespace Noobot.Runner
 {
@@ -10,6 +6,20 @@ namespace Noobot.Runner
     {
         static void Main(string[] args)
         {
+            HostFactory.Run(x =>
+            {
+                x.Service<INoobotHost>(s =>
+                {
+                    s.ConstructUsing(name => new NoobotHost());
+                    s.WhenStarted(n => n.Start());
+                    s.WhenStopped(n => n.Stop());
+                });
+
+                x.RunAsLocalSystem();
+                x.SetDisplayName("Noobot");
+                x.SetServiceName("Noobot");
+                x.SetDescription("An extensible Slackbot built in C#");
+            });
         }
     }
 }
