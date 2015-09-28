@@ -60,6 +60,12 @@
     </None>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Noobot.Domain\Noobot.Domain.csproj">
+      <Project>{20c88122-7ba3-4380-89fc-350f9d5b94dc}</Project>
+      <Name>Noobot.Domain</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
