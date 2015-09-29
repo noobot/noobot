@@ -3,12 +3,12 @@ using System.Threading.Tasks;
 
 namespace Noobot.Domain.MessagingPipeline.Middlewares
 {
-    public class UnhandledMessageMiddleware : MiddlewareBase
+    /// <summary>
+    /// Should always be the last middleware. Simply logs and stops the chain.
+    /// </summary>
+    public class UnhandledMessageMiddleware : IMiddleware
     {
-        public UnhandledMessageMiddleware(MiddlewareBase next) : base(next)
-        { }
-
-        public override Task<Response> Invoke(IncomingMessage message)
+        public Task<Response> Invoke(IncomingMessage message)
         {
             Console.WriteLine("[{0}] Unhandled", message.MessageId);
             var emptyResponse = new Response();

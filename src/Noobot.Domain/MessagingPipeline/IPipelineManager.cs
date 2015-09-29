@@ -4,6 +4,7 @@ namespace Noobot.Domain.MessagingPipeline
 {
     public interface IPipelineManager
     {
-        MiddlewareBase GetPipeline();
+        void Initialise();
+        IMiddleware GetPipeline();
     }
 }

@@ -58,6 +58,7 @@
     <Compile Include="DependencyResolution\Container.cs" />
     <Compile Include="DependencyResolution\DefaultRegistry.cs" />
     <Compile Include="INoobotHost.cs" />
+    <Compile Include="MessagingPipeline\PipelineManager.cs" />
     <Compile Include="NoobotHost.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

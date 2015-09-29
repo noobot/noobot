@@ -2,11 +2,11 @@
 
 namespace Noobot.Domain.MessagingPipeline
 {
-    public abstract class MiddlewareBase
+    public abstract class MiddlewareBase : IMiddleware
     {
-        private readonly MiddlewareBase _next;
+        private readonly IMiddleware _next;
 
-        protected MiddlewareBase(MiddlewareBase next)
+        protected MiddlewareBase(IMiddleware next)
         {
             _next = next;
         }

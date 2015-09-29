@@ -2,7 +2,7 @@
 {
     public class IncomingMessage
     {
-        public string MessageId { get; set; }
+        public int MessageId { get; set; }
         public string UserId { get; set; }
         public string Username { get; set; }
         public string Text { get; set; }

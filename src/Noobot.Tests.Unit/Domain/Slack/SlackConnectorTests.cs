@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Noobot.Domain.Configuration;
 using Noobot.Domain.Slack;
+using Noobot.Tests.Unit.Stubs.MessagingPipeline;
 using NUnit.Framework;
 
 namespace Noobot.Tests.Unit.Domain.Slack
@@ -13,7 +14,9 @@ namespace Noobot.Tests.Unit.Domain.Slack
         {
             // given
             var configReader = new ConfigReader();
-            var connector = new SlackConnector(configReader);
+            var pipelineManagerStub = new PipelineManagerStub();
+
+            var connector = new SlackConnector(configReader, pipelineManagerStub);
 
             // when
             var task = connector.Connect();

@@ -3,14 +3,14 @@ using System.Threading.Tasks;
 
 namespace Noobot.Domain.MessagingPipeline.Middlewares
 {
-    public class BeginMessageMiddleware : MiddlewareBase
+    public class TestMiddleware : MiddlewareBase
     {
-        public BeginMessageMiddleware(IMiddleware next) : base(next)
+        public TestMiddleware(IMiddleware next) : base(next)
         { }
 
         public override async Task<Response> Invoke(IncomingMessage message)
         {
-            Console.WriteLine("[{0}] Message from {1}: {2}", message.MessageId, message.Username, message.Text);
+            Console.WriteLine("I shouldn't do anything, but want to test the ordering of the pipeline");
             return await Next(message);
         }
     }
