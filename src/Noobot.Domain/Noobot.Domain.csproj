@@ -53,6 +53,9 @@
     <Compile Include="Configuration\IConfigReader.cs" />
     <Compile Include="Configuration\SlackConfig.cs" />
     <Compile Include="MessagingPipeline\IncomingMessage.cs" />
+    <Compile Include="MessagingPipeline\MiddlewareBase.cs" />
+    <Compile Include="MessagingPipeline\Middlewares\UnhandledMessageMiddleware.cs" />
+    <Compile Include="MessagingPipeline\Middlewares\BeginMessageMiddleware.cs" />
     <Compile Include="MessagingPipeline\Response.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Slack\InitialConnectionStatus.cs" />
