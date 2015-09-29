@@ -1,7 +1,9 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Noobot.Domain.Configuration;
 using Noobot.Domain.MessagingPipeline;
 using SlackAPI;
+using SlackAPI.WebSocketMessages;
 
 namespace Noobot.Domain.Slack
 {
@@ -35,25 +37,27 @@ namespace Noobot.Domain.Slack
                 //This is called once the Real Time Messaging client has connected to the end point
                 _pipelineManager.Initialise();
 
-                _client.OnMessageReceived += message =>
-                {
-                    var pipeline = _pipelineManager.GetPipeline();
-                    var incomingMessage = new IncomingMessage
-                    {
-                        MessageId = message.id,
-                        Text = message.text,
-                        UserId = message.user,
-                        Channel = message.channel
-                    };
-
-                    pipeline.Invoke(incomingMessage);
-                };
+                _client.OnMessageReceived += ClientOnOnMessageReceived;
 
                 var connectionStatus = new InitialConnectionStatus();
                 tcs.SetResult(connectionStatus);
             });
 
             return await tcs.Task;
+        }
+
+        private void ClientOnOnMessageReceived(NewMessage newMessage)
+        {
+            IMiddleware pipeline = _pipelineManager.GetPipeline();
+            var incomingMessage = new IncomingMessage
+            {
+                MessageId = newMessage.id,
+                Text = newMessage.text,
+                UserId = newMessage.user,
+                Channel = newMessage.channel
+            };
+
+            pipeline.Invoke(incomingMessage);
         }
 
         public void Disconnect()
