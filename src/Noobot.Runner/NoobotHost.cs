@@ -1,14 +1,15 @@
 ﻿using Noobot.Domain.Configuration;
+using Noobot.Domain.Slack;
 
 namespace Noobot.Runner
 {
     public class NoobotHost : INoobotHost
     {
-        private readonly IConfigReader _configReader;
+        private readonly ISlackConnector _slackConnector;
 
-        public NoobotHost(IConfigReader configReader)
+        public NoobotHost(ISlackConnector slackConnector)
         {
-            _configReader = configReader;
+            _slackConnector = slackConnector;
         }
 
         public void Start()

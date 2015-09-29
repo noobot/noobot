@@ -53,13 +53,15 @@
     <Compile Include="Configuration\IConfigReader.cs" />
     <Compile Include="Configuration\SlackConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Slack\InitialConnectionStatus.cs" />
+    <Compile Include="Slack\ISlackConnector.cs" />
+    <Compile Include="Slack\Message.cs" />
+    <Compile Include="Slack\SlackConnector.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Slack\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
