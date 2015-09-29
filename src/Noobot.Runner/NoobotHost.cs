@@ -1,4 +1,4 @@
-﻿using Noobot.Domain.Configuration;
+﻿using System;
 using Noobot.Domain.Slack;
 
 namespace Noobot.Runner
@@ -14,12 +14,16 @@ namespace Noobot.Runner
 
         public void Start()
         {
-            
+            Console.WriteLine("Connecting...");
+            _slackConnector.Connect().Wait();
+            Console.WriteLine("CONNECTED :-)");
         }
 
         public void Stop()
         {
-            
+            Console.WriteLine("Disconnecting...");
+            _slackConnector.Disconnect();
+            Console.WriteLine("DISCONNECTED :(");
         }
     }
 }

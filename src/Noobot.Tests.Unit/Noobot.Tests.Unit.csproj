@@ -67,7 +67,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Noobot.Runner\Configuration\config.json">
-      <Link>config.json</Link>
+      <Link>Configuration\config.json</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />

@@ -12,7 +12,7 @@ namespace Noobot.Domain.Configuration
         {
             if (Current == null)
             {
-                string fileName = Path.Combine(Environment.CurrentDirectory, "config.json");
+                string fileName = Path.Combine(Environment.CurrentDirectory, @"configuration\config.json");
                 string json = System.IO.File.ReadAllText(fileName);
                 Current = JsonConvert.DeserializeObject<Config>(json);
             }

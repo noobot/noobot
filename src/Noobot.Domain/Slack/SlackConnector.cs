@@ -26,7 +26,7 @@ namespace Noobot.Domain.Slack
             {
                 //This is called once the client has emitted the RTM start command
                 loginResponse = response;
-            }, 
+            },
             () =>
             {
                 //This is called once the Real Time Messaging client has connected to the end point
@@ -35,6 +35,14 @@ namespace Noobot.Domain.Slack
             });
 
             return await tcs.Task;
+        }
+
+        public void Disconnect()
+        {
+            if (_client != null && _client.IsConnected)
+            {
+                _client.CloseSocket();
+            }
         }
     }
 }
