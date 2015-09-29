@@ -1,7 +1,7 @@
 ﻿using Noobot.Domain.MessagingPipeline;
 using Noobot.Domain.MessagingPipeline.Middlewares;
 
-namespace Noobot.Runner.MessagingPipeline
+namespace Noobot.Runner
 {
     public class PipelineManager : PipelineManagerBase
     {
