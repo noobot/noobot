@@ -13,7 +13,7 @@ namespace Noobot.Domain.MessagingPipeline.Middlewares
             if (message.Text.Equals("hi", StringComparison.InvariantCultureIgnoreCase))
             {
                 Console.WriteLine("I FOUND HI. Ending call stack now");
-                return await Task.FromResult(new Response());
+                return await Task.FromResult<Response>(null);
             }
 
             Console.WriteLine("I shouldn't do anything, but want to test the ordering of the pipeline");

@@ -11,8 +11,7 @@ namespace Noobot.Domain.MessagingPipeline.Middlewares
         public Task<Response> Invoke(IncomingMessage message)
         {
             Console.WriteLine("[{0}] Unhandled", message.MessageId);
-            var emptyResponse = new Response();
-            return Task.FromResult(emptyResponse);
+            return Task.FromResult<Response>(null);
         }
     }
 }
