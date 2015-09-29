@@ -1,4 +1,5 @@
-﻿using Topshelf;
+﻿using Noobot.Runner.DependencyResolution;
+using Topshelf;
 
 namespace Noobot.Runner
 {
@@ -10,7 +11,7 @@ namespace Noobot.Runner
             {
                 x.Service<INoobotHost>(s =>
                 {
-                    s.ConstructUsing(name => new NoobotHost());
+                    s.ConstructUsing(name => Container.Instance.GetInstance<INoobotHost>());
                     s.WhenStarted(n => n.Start());
                     s.WhenStopped(n => n.Stop());
                 });

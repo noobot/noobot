@@ -34,6 +34,18 @@
       <HintPath>..\..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="SlackAPI, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\SlackAPI.1.0.3.1\lib\net45\SlackAPI.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="StructureMap, Version=3.1.6.186, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\structuremap.3.1.6.186\lib\net40\StructureMap.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="StructureMap.Net4, Version=3.1.6.186, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\structuremap.3.1.6.186\lib\net40\StructureMap.Net4.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -45,12 +57,28 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configuration\Config.cs" />
+    <Compile Include="Configuration\ConfigReader.cs" />
+    <Compile Include="Configuration\IConfigReader.cs" />
     <Compile Include="Configuration\SlackConfig.cs" />
+    <Compile Include="MessagingPipeline\IMiddleware.cs" />
+    <Compile Include="MessagingPipeline\IncomingMessage.cs" />
+    <Compile Include="MessagingPipeline\MiddlewareBase.cs" />
+    <Compile Include="MessagingPipeline\Middlewares\TestMiddleware.cs" />
+    <Compile Include="MessagingPipeline\Middlewares\UnhandledMessageMiddleware.cs" />
+    <Compile Include="MessagingPipeline\Middlewares\BeginMessageMiddleware.cs" />
+    <Compile Include="MessagingPipeline\PipelineManagerBase.cs" />
+    <Compile Include="MessagingPipeline\Response.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Slack\InitialConnectionStatus.cs" />
+    <Compile Include="MessagingPipeline\IPipelineManager.cs" />
+    <Compile Include="Slack\ISlackConnector.cs" />
+    <Compile Include="Slack\Message.cs" />
+    <Compile Include="Slack\SlackConnector.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -34,12 +34,20 @@
       <HintPath>..\..\packages\Moq.4.2.1507.0118\lib\net40\Moq.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="nunit.framework, Version=2.6.4.14350, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <HintPath>..\..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Should, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Should.1.1.20\lib\Should.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="SlackAPI, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\SlackAPI.1.0.3.1\lib\net45\SlackAPI.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -52,12 +60,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Domain\Configuration\ConfigReadingTests.cs" />
+    <Compile Include="Domain\Configuration\ConfigReaderTests.cs" />
+    <Compile Include="Domain\Slack\ListenerTests.cs" />
+    <Compile Include="Domain\Slack\SlackConnectorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Stubs\MessagingPipeline\PipelineManagerStub.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Noobot.Runner\Configuration\config.json">
-      <Link>config.json</Link>
+      <Link>Configuration\config.json</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />
@@ -72,6 +83,7 @@
       <Name>Noobot.Runner</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
