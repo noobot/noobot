@@ -4,6 +4,7 @@ using Noobot.Domain.Configuration;
 using Noobot.Domain.MessagingPipeline;
 using SlackAPI;
 using SlackAPI.WebSocketMessages;
+using Response = Noobot.Domain.MessagingPipeline.Response;
 
 namespace Noobot.Domain.Slack
 {
@@ -48,6 +49,8 @@ namespace Noobot.Domain.Slack
 
         private void ClientOnOnMessageReceived(NewMessage newMessage)
         {
+            Console.WriteLine("[[[Message started]]]");
+
             IMiddleware pipeline = _pipelineManager.GetPipeline();
             var incomingMessage = new IncomingMessage
             {
@@ -57,7 +60,12 @@ namespace Noobot.Domain.Slack
                 Channel = newMessage.channel
             };
 
-            pipeline.Invoke(incomingMessage);
+            Task<Response> messageTask = pipeline.Invoke(incomingMessage);
+            messageTask.ContinueWith(task =>
+            {
+                // message completed. Send messages etc here
+                Console.WriteLine("[[[Message ended]]]");
+            });
         }
 
         public void Disconnect()

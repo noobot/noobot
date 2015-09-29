@@ -63,6 +63,7 @@
     <Compile Include="MessagingPipeline\IMiddleware.cs" />
     <Compile Include="MessagingPipeline\IncomingMessage.cs" />
     <Compile Include="MessagingPipeline\MiddlewareBase.cs" />
+    <Compile Include="MessagingPipeline\Middlewares\ErrorHandlerMiddleware.cs" />
     <Compile Include="MessagingPipeline\Middlewares\TestMiddleware.cs" />
     <Compile Include="MessagingPipeline\Middlewares\UnhandledMessageMiddleware.cs" />
     <Compile Include="MessagingPipeline\Middlewares\BeginMessageMiddleware.cs" />

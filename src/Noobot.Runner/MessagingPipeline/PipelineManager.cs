@@ -7,6 +7,7 @@ namespace Noobot.Runner.MessagingPipeline
     {
         public override void Initialise()
         {
+            Use<ErrorHandlerMiddleware>();
             Use<BeginMessageMiddleware>();
             Use<TestMiddleware>();
             Use<UnhandledMessageMiddleware>();
