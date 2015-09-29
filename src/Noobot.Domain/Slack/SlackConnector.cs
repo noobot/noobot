@@ -40,6 +40,7 @@ namespace Noobot.Domain.Slack
 
                 _client.OnMessageReceived += ClientOnOnMessageReceived;
 
+                //TODO: Populate with useful information and display/log it somewhere
                 var connectionStatus = new InitialConnectionStatus();
                 tcs.SetResult(connectionStatus);
             });
@@ -63,6 +64,7 @@ namespace Noobot.Domain.Slack
             Task<Response> messageTask = pipeline.Invoke(incomingMessage);
             messageTask.ContinueWith(task =>
             {
+                //TODO: Send messages and stuff from here
                 // message completed. Send messages etc here
                 Console.WriteLine("[[[Message ended]]]");
             });
