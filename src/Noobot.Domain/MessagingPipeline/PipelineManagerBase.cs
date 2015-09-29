@@ -20,13 +20,13 @@ namespace Noobot.Domain.MessagingPipeline
         {
             if (Container == null)
             {
-                CreateContainer();
+                Container = CreateContainer();
             }
 
             return Container.GetInstance<IMiddleware>();
         }
 
-        private void CreateContainer()
+        private Container CreateContainer()
         {
             var registry = new Registry();
             registry.Scan(x =>
@@ -55,7 +55,7 @@ namespace Noobot.Domain.MessagingPipeline
                 }
             }
 
-            Container = new Container(registry);
+            return new Container(registry);
         }
 
         protected void Use<T>() where T : IMiddleware
