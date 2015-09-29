@@ -60,7 +60,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Domain\Configuration\ConfigReadingTests.cs" />
+    <Compile Include="Domain\Configuration\ConfigReaderTests.cs" />
     <Compile Include="Domain\Slack\ListenerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

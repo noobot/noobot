@@ -15,7 +15,7 @@ namespace Noobot.Tests.Unit.Domain.Slack
         public void should_connect_and_do_stuff()
         {
             // given
-            Config config = Config.GetConfig();
+            Config config = new ConfigReader().GetConfig();
             var client = new SlackSocketClient(config.Slack.ApiToken);
             
             // when

@@ -5,15 +5,16 @@ using Should;
 namespace Noobot.Tests.Unit.Domain.Configuration
 {
     [TestFixture]
-    public class ConfigReadingTests
+    public class ConfigReaderTests
     {
         [Test]
         public void should_read_config()
         {
             // given
+            var reader = new ConfigReader();
 
             // when
-            var config = Config.GetConfig();
+            var config = reader.GetConfig();
 
             // then
             config.ShouldNotBeNull();

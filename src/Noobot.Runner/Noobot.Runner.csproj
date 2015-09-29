@@ -55,6 +55,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DependencyResolution\Container.cs" />
+    <Compile Include="DependencyResolution\DefaultRegistry.cs" />
     <Compile Include="INoobotHost.cs" />
     <Compile Include="NoobotHost.cs" />
     <Compile Include="Program.cs" />
@@ -74,9 +76,7 @@
       <Name>Noobot.Domain</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="DependencyResolution\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
