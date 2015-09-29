@@ -1,7 +1,9 @@
-﻿namespace Noobot.Domain.Slack
+﻿using System.Threading.Tasks;
+
+namespace Noobot.Domain.Slack
 {
     public interface ISlackConnector
     {
-        InitialConnectionStatus Connect();
+        Task<InitialConnectionStatus> Connect();
     }
 }

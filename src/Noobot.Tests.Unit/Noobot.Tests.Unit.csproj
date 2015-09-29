@@ -62,6 +62,7 @@
   <ItemGroup>
     <Compile Include="Domain\Configuration\ConfigReaderTests.cs" />
     <Compile Include="Domain\Slack\ListenerTests.cs" />
+    <Compile Include="Domain\Slack\SlackConnectorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
