@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Noobot.Domain.MessagingPipeline.Request;
 using Noobot.Domain.MessagingPipeline.Response;
 

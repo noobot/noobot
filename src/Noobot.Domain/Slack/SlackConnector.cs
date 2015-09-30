@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Noobot.Domain.Configuration;
 using Noobot.Domain.MessagingPipeline;
@@ -69,7 +70,8 @@ namespace Noobot.Domain.Slack
                 Text = newMessage.text,
                 UserId = newMessage.user,
                 Channel = newMessage.channel,
-                Username = _client.UserLookup[newMessage.user].name
+                Username = _client.UserLookup[newMessage.user].name,
+                UserChannel = GetUserChannel(newMessage)
             };
 
             Task.Factory.StartNew(() =>
@@ -90,6 +92,17 @@ namespace Noobot.Domain.Slack
                 }
             })
             .ContinueWith(task => Console.WriteLine("[[[Message ended]]]"));
+        }
+
+        private string GetUserChannel(NewMessage newMessage)
+        {
+            var channel = _client.DirectMessages.FirstOrDefault(x => x.user == newMessage.user);
+            if (channel != null)
+            {
+                return channel.id;
+            }
+
+            return string.Empty;
         }
 
         public void Disconnect()
