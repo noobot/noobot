@@ -34,6 +34,10 @@
       <HintPath>..\..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="RestSharp, Version=105.2.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\RestSharp.105.2.3\lib\net452\RestSharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="SlackAPI, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\SlackAPI.1.0.3.1\lib\net45\SlackAPI.dll</HintPath>
       <Private>True</Private>
@@ -62,11 +66,12 @@
     <Compile Include="Configuration\SlackConfig.cs" />
     <Compile Include="MessagingPipeline\Middleware\CommandDescription.cs" />
     <Compile Include="MessagingPipeline\Middleware\IMiddleware.cs" />
+    <Compile Include="MessagingPipeline\Middleware\StandardMiddleware\AboutMiddleware.cs" />
+    <Compile Include="MessagingPipeline\Middleware\StandardMiddleware\JokeMiddleware.cs" />
     <Compile Include="MessagingPipeline\Middleware\StandardMiddleware\HelpMiddleware.cs" />
     <Compile Include="MessagingPipeline\Middleware\StandardMiddleware\YieldTestMiddleware.cs" />
     <Compile Include="MessagingPipeline\Request\IncomingMessage.cs" />
     <Compile Include="MessagingPipeline\Middleware\MiddlewareBase.cs" />
-    <Compile Include="MessagingPipeline\Middleware\StandardMiddleware\ErrorHandlerMiddleware.cs" />
     <Compile Include="MessagingPipeline\Middleware\StandardMiddleware\TestMiddleware.cs" />
     <Compile Include="MessagingPipeline\Middleware\StandardMiddleware\UnhandledMessageMiddleware.cs" />
     <Compile Include="MessagingPipeline\Middleware\StandardMiddleware\BeginMessageMiddleware.cs" />

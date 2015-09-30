@@ -7,10 +7,11 @@ namespace Noobot.Runner
     {
         public override void Initialise()
         {
-            Use<ErrorHandlerMiddleware>();
             Use<BeginMessageMiddleware>();
             Use<HelpMiddleware>();
             Use<TestMiddleware>();
+            Use<JokeMiddleware>();
+            Use<AboutMiddleware>();
             Use<UnhandledMessageMiddleware>();
         }
     }

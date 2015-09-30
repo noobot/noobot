@@ -1,24 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading;
 using Noobot.Domain.MessagingPipeline.Request;
 using Noobot.Domain.MessagingPipeline.Response;
 
 namespace Noobot.Domain.MessagingPipeline.Middleware.StandardMiddleware
 {
-    public class TestMiddleware : MiddlewareBase
+    public class AboutMiddleware : MiddlewareBase
     {
-        public TestMiddleware(IMiddleware next) : base(next)
+        public AboutMiddleware(IMiddleware next) : base(next)
         { }
 
         public override IEnumerable<ResponseMessage> Invoke(IncomingMessage message)
         {
-            if (message.Text.Equals("hi", StringComparison.InvariantCultureIgnoreCase))
+            if (message.Text.Equals("about", StringComparison.InvariantCultureIgnoreCase))
             {
-                yield return message.ReplyToChannel(string.Format("Hey @{0}, how you doing?", message.Username));
-                Thread.Sleep(TimeSpan.FromSeconds(5));
-                throw new Exception("something");
-                yield return message.ReplyDirectlyToUser("I know where you live...");
+                yield return message.ReplyDirectlyToUser("Noobot - Created by Simon Colmer " + DateTime.Now.Year);
+                yield return message.ReplyDirectlyToUser("I am an extensible SlackBot built in C# using loads of awesome open source projects.");
+                yield return message.ReplyDirectlyToUser("Please find more at http://github.com/workshop2/noobot");
             }
             else
             {
@@ -31,12 +29,12 @@ namespace Noobot.Domain.MessagingPipeline.Middleware.StandardMiddleware
 
         protected override CommandDescription[] SupportedCommands()
         {
-            return new[]
+            return new []
             {
                 new CommandDescription
                 {
-                    Command = "hi",
-                    Description = "Try saying hi and see what happens"
+                    Command = "about",
+                    Description = "Tells you some stuff about this bot :-)"
                 }
             };
         }
