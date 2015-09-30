@@ -2,9 +2,11 @@
 using System.Threading.Tasks;
 using Noobot.Domain.Configuration;
 using Noobot.Domain.MessagingPipeline;
+using Noobot.Domain.MessagingPipeline.Middleware;
+using Noobot.Domain.MessagingPipeline.Request;
+using Noobot.Domain.MessagingPipeline.Response;
 using SlackAPI;
 using SlackAPI.WebSocketMessages;
-using Response = Noobot.Domain.MessagingPipeline.Response;
 
 namespace Noobot.Domain.Slack
 {
@@ -13,6 +15,7 @@ namespace Noobot.Domain.Slack
         private readonly IConfigReader _configReader;
         private readonly IPipelineManager _pipelineManager;
         private SlackSocketClient _client;
+        private string _myId;
 
         public SlackConnector(IConfigReader configReader, IPipelineManager pipelineManager)
         {
@@ -32,6 +35,7 @@ namespace Noobot.Domain.Slack
             {
                 //This is called once the client has emitted the RTM start command
                 loginResponse = response;
+                _myId = loginResponse.self.id;
             },
             () =>
             {
@@ -50,6 +54,12 @@ namespace Noobot.Domain.Slack
 
         private void ClientOnOnMessageReceived(NewMessage newMessage)
         {
+            // ignore self messages...you dirty thing
+            if (newMessage.user == _myId)
+            {
+                return;
+            }
+
             Console.WriteLine("[[[Message started]]]");
 
             IMiddleware pipeline = _pipelineManager.GetPipeline();
@@ -58,15 +68,33 @@ namespace Noobot.Domain.Slack
                 MessageId = newMessage.id,
                 Text = newMessage.text,
                 UserId = newMessage.user,
-                Channel = newMessage.channel
+                Channel = newMessage.channel,
+                Username = _client.UserLookup[newMessage.user].name
             };
 
-            Task<Response> messageTask = pipeline.Invoke(incomingMessage);
+            Task<MiddlewareResponse> messageTask = pipeline.Invoke(incomingMessage);
             messageTask.ContinueWith(task =>
             {
-                //TODO: Send messages and stuff from here
                 // message completed. Send messages etc here
                 Console.WriteLine("[[[Message ended]]]");
+
+                if (task.Result != null)
+                {
+                    foreach (var responseMessage in task.Result.Messages)
+                    {
+                        _client.SendMessage(received =>
+                        {
+                            if (received.ok)
+                            {
+                                Console.WriteLine(@"Message: '{0}' received", responseMessage.Text);
+                            }
+                            else
+                            {
+                                Console.WriteLine(@"FAILED TO DELIVER MESSAGE '{0}'", responseMessage.Text);
+                            }
+                        }, responseMessage.Channel, responseMessage.Text);
+                    }   
+                }
             });
         }
 

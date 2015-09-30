@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Noobot.Domain.MessagingPipeline.Middleware;
 using StructureMap;
 using StructureMap.Configuration.DSL;
 using StructureMap.Graph;

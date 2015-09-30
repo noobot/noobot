@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Noobot.Domain.MessagingPipeline.Request;
+using Noobot.Domain.MessagingPipeline.Response;
 
-namespace Noobot.Domain.MessagingPipeline.StandardMiddleware
+namespace Noobot.Domain.MessagingPipeline.Middleware.StandardMiddleware
 {
     /// <summary>
     /// Handles unhanlded exceptions. Should just log it somewhere
@@ -11,7 +13,7 @@ namespace Noobot.Domain.MessagingPipeline.StandardMiddleware
         public ErrorHandlerMiddleware(IMiddleware next) : base(next)
         { }
 
-        public override async Task<Response> Invoke(IncomingMessage message)
+        public override async Task<MiddlewareResponse> Invoke(IncomingMessage message)
         {
             try
             {
@@ -22,7 +24,7 @@ namespace Noobot.Domain.MessagingPipeline.StandardMiddleware
                 Console.WriteLine("ERROR DETECTED: {0}", exception);
             }
 
-            return await Task.FromResult<Response>(null);
+            return await Task.FromResult<MiddlewareResponse>(null);
         }
     }
 }

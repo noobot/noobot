@@ -1,4 +1,4 @@
-﻿namespace Noobot.Domain.MessagingPipeline
+﻿namespace Noobot.Domain.MessagingPipeline.Request
 {
     public class IncomingMessage
     {
