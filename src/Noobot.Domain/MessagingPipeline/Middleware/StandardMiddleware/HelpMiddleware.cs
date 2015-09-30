@@ -1,29 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading;
+﻿using System.Collections.Generic;
+using System.Text;
 using Noobot.Domain.MessagingPipeline.Request;
 using Noobot.Domain.MessagingPipeline.Response;
 
 namespace Noobot.Domain.MessagingPipeline.Middleware.StandardMiddleware
 {
-    public class TestMiddleware : MiddlewareBase
+    public class HelpMiddleware : MiddlewareBase
     {
-        public TestMiddleware(IMiddleware next) : base(next)
+        public HelpMiddleware(IMiddleware next) : base(next)
         { }
 
         public override IEnumerable<ResponseMessage> Invoke(IncomingMessage message)
         {
-            if (message.Text.Equals("hi", StringComparison.InvariantCultureIgnoreCase))
+            if (message.Text.Equals("help"))
             {
-                Console.WriteLine("I FOUND HI. Ending call stack now");
+                var builder = new StringBuilder();
+                builder.Append(">>>");
 
-                yield return message.ReplyToChannel(string.Format("Hey @{0}, how you doing?", message.Username));
-                Thread.Sleep(TimeSpan.FromSeconds(5));
-                yield return message.ReplyDirectlyToUser("I know where you live...");
+                foreach (var commandDescription in GetSupportedCommands())
+                {
+                    builder.AppendFormat("{0}\t- {1}\n", commandDescription.Command, commandDescription.Description);
+                }
+
+                yield return message.ReplyDirectlyToUser(builder.ToString());
             }
             else
             {
-                Console.WriteLine("I shouldn't do anything, but want to test the ordering of the pipeline");
                 foreach (ResponseMessage responseMessage in Next(message))
                 {
                     yield return responseMessage;
@@ -35,8 +37,8 @@ namespace Noobot.Domain.MessagingPipeline.Middleware.StandardMiddleware
         {
             yield return new CommandDescription
             {
-                Command = "hi",
-                Description = "Try saying hi and see what happens"
+                Command = "help",
+                Description = "Returns supported commands and descriptions of how to use them"
             };
 
             foreach (var commandDescription in base.GetSupportedCommands())

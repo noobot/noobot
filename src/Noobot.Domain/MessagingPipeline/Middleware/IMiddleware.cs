@@ -7,5 +7,6 @@ namespace Noobot.Domain.MessagingPipeline.Middleware
     public interface IMiddleware
     {
         IEnumerable<ResponseMessage> Invoke(IncomingMessage message);
+        IEnumerable<CommandDescription> GetSupportedCommands();
     }
 }
