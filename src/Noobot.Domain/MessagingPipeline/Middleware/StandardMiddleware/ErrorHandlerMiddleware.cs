@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Noobot.Domain.MessagingPipeline.Request;
 using Noobot.Domain.MessagingPipeline.Response;
@@ -13,18 +14,18 @@ namespace Noobot.Domain.MessagingPipeline.Middleware.StandardMiddleware
         public ErrorHandlerMiddleware(IMiddleware next) : base(next)
         { }
 
-        public override async Task<MiddlewareResponse> Invoke(IncomingMessage message)
+        public override IEnumerable<ResponseMessage> Invoke(IncomingMessage message)
         {
             try
             {
-                return await Next(message);
+                return Next(message);
             }
             catch (Exception exception)
             {
                 Console.WriteLine("ERROR DETECTED: {0}", exception);
             }
 
-            return await Task.FromResult<MiddlewareResponse>(null);
+            return new ResponseMessage[0];
         }
     }
 }

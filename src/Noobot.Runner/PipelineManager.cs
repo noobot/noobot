@@ -9,6 +9,7 @@ namespace Noobot.Runner
         {
             Use<ErrorHandlerMiddleware>();
             Use<BeginMessageMiddleware>();
+            Use<YieldTestMiddleware>();
             Use<TestMiddleware>();
             Use<UnhandledMessageMiddleware>();
         }

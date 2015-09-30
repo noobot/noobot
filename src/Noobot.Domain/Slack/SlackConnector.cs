@@ -72,30 +72,24 @@ namespace Noobot.Domain.Slack
                 Username = _client.UserLookup[newMessage.user].name
             };
 
-            Task<MiddlewareResponse> messageTask = pipeline.Invoke(incomingMessage);
-            messageTask.ContinueWith(task =>
+            Task.Factory.StartNew(() =>
             {
-                // message completed. Send messages etc here
-                Console.WriteLine("[[[Message ended]]]");
-
-                if (task.Result != null)
+                foreach (ResponseMessage responseMessage in pipeline.Invoke(incomingMessage))
                 {
-                    foreach (var responseMessage in task.Result.Messages)
+                    _client.SendMessage(received =>
                     {
-                        _client.SendMessage(received =>
+                        if (received.ok)
                         {
-                            if (received.ok)
-                            {
-                                Console.WriteLine(@"Message: '{0}' received", responseMessage.Text);
-                            }
-                            else
-                            {
-                                Console.WriteLine(@"FAILED TO DELIVER MESSAGE '{0}'", responseMessage.Text);
-                            }
-                        }, responseMessage.Channel, responseMessage.Text);
-                    }   
+                            Console.WriteLine(@"Message: '{0}' received", responseMessage.Text);
+                        }
+                        else
+                        {
+                            Console.WriteLine(@"FAILED TO DELIVER MESSAGE '{0}'", responseMessage.Text);
+                        }
+                    }, responseMessage.Channel, responseMessage.Text);
                 }
-            });
+            })
+            .ContinueWith(task => Console.WriteLine("[[[Message ended]]]"));
         }
 
         public void Disconnect()

@@ -1,4 +1,4 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Noobot.Domain.MessagingPipeline.Request;
 using Noobot.Domain.MessagingPipeline.Response;
 
@@ -13,11 +13,11 @@ namespace Noobot.Domain.MessagingPipeline.Middleware
             _next = next;
         }
 
-        protected async Task<MiddlewareResponse> Next(IncomingMessage message)
+        protected IEnumerable<ResponseMessage> Next(IncomingMessage message)
         {
-            return await _next.Invoke(message);
+            return _next.Invoke(message);
         }
 
-        public abstract Task<MiddlewareResponse> Invoke(IncomingMessage message);
+        public abstract IEnumerable<ResponseMessage> Invoke(IncomingMessage message);
     }
 }

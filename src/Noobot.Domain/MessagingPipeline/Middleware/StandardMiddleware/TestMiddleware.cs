@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Noobot.Domain.MessagingPipeline.Request;
 using Noobot.Domain.MessagingPipeline.Response;
@@ -10,23 +11,22 @@ namespace Noobot.Domain.MessagingPipeline.Middleware.StandardMiddleware
         public TestMiddleware(IMiddleware next) : base(next)
         { }
 
-        public override async Task<MiddlewareResponse> Invoke(IncomingMessage message)
+        public override IEnumerable<ResponseMessage> Invoke(IncomingMessage message)
         {
             if (message.Text.Equals("hi", StringComparison.InvariantCultureIgnoreCase))
             {
                 Console.WriteLine("I FOUND HI. Ending call stack now");
-                var response = new MiddlewareResponse();
-                response.Messages.Add(new ResponseMessage
+                var responseMessage = new ResponseMessage
                 {
                     Channel = message.Channel,
                     Text = string.Format("Hey @{0}, how you doing?", message.Username)
-                });
+                };
 
-                return response;
+                return new [] { responseMessage };
             }
 
             Console.WriteLine("I shouldn't do anything, but want to test the ordering of the pipeline");
-            return await Next(message);
+            return Next(message);
         }
     }
 }
