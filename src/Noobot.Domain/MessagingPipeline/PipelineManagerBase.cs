@@ -34,6 +34,13 @@ namespace Noobot.Domain.MessagingPipeline
             {
                 x.TheCallingAssembly();
                 x.WithDefaultConventions();
+
+                MethodInfo method = x.GetType().GetMethod("AssemblyContainingType", new Type[0]);
+                foreach (Type middlewareType in _pipeline)
+                {
+                    MethodInfo generic = method.MakeGenericMethod(middlewareType);
+                    generic.Invoke(x, null);
+                }
             });
 
             if (_pipeline.Any())

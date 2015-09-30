@@ -13,7 +13,7 @@ namespace Noobot.Domain.MessagingPipeline.Middleware.StandardMiddleware
         public Task<MiddlewareResponse> Invoke(IncomingMessage message)
         {
             Console.WriteLine("[{0}] Unhandled", message.MessageId);
-            return Task.FromResult<MiddlewareResponse>(null);
+            return Task.FromResult(new MiddlewareResponse());
         }
     }
 }
