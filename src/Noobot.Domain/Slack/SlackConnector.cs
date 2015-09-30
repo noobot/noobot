@@ -76,47 +76,20 @@ namespace Noobot.Domain.Slack
             {
                 foreach (ResponseMessage responseMessage in pipeline.Invoke(incomingMessage))
                 {
-                    switch (responseMessage.MessageType)
+                    _client.SendMessage(received =>
                     {
-                        case ResponseMessageType.Channel:
-                            SendChannelMessage(responseMessage);
-                            break;
-                        case ResponseMessageType.DirectMessage:
-                            SendDirectMessage(responseMessage);
-                            break;
-                    }
-
-
-
+                        if (received.ok)
+                        {
+                            Console.WriteLine(@"Message: '{0}' received", responseMessage.Text);
+                        }
+                        else
+                        {
+                            Console.WriteLine(@"FAILED TO DELIVER MESSAGE '{0}'", responseMessage.Text);
+                        }
+                    }, responseMessage.Channel, responseMessage.Text);
                 }
             })
             .ContinueWith(task => Console.WriteLine("[[[Message ended]]]"));
-        }
-
-        private void SendDirectMessage(ResponseMessage responseMessage)
-        {
-            _client.PostMessage();
-            _client.Message(new NewMessage
-            {
-                user = responseMessage.Channel,
-                text = responseMessage.Text,
-                
-            });
-        }
-
-        private void SendChannelMessage(ResponseMessage responseMessage)
-        {
-            _client.SendMessage(received =>
-            {
-                if (received.ok)
-                {
-                    Console.WriteLine(@"Message: '{0}' received", responseMessage.Text);
-                }
-                else
-                {
-                    Console.WriteLine(@"FAILED TO DELIVER MESSAGE '{0}'", responseMessage.Text);
-                }
-            }, responseMessage.Channel, responseMessage.Text);
         }
 
         public void Disconnect()

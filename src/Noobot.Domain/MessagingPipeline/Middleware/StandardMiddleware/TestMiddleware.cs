@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading;
+using System.Threading.Tasks;
 using Noobot.Domain.MessagingPipeline.Request;
 using Noobot.Domain.MessagingPipeline.Response;
 
@@ -16,19 +16,17 @@ namespace Noobot.Domain.MessagingPipeline.Middleware.StandardMiddleware
             if (message.Text.Equals("hi", StringComparison.InvariantCultureIgnoreCase))
             {
                 Console.WriteLine("I FOUND HI. Ending call stack now");
-                
-                yield return new ResponseMessage { Channel = message.Channel, Text = string.Format("Hey @{0}, how you doing?", message.Username)};
-                Thread.Sleep(TimeSpan.FromSeconds(5));
-                yield return new ResponseMessage { Channel = message.Channel, Text = "I know where you live..." };
-            }
-            else
-            {
-                Console.WriteLine("I shouldn't do anything, but want to test the ordering of the pipeline");
-                foreach (ResponseMessage responseMessage in Next(message))
+                var responseMessage = new ResponseMessage
                 {
-                    yield return responseMessage;
-                }
+                    Channel = message.Channel,
+                    Text = string.Format("Hey @{0}, how you doing?", message.Username)
+                };
+
+                return new [] { responseMessage };
             }
+
+            Console.WriteLine("I shouldn't do anything, but want to test the ordering of the pipeline");
+            return Next(message);
         }
     }
 }
