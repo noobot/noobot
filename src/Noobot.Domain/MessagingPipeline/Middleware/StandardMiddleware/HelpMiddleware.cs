@@ -33,18 +33,16 @@ namespace Noobot.Domain.MessagingPipeline.Middleware.StandardMiddleware
             }
         }
 
-        public override IEnumerable<CommandDescription> GetSupportedCommands()
+        protected override CommandDescription[] SupportedCommands()
         {
-            yield return new CommandDescription
+            return new []
             {
-                Command = "help",
-                Description = "Returns supported commands and descriptions of how to use them"
+                new CommandDescription
+                {
+                    Command = "help",
+                    Description = "Returns supported commands and descriptions of how to use them"
+                }
             };
-
-            foreach (var commandDescription in base.GetSupportedCommands())
-            {
-                yield return commandDescription;
-            }
         }
     }
 }

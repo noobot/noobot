@@ -20,9 +20,22 @@ namespace Noobot.Domain.MessagingPipeline.Middleware
 
         public abstract IEnumerable<ResponseMessage> Invoke(IncomingMessage message);
 
-        public virtual IEnumerable<CommandDescription> GetSupportedCommands()
+        protected virtual CommandDescription[] SupportedCommands()
         {
-            return _next.GetSupportedCommands();
+            return new CommandDescription[0];
+        }
+
+        public IEnumerable<CommandDescription> GetSupportedCommands()
+        {
+            foreach (var commandDescription in SupportedCommands())
+            {
+                yield return commandDescription;
+            }
+
+            foreach (var commandDescription in _next.GetSupportedCommands())
+            {
+                yield return commandDescription;
+            }
         }
     }
 }
