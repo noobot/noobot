@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using Noobot.Domain.MessagingPipeline.Request;
 using Noobot.Domain.MessagingPipeline.Response;
@@ -12,7 +13,7 @@ namespace Noobot.Domain.MessagingPipeline.Middleware.StandardMiddleware
 
         public override IEnumerable<ResponseMessage> Invoke(IncomingMessage message)
         {
-            if (message.Text.Equals("help"))
+            if (message.Text.Equals("help", StringComparison.InvariantCultureIgnoreCase))
             {
                 var builder = new StringBuilder();
                 builder.Append(">>>");
