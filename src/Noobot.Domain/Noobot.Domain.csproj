@@ -76,7 +76,6 @@
     <Compile Include="Slack\InitialConnectionStatus.cs" />
     <Compile Include="MessagingPipeline\IPipelineManager.cs" />
     <Compile Include="Slack\ISlackConnector.cs" />
-    <Compile Include="Slack\Message.cs" />
     <Compile Include="Slack\SlackConnector.cs" />
   </ItemGroup>
   <ItemGroup>

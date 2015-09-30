@@ -2,6 +2,5 @@
 {
     public class InitialConnectionStatus
     {
-        public Message[] MissedMessages { get; set; } 
     }
 }

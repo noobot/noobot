@@ -17,6 +17,7 @@ namespace Noobot.Domain.Slack
         private readonly IPipelineManager _pipelineManager;
         private SlackSocketClient _client;
         private string _myId;
+        private string _myName;
 
         public SlackConnector(IConfigReader configReader, IPipelineManager pipelineManager)
         {
@@ -37,6 +38,7 @@ namespace Noobot.Domain.Slack
                 //This is called once the client has emitted the RTM start command
                 loginResponse = response;
                 _myId = loginResponse.self.id;
+                _myName = loginResponse.self.name;
             },
             () =>
             {
@@ -61,13 +63,19 @@ namespace Noobot.Domain.Slack
                 return;
             }
 
+            string text = FilterText(newMessage.text);
+            if (string.IsNullOrEmpty(text))
+            {
+                return;
+            }
+
             Console.WriteLine("[[[Message started]]]");
 
             IMiddleware pipeline = _pipelineManager.GetPipeline();
             var incomingMessage = new IncomingMessage
             {
                 MessageId = newMessage.id,
-                Text = newMessage.text,
+                Text = text,
                 UserId = newMessage.user,
                 Channel = newMessage.channel,
                 Username = _client.UserLookup[newMessage.user].name,
@@ -92,6 +100,22 @@ namespace Noobot.Domain.Slack
                 }
             })
             .ContinueWith(task => Console.WriteLine("[[[Message ended]]]"));
+        }
+
+        private string FilterText(string text)
+        {
+            string[] myNames =
+            {
+                string.Format("<@{0}>:", _myId),
+                string.Format("<@{0}>", _myId),
+                _myName + ":",
+                _myName,
+                string.Format("@{0}:", _myName),
+                string.Format("@{0}", _myName),
+            };
+
+            string match = myNames.FirstOrDefault(x => text.StartsWith(x, StringComparison.InvariantCultureIgnoreCase));
+            return string.IsNullOrEmpty(match) ? string.Empty : text.Substring(match.Length).Trim();
         }
 
         private string GetUserChannel(NewMessage newMessage)
