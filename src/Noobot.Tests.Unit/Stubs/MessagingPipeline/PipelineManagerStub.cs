@@ -1,5 +1,5 @@
 ﻿using Noobot.Domain.MessagingPipeline;
-using Noobot.Domain.MessagingPipeline.Middlewares;
+using Noobot.Domain.MessagingPipeline.StandardMiddleware;
 
 namespace Noobot.Tests.Unit.Stubs.MessagingPipeline
 {

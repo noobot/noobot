@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace Noobot.Domain.MessagingPipeline.Middlewares
+namespace Noobot.Domain.MessagingPipeline.StandardMiddleware
 {
     public class BeginMessageMiddleware : MiddlewareBase
     {
