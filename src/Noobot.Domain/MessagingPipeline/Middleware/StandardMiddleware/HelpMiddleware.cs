@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Text;
 using Noobot.Domain.MessagingPipeline.Request;
 using Noobot.Domain.MessagingPipeline.Response;
@@ -9,41 +8,29 @@ namespace Noobot.Domain.MessagingPipeline.Middleware.StandardMiddleware
     public class HelpMiddleware : MiddlewareBase
     {
         public HelpMiddleware(IMiddleware next) : base(next)
-        { }
-
-        public override IEnumerable<ResponseMessage> Invoke(IncomingMessage message)
         {
-            if (message.Text.Equals("help", StringComparison.InvariantCultureIgnoreCase))
+            HandlerMappings = new[]
             {
-                var builder = new StringBuilder();
-                builder.Append(">>>");
-
-                foreach (var commandDescription in GetSupportedCommands())
+                new HandlerMapping
                 {
-                    builder.AppendFormat("{0}\t- {1}\n", commandDescription.Command, commandDescription.Description);
-                }
-
-                yield return message.ReplyDirectlyToUser(builder.ToString());
-            }
-            else
-            {
-                foreach (ResponseMessage responseMessage in Next(message))
-                {
-                    yield return responseMessage;
-                }
-            }
-        }
-
-        protected override CommandDescription[] SupportedCommands()
-        {
-            return new []
-            {
-                new CommandDescription
-                {
-                    Command = "help",
-                    Description = "Returns supported commands and descriptions of how to use them"
+                    ValidHandles = new[] {"help", "yo tell me more"},
+                    Description = "Returns supported commands and descriptions of how to use them",
+                    EvaluatorFunc = HelpHandler
                 }
             };
+        }
+
+        private IEnumerable<ResponseMessage> HelpHandler(IncomingMessage message)
+        {
+            var builder = new StringBuilder();
+            builder.Append(">>>");
+
+            foreach (var commandDescription in GetSupportedCommands())
+            {
+                builder.AppendFormat("{0}\t- {1}\n", commandDescription.Command, commandDescription.Description);
+            }
+
+            yield return message.ReplyDirectlyToUser(builder.ToString());
         }
     }
 }

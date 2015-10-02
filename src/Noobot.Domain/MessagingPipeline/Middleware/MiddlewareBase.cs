@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using Noobot.Domain.MessagingPipeline.Middleware.StandardMiddleware;
 using Noobot.Domain.MessagingPipeline.Request;
 using Noobot.Domain.MessagingPipeline.Response;
 
@@ -6,11 +8,13 @@ namespace Noobot.Domain.MessagingPipeline.Middleware
 {
     public abstract class MiddlewareBase : IMiddleware
     {
+        protected HandlerMapping[] HandlerMappings;
         private readonly IMiddleware _next;
 
         protected MiddlewareBase(IMiddleware next)
         {
             _next = next;
+            HandlerMappings = HandlerMappings ?? new HandlerMapping[0];
         }
 
         protected IEnumerable<ResponseMessage> Next(IncomingMessage message)
@@ -18,18 +22,42 @@ namespace Noobot.Domain.MessagingPipeline.Middleware
             return _next.Invoke(message);
         }
 
-        public abstract IEnumerable<ResponseMessage> Invoke(IncomingMessage message);
-
-        protected virtual CommandDescription[] SupportedCommands()
+        public virtual IEnumerable<ResponseMessage> Invoke(IncomingMessage message)
         {
-            return new CommandDescription[0];
-        }
+            foreach (var handlerMapping in HandlerMappings)
+            {
+                foreach (string map in handlerMapping.ValidHandles)
+                {
+                    if (message.Text.StartsWith(map, StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        foreach (var responseMessage in handlerMapping.EvaluatorFunc(message))
+                        {
+                            yield return responseMessage;
+                        }
 
+                        if (!handlerMapping.ShouldContinueProcessing)
+                        {
+                            yield break;
+                        }
+                    }
+                }
+            }
+
+            foreach (ResponseMessage responseMessage in Next(message))
+            {
+                yield return responseMessage;
+            }
+        }
+        
         public IEnumerable<CommandDescription> GetSupportedCommands()
         {
-            foreach (var commandDescription in SupportedCommands())
+            foreach (var handlerMapping in HandlerMappings)
             {
-                yield return commandDescription;
+                yield return new CommandDescription
+                {
+                    Command = string.Join(" | ", handlerMapping.ValidHandles),
+                    Description = handlerMapping.Description
+                };
             }
 
             foreach (var commandDescription in _next.GetSupportedCommands())
