@@ -84,9 +84,17 @@ namespace Noobot.Domain.Slack
 
             Task.Factory.StartNew(() =>
             {
+                //_client.PostMessage(response =>
+                //{
+                //    if (response != null)
+                //    {
+
+                //    }
+                //}, "U0BPYUD54", "TEST", botName: _myName);
+
                 foreach (ResponseMessage responseMessage in pipeline.Invoke(incomingMessage))
                 {
-                    _client.SendMessage(received =>
+                    _client.PostMessage(received =>
                     {
                         if (received.ok)
                         {
@@ -96,7 +104,7 @@ namespace Noobot.Domain.Slack
                         {
                             Console.WriteLine(@"FAILED TO DELIVER MESSAGE '{0}'", responseMessage.Text);
                         }
-                    }, responseMessage.Channel, responseMessage.Text);
+                    }, responseMessage.Channel, responseMessage.Text, botName: _myName);
                 }
             })
             .ContinueWith(task => Console.WriteLine("[[[Message ended]]]"));
@@ -106,10 +114,10 @@ namespace Noobot.Domain.Slack
         {
             string[] myNames =
             {
-                string.Format("<@{0}>:", _myId),
-                string.Format("<@{0}>", _myId),
                 _myName + ":",
                 _myName,
+                string.Format("<@{0}>:", _myId),
+                string.Format("<@{0}>", _myId),
                 string.Format("@{0}:", _myName),
                 string.Format("@{0}", _myName),
             };
@@ -125,6 +133,8 @@ namespace Noobot.Domain.Slack
             {
                 return channel.id;
             }
+
+            return newMessage.user;
 
             return string.Empty;
         }
