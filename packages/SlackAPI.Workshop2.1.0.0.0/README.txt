@@ -1,0 +1,1 @@
+This is a custom build of SlackAPI to add DM Channel Creation: https://github.com/workshop2/slackapi

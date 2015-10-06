@@ -17,21 +17,19 @@ namespace Noobot.Domain.MessagingPipeline.Request
             return new ResponseMessage
             {
                 Channel = Channel,
-                Text = text
+                Text = text,
+                ResponseType = ResponseType.Channel
             };
         }
 
         public ResponseMessage ReplyDirectlyToUser(string text)
         {
-            if (string.IsNullOrEmpty(UserChannel))
-            {
-                throw new NullReferenceException("No user channel found. Unable to reply");
-            }
-
             return new ResponseMessage
             {
                 Channel = UserChannel,
-                Text = text
+                Text = text,
+                ResponseType = ResponseType.DirectMessage,
+                UserId = UserId
             };
         }
     }

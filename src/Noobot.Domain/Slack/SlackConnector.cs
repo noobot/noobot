@@ -84,30 +84,55 @@ namespace Noobot.Domain.Slack
 
             Task.Factory.StartNew(() =>
             {
-                //_client.PostMessage(response =>
-                //{
-                //    if (response != null)
-                //    {
-
-                //    }
-                //}, "U0BPYUD54", "TEST", botName: _myName);
-
                 foreach (ResponseMessage responseMessage in pipeline.Invoke(incomingMessage))
                 {
-                    _client.PostMessage(received =>
-                    {
-                        if (received.ok)
-                        {
-                            Console.WriteLine(@"Message: '{0}' received", responseMessage.Text);
-                        }
-                        else
-                        {
-                            Console.WriteLine(@"FAILED TO DELIVER MESSAGE '{0}'", responseMessage.Text);
-                        }
-                    }, responseMessage.Channel, responseMessage.Text, botName: _myName);
+                    SendMessage(responseMessage);
                 }
             })
             .ContinueWith(task => Console.WriteLine("[[[Message ended]]]"));
+        }
+
+        private void SendMessage(ResponseMessage responseMessage)
+        {
+            string channel = responseMessage.Channel;
+            if (responseMessage.ResponseType == ResponseType.DirectMessage)
+            {
+                if (string.IsNullOrEmpty(channel) || _client.ChannelLookup[channel] == null)
+                {
+                    channel = JoinDirectMessageChannel(responseMessage.UserId);
+                }
+            }
+            
+            _client.SendMessage(received =>
+            {
+                if (received.ok)
+                {
+                    Console.WriteLine(@"Message: '{0}' received", responseMessage.Text);
+                }
+                else
+                {
+                    Console.WriteLine(@"FAILED TO DELIVER MESSAGE '{0}'", responseMessage.Text);
+                }
+            }, channel, responseMessage.Text);
+        }
+
+        private string JoinDirectMessageChannel(string userName)
+        {
+            var tcs = new TaskCompletionSource<string>();
+
+            _client.JoinDirectMessageChannel(response =>
+            {
+                if (response.ok)
+                {
+                    tcs.SetResult(response.channel.id);
+                }
+                else
+                {
+                    tcs.SetResult(string.Empty);
+                }
+            }, userName);
+
+            return tcs.Task.Result;
         }
 
         private string FilterText(string text)
@@ -135,8 +160,6 @@ namespace Noobot.Domain.Slack
             }
 
             return newMessage.user;
-
-            return string.Empty;
         }
 
         public void Disconnect()
