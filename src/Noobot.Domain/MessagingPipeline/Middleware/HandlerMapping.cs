@@ -5,10 +5,11 @@ using Noobot.Domain.MessagingPipeline.Response;
 
 namespace Noobot.Domain.MessagingPipeline.Middleware
 {
-    public class Mapping
+    public class HandlerMapping
     {
-        public string[] ValidHandle { get; set; }
+        public string[] ValidHandles { get; set; }
+        public string Description { get; set; }
         public Func<IncomingMessage, IEnumerable<ResponseMessage>> EvaluatorFunc { get; set; }
-        public string Description { get; set; } 
+        public bool ShouldContinueProcessing { get; set; }
     }
 }

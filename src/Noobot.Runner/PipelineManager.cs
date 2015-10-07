@@ -9,7 +9,7 @@ namespace Noobot.Runner
         {
             Use<BeginMessageMiddleware>();
             Use<HelpMiddleware>();
-            Use<TestMiddleware>();
+            Use<WelcomeMiddleware>();
             Use<JokeMiddleware>();
             Use<AboutMiddleware>();
             Use<UnhandledMessageMiddleware>();

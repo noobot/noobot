@@ -71,14 +71,14 @@
     <Compile Include="MessagingPipeline\Middleware\CommandDescription.cs" />
     <Compile Include="MessagingPipeline\Middleware\IMiddleware.cs" />
     <Compile Include="MessagingPipeline\Middleware\StandardMiddleware\AboutMiddleware.cs" />
-    <Compile Include="MessagingPipeline\Middleware\StandardMiddleware\HandlerMapping.cs" />
+    <Compile Include="MessagingPipeline\Middleware\HandlerMapping.cs" />
     <Compile Include="MessagingPipeline\Middleware\StandardMiddleware\JokeMiddleware.cs" />
     <Compile Include="MessagingPipeline\Middleware\StandardMiddleware\HelpMiddleware.cs" />
     <Compile Include="MessagingPipeline\Middleware\StandardMiddleware\YieldTestMiddleware.cs" />
     <Compile Include="MessagingPipeline\PipelineFactory.cs" />
     <Compile Include="MessagingPipeline\Request\IncomingMessage.cs" />
     <Compile Include="MessagingPipeline\Middleware\MiddlewareBase.cs" />
-    <Compile Include="MessagingPipeline\Middleware\StandardMiddleware\TestMiddleware.cs" />
+    <Compile Include="MessagingPipeline\Middleware\StandardMiddleware\WelcomeMiddleware.cs" />
     <Compile Include="MessagingPipeline\Middleware\StandardMiddleware\UnhandledMessageMiddleware.cs" />
     <Compile Include="MessagingPipeline\Middleware\StandardMiddleware\BeginMessageMiddleware.cs" />
     <Compile Include="MessagingPipeline\PipelineManagerBase.cs" />
