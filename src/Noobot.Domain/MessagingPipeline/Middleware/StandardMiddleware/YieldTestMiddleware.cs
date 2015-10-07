@@ -9,20 +9,25 @@ namespace Noobot.Domain.MessagingPipeline.Middleware.StandardMiddleware
     public class YieldTestMiddleware : MiddlewareBase
     {
         public YieldTestMiddleware(IMiddleware next) : base(next)
-        { }
+        {
+            HandlerMappings = new[]
+            {
+                new HandlerMapping
+                {
+                    ValidHandles = new[] {"yield test"},
+                    EvaluatorFunc = YieldTest,
+                    Description = "Just tests delayed messages"
+                }
+            };
+        }
 
-        public override IEnumerable<ResponseMessage> Invoke(IncomingMessage message)
+        private IEnumerable<ResponseMessage> YieldTest(IncomingMessage incomingMessage)
         {
             for (int i = 0; i < 10; i++)
             {
                 Console.WriteLine("Sending message");
-                yield return new ResponseMessage { Channel = message.Channel, Text = "Waiting " + i };
+                yield return new ResponseMessage { Channel = incomingMessage.Channel, Text = "Waiting " + i };
                 Thread.Sleep(TimeSpan.FromSeconds(2));
-            }
-            
-            foreach (ResponseMessage responseMessage in Next(message))
-            {
-                yield return responseMessage;
             }
         }
     }

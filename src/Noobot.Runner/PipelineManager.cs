@@ -12,6 +12,7 @@ namespace Noobot.Runner
             Use<WelcomeMiddleware>();
             Use<JokeMiddleware>();
             Use<AboutMiddleware>();
+            Use<YieldTestMiddleware>();
             Use<UnhandledMessageMiddleware>();
         }
     }
