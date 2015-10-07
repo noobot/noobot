@@ -14,15 +14,15 @@ namespace Noobot.Domain.Slack
     public class SlackConnector : ISlackConnector
     {
         private readonly IConfigReader _configReader;
-        private readonly IPipelineManager _pipelineManager;
+        private readonly IPipelineFactory _pipelineFactory;
         private SlackSocketClient _client;
         private string _myId;
         private string _myName;
 
-        public SlackConnector(IConfigReader configReader, IPipelineManager pipelineManager)
+        public SlackConnector(IConfigReader configReader, IPipelineFactory pipelineFactory)
         {
             _configReader = configReader;
-            _pipelineManager = pipelineManager;
+            _pipelineFactory = pipelineFactory;
         }
 
         public async Task<InitialConnectionStatus> Connect()
@@ -43,8 +43,6 @@ namespace Noobot.Domain.Slack
             () =>
             {
                 //This is called once the Real Time Messaging client has connected to the end point
-                _pipelineManager.Initialise();
-
                 _client.OnMessageReceived += ClientOnOnMessageReceived;
 
                 //TODO: Populate with useful information and display/log it somewhere
@@ -71,7 +69,7 @@ namespace Noobot.Domain.Slack
 
             Console.WriteLine("[[[Message started]]]");
 
-            IMiddleware pipeline = _pipelineManager.GetPipeline();
+            IMiddleware pipeline = _pipelineFactory.GetPipeline();
             var incomingMessage = new IncomingMessage
             {
                 MessageId = newMessage.id,

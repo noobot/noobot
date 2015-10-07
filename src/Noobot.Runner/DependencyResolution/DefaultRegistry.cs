@@ -14,6 +14,9 @@ namespace Noobot.Runner.DependencyResolution
                 scan.WithDefaultConventions();
                 scan.Assembly("Noobot.Domain");
             });
+
+            For<INoobotHost>()
+                .Use<NoobotHost2>();
             
             For<IPipelineManager>()
                 .Use<PipelineManager>();

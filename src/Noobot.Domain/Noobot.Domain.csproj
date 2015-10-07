@@ -63,6 +63,11 @@
     <Compile Include="Configuration\ConfigReader.cs" />
     <Compile Include="Configuration\IConfigReader.cs" />
     <Compile Include="Configuration\SlackConfig.cs" />
+    <Compile Include="DependencyResolution\ContainerGenerator.cs" />
+    <Compile Include="DependencyResolution\INoobotContainer.cs" />
+    <Compile Include="DependencyResolution\IContainerGenerator.cs" />
+    <Compile Include="DependencyResolution\NoobotContainer.cs" />
+    <Compile Include="MessagingPipeline\IPipelineFactory.cs" />
     <Compile Include="MessagingPipeline\Middleware\CommandDescription.cs" />
     <Compile Include="MessagingPipeline\Middleware\IMiddleware.cs" />
     <Compile Include="MessagingPipeline\Middleware\StandardMiddleware\AboutMiddleware.cs" />
@@ -70,6 +75,7 @@
     <Compile Include="MessagingPipeline\Middleware\StandardMiddleware\JokeMiddleware.cs" />
     <Compile Include="MessagingPipeline\Middleware\StandardMiddleware\HelpMiddleware.cs" />
     <Compile Include="MessagingPipeline\Middleware\StandardMiddleware\YieldTestMiddleware.cs" />
+    <Compile Include="MessagingPipeline\PipelineFactory.cs" />
     <Compile Include="MessagingPipeline\Request\IncomingMessage.cs" />
     <Compile Include="MessagingPipeline\Middleware\MiddlewareBase.cs" />
     <Compile Include="MessagingPipeline\Middleware\StandardMiddleware\TestMiddleware.cs" />

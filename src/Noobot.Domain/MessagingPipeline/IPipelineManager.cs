@@ -1,11 +1,11 @@
-﻿using System.Threading.Tasks;
-using Noobot.Domain.MessagingPipeline.Middleware;
+﻿using Noobot.Domain.MessagingPipeline.Middleware;
+using StructureMap.Configuration.DSL;
 
 namespace Noobot.Domain.MessagingPipeline
 {
     public interface IPipelineManager
     {
-        void Initialise();
+        Registry Initialise(Registry registry);
         IMiddleware GetPipeline();
     }
 }
