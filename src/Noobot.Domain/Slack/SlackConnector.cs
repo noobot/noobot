@@ -95,7 +95,7 @@ namespace Noobot.Domain.Slack
             string channel = responseMessage.Channel;
             if (responseMessage.ResponseType == ResponseType.DirectMessage)
             {
-                if (string.IsNullOrEmpty(channel) || _client.ChannelLookup[channel] == null)
+                if (string.IsNullOrEmpty(channel) || !_client.DirectMessageLookup.ContainsKey(channel))
                 {
                     channel = JoinDirectMessageChannel(responseMessage.UserId);
                 }
