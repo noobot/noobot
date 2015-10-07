@@ -5,13 +5,14 @@ namespace Noobot.Runner
 {
     public class PipelineManager : PipelineManagerBase
     {
-        public override void Initialise()
+        protected override void Initialise()
         {
             Use<BeginMessageMiddleware>();
             Use<HelpMiddleware>();
-            Use<TestMiddleware>();
+            Use<WelcomeMiddleware>();
             Use<JokeMiddleware>();
             Use<AboutMiddleware>();
+            Use<YieldTestMiddleware>();
             Use<UnhandledMessageMiddleware>();
         }
     }

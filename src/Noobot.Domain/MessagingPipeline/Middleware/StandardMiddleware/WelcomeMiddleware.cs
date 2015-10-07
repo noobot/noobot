@@ -6,9 +6,9 @@ using Noobot.Domain.MessagingPipeline.Response;
 
 namespace Noobot.Domain.MessagingPipeline.Middleware.StandardMiddleware
 {
-    public class TestMiddleware : MiddlewareBase
+    public class WelcomeMiddleware : MiddlewareBase
     {
-        public TestMiddleware(IMiddleware next) : base(next)
+        public WelcomeMiddleware(IMiddleware next) : base(next)
         {
             HandlerMappings = new[]
             {
