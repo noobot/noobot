@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Noobot.Domain.MessagingPipeline.Response;
 
 namespace Noobot.Domain.Slack
 {
@@ -6,5 +7,6 @@ namespace Noobot.Domain.Slack
     {
         Task<InitialConnectionStatus> Connect();
         void Disconnect();
+        void SendMessage(ResponseMessage responseMessage);
     }
 }

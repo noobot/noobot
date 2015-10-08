@@ -60,6 +60,7 @@
     <Compile Include="INoobotHost.cs" />
     <Compile Include="NoobotHost.cs" />
     <Compile Include="PipelineManager.cs" />
+    <Compile Include="PluginManager.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
