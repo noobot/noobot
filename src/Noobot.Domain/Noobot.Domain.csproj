@@ -70,6 +70,7 @@
     <Compile Include="MessagingPipeline\IPipelineFactory.cs" />
     <Compile Include="MessagingPipeline\Middleware\CommandDescription.cs" />
     <Compile Include="MessagingPipeline\Middleware\IMiddleware.cs" />
+    <Compile Include="MessagingPipeline\Middleware\StandardMiddleware\PingMiddleware.cs" />
     <Compile Include="MessagingPipeline\Middleware\StandardMiddleware\AboutMiddleware.cs" />
     <Compile Include="MessagingPipeline\Middleware\HandlerMapping.cs" />
     <Compile Include="MessagingPipeline\Middleware\StandardMiddleware\JokeMiddleware.cs" />

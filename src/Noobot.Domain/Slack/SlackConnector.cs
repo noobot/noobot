@@ -90,7 +90,7 @@ namespace Noobot.Domain.Slack
             .ContinueWith(task => Console.WriteLine("[[[Message ended]]]"));
         }
 
-        private void SendMessage(ResponseMessage responseMessage)
+        public void SendMessage(ResponseMessage responseMessage)
         {
             string channel = responseMessage.Channel;
             if (responseMessage.ResponseType == ResponseType.DirectMessage)
