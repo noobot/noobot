@@ -10,9 +10,10 @@ namespace Noobot.Domain.Plugins.StandardPlugins
 {
     public class PingPlugin : IPlugin
     {
+        private readonly object _lock = new object();
         private bool _isRunning;
         private readonly ISlackConnector _slackConnector;
-        private readonly StringCollection _userIds = new StringCollection(); 
+        private readonly StringCollection _userIds = new StringCollection();
 
         public PingPlugin(ISlackConnector slackConnector)
         {
@@ -26,15 +27,23 @@ namespace Noobot.Domain.Plugins.StandardPlugins
             {
                 while (_isRunning)
                 {
-                    foreach (string userId in _userIds)
-                    {
-                        var message = new ResponseMessage
-                        {
-                            UserId = userId,
-                            Text = "Ping " + DateTime.Now.ToLongTimeString(),
-                            ResponseType = ResponseType.DirectMessage
-                        };
+                    var messagesToSend = new List<ResponseMessage>();
 
+                    lock (_lock)
+                    {
+                        foreach (string userId in _userIds)
+                        {
+                            messagesToSend.Add(new ResponseMessage
+                            {
+                                UserId = userId,
+                                Text = "Ping " + DateTime.Now.ToLongTimeString(),
+                                ResponseType = ResponseType.DirectMessage
+                            });
+                        }
+                    }
+
+                    foreach (var message in messagesToSend)
+                    {
                         _slackConnector.SendMessage(message);
                     }
 
@@ -50,18 +59,24 @@ namespace Noobot.Domain.Plugins.StandardPlugins
 
         public void PingUserId(string userId)
         {
-            if (!_userIds.Contains(userId))
+            lock (_lock)
             {
-                _userIds.Add(userId);
+                if (!_userIds.Contains(userId))
+                {
+                    _userIds.Add(userId);
+                }
             }
         }
 
         public bool StopPingingUser(string userId)
         {
-            if (_userIds.Contains(userId))
+            lock (_lock)
             {
-                _userIds.Remove(userId);
-                return true;
+                if (_userIds.Contains(userId))
+                {
+                    _userIds.Remove(userId);
+                    return true;
+                }
             }
 
             return false;
