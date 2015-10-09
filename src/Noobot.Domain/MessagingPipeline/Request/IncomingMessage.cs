@@ -14,23 +14,12 @@ namespace Noobot.Domain.MessagingPipeline.Request
 
         public ResponseMessage ReplyToChannel(string text)
         {
-            return new ResponseMessage
-            {
-                Channel = Channel,
-                Text = text,
-                ResponseType = ResponseType.Channel
-            };
+            return ResponseMessage.ChannelMessage(Channel, text);
         }
 
         public ResponseMessage ReplyDirectlyToUser(string text)
         {
-            return new ResponseMessage
-            {
-                Channel = UserChannel,
-                Text = text,
-                ResponseType = ResponseType.DirectMessage,
-                UserId = UserId
-            };
+            return ResponseMessage.DirectUserMessage(UserChannel, UserId, text);
         }
     }
 }

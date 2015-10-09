@@ -9,7 +9,7 @@ using Noobot.Domain.Slack;
 namespace Noobot.Domain.Plugins.StandardPlugins
 {
     public class PingPlugin : IPlugin
-    {
+    { 
         private readonly object _lock = new object();
         private bool _isRunning;
         private readonly ISlackConnector _slackConnector;
@@ -23,6 +23,7 @@ namespace Noobot.Domain.Plugins.StandardPlugins
         public void Start()
         {
             _isRunning = true;
+
             Task.Factory.StartNew(() =>
             {
                 while (_isRunning)
@@ -33,12 +34,7 @@ namespace Noobot.Domain.Plugins.StandardPlugins
                     {
                         foreach (string userId in _userIds)
                         {
-                            messagesToSend.Add(new ResponseMessage
-                            {
-                                UserId = userId,
-                                Text = "Ping " + DateTime.Now.ToLongTimeString(),
-                                ResponseType = ResponseType.DirectMessage
-                            });
+                            messagesToSend.Add(ResponseMessage.DirectUserMessage(userId, "Ping " + DateTime.Now.ToLongTimeString()));
                         }
                     }
 
