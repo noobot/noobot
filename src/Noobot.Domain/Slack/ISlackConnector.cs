@@ -8,5 +8,7 @@ namespace Noobot.Domain.Slack
         Task<InitialConnectionStatus> Connect();
         void Disconnect();
         void SendMessage(ResponseMessage responseMessage);
+        string GetUserIdForUsername(string username);
+        string GetChannelId(string channelName);
     }
 }

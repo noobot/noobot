@@ -114,6 +114,18 @@ namespace Noobot.Domain.Slack
             }, channel, responseMessage.Text);
         }
 
+        public string GetUserIdForUsername(string username)
+        {
+            var user = _client.Users.FirstOrDefault(x => x.name.Equals(username, StringComparison.InvariantCultureIgnoreCase));
+            return user != null ? user.id : string.Empty; 
+        }
+
+        public string GetChannelId(string channelName)
+        {
+            var channel = _client.Channels.FirstOrDefault(x => x.name.Equals(channelName, StringComparison.InvariantCultureIgnoreCase));
+            return channel != null ? channel.id : string.Empty;
+        }
+
         private string JoinDirectMessageChannel(string userName)
         {
             var tcs = new TaskCompletionSource<string>();
