@@ -14,7 +14,7 @@ namespace Noobot.Custom.Pipeline.Middleware
             {
                 new HandlerMapping
                 {
-                    ValidHandles = new []{ "about" },
+                    ValidHandles = new []{ "/about", "about" },
                     Description = "Tells you some stuff about this bot :-)",
                     EvaluatorFunc = AboutHandler
                 }

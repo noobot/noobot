@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Noobot.Domain.MessagingPipeline.Middleware.StandardMiddleware;
 using Noobot.Domain.MessagingPipeline.Request;
 using Noobot.Domain.MessagingPipeline.Response;
@@ -55,7 +56,7 @@ namespace Noobot.Domain.MessagingPipeline.Middleware
             {
                 yield return new CommandDescription
                 {
-                    Command = string.Join(" | ", handlerMapping.ValidHandles),
+                    Command = string.Join(" | ", handlerMapping.ValidHandles.OrderBy(x => x)),
                     Description = handlerMapping.Description
                 };
             }

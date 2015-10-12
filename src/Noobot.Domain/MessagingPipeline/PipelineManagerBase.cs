@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Noobot.Domain.MessagingPipeline.Middleware;
-using StructureMap;
 using StructureMap.Configuration.DSL;
-using StructureMap.Graph;
 using StructureMap.Pipeline;
 
 namespace Noobot.Domain.MessagingPipeline
@@ -41,7 +39,7 @@ namespace Noobot.Domain.MessagingPipeline
 
                 while (_pipeline.Any())
                 {
-                    var nextType = _pipeline.Pop();
+                    Type nextType = _pipeline.Pop();
                     var nextDeclare = registry.For<IMiddleware>();
 
                     MethodInfo decorateMethod = nextDeclare.GetType().GetMethod("DecorateAllWith", new[] { typeof(Func<Instance, bool>) });

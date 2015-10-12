@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Noobot.Domain.MessagingPipeline.Request;
 using Noobot.Domain.MessagingPipeline.Response;
@@ -13,7 +14,7 @@ namespace Noobot.Domain.MessagingPipeline.Middleware.StandardMiddleware
             {
                 new HandlerMapping
                 {
-                    ValidHandles = new[] {"help", "yo tell me more"},
+                    ValidHandles = new[] {"/help", "help", "yo tell me more"},
                     Description = "Returns supported commands and descriptions of how to use them",
                     EvaluatorFunc = HelpHandler
                 }
@@ -25,7 +26,9 @@ namespace Noobot.Domain.MessagingPipeline.Middleware.StandardMiddleware
             var builder = new StringBuilder();
             builder.Append(">>>");
 
-            foreach (var commandDescription in GetSupportedCommands())
+            var supportedCommands = GetSupportedCommands().OrderBy(x => x.Command);
+
+            foreach (CommandDescription commandDescription in supportedCommands)
             {
                 builder.AppendFormat("{0}\t- {1}\n", commandDescription.Command, commandDescription.Description);
             }
