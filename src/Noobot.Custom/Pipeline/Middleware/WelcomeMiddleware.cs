@@ -22,7 +22,7 @@ namespace Noobot.Custom.Pipeline.Middleware
             };
         }
 
-        private IEnumerable<ResponseMessage> TestHandler(IncomingMessage message)
+        private IEnumerable<ResponseMessage> TestHandler(IncomingMessage message, string matchedHandle)
         {
             yield return message.ReplyToChannel($"Hey @{message.Username}, how you doing?");
             Thread.Sleep(TimeSpan.FromSeconds(5));

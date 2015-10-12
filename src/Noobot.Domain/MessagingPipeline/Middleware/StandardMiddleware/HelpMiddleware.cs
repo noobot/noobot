@@ -21,7 +21,7 @@ namespace Noobot.Domain.MessagingPipeline.Middleware.StandardMiddleware
             };
         }
 
-        private IEnumerable<ResponseMessage> HelpHandler(IncomingMessage message)
+        private IEnumerable<ResponseMessage> HelpHandler(IncomingMessage message, string matchedHandle)
         {
             var builder = new StringBuilder();
             builder.Append(">>>");

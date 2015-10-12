@@ -22,7 +22,7 @@ namespace Noobot.Custom.Pipeline.Middleware
             };
         }
 
-        private IEnumerable<ResponseMessage> JokeHandler(IncomingMessage message)
+        private IEnumerable<ResponseMessage> JokeHandler(IncomingMessage message, string matchedHandle)
         {
             yield return message.ReplyToChannel("Hmm... let me think");
 

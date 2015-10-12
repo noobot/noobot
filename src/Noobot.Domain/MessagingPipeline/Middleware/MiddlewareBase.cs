@@ -31,7 +31,7 @@ namespace Noobot.Domain.MessagingPipeline.Middleware
                 {
                     if (message.Text.StartsWith(map, StringComparison.InvariantCultureIgnoreCase))
                     {
-                        foreach (var responseMessage in handlerMapping.EvaluatorFunc(message))
+                        foreach (var responseMessage in handlerMapping.EvaluatorFunc(message, map))
                         {
                             yield return responseMessage;
                         }

@@ -22,7 +22,7 @@ namespace Noobot.Custom.Pipeline.Middleware
             };
         }
 
-        private IEnumerable<ResponseMessage> YieldTest(IncomingMessage incomingMessage)
+        private IEnumerable<ResponseMessage> YieldTest(IncomingMessage incomingMessage, string matchedHandle)
         {
             for (int i = 0; i < 10; i++)
             {

@@ -37,13 +37,13 @@ namespace Noobot.Custom.Pipeline.Middleware
             };
         }
 
-        private IEnumerable<ResponseMessage> PingHandler(IncomingMessage message)
+        private IEnumerable<ResponseMessage> PingHandler(IncomingMessage message, string matchedHandle)
         {
             yield return message.ReplyToChannel("Ok, I will start pinging @" + message.Username);
             _pingPlugin.StartPingingUser(message.UserId);
         }
 
-        private IEnumerable<ResponseMessage> StopPingingHandler(IncomingMessage message)
+        private IEnumerable<ResponseMessage> StopPingingHandler(IncomingMessage message, string matchedHandle)
         {
             if (_pingPlugin.StopPingingUser(message.UserId))
             {
@@ -55,7 +55,7 @@ namespace Noobot.Custom.Pipeline.Middleware
             }
         }
 
-        private IEnumerable<ResponseMessage> ListPingHandler(IncomingMessage message)
+        private IEnumerable<ResponseMessage> ListPingHandler(IncomingMessage message, string matchedHandle)
         {
             string[] users = _pingPlugin.ListPingedUsers();
 
