@@ -22,14 +22,25 @@ namespace Noobot.Runner
             _slackConnector = container.GetSlackConnector();
 
             Console.WriteLine("Connecting...");
-            _slackConnector.Connect().Wait();
-            Console.WriteLine("CONNECTED :-)");
+            _slackConnector
+                .Connect()
+                .ContinueWith(task =>
+                {
+                    if (task.IsCompleted && !task.IsFaulted)
+                    {
+                        Console.WriteLine("CONNECTED :-)");
 
-            _plugins = container.GetPlugins();
-            foreach (IPlugin plugin in _plugins)
-            {
-                plugin.Start();
-            }
+                        _plugins = container.GetPlugins();
+                        foreach (IPlugin plugin in _plugins)
+                        {
+                            plugin.Start();
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Error connecting to Slack: {0}", task.Exception);
+                    }
+                });
         }
 
         public void Stop()
