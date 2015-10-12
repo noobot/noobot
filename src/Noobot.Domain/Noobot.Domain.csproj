@@ -70,16 +70,11 @@
     <Compile Include="MessagingPipeline\IPipelineFactory.cs" />
     <Compile Include="MessagingPipeline\Middleware\CommandDescription.cs" />
     <Compile Include="MessagingPipeline\Middleware\IMiddleware.cs" />
-    <Compile Include="MessagingPipeline\Middleware\StandardMiddleware\PingMiddleware.cs" />
-    <Compile Include="MessagingPipeline\Middleware\StandardMiddleware\AboutMiddleware.cs" />
     <Compile Include="MessagingPipeline\Middleware\HandlerMapping.cs" />
-    <Compile Include="MessagingPipeline\Middleware\StandardMiddleware\JokeMiddleware.cs" />
     <Compile Include="MessagingPipeline\Middleware\StandardMiddleware\HelpMiddleware.cs" />
-    <Compile Include="MessagingPipeline\Middleware\StandardMiddleware\YieldTestMiddleware.cs" />
     <Compile Include="MessagingPipeline\PipelineFactory.cs" />
     <Compile Include="MessagingPipeline\Request\IncomingMessage.cs" />
     <Compile Include="MessagingPipeline\Middleware\MiddlewareBase.cs" />
-    <Compile Include="MessagingPipeline\Middleware\StandardMiddleware\WelcomeMiddleware.cs" />
     <Compile Include="MessagingPipeline\Middleware\StandardMiddleware\UnhandledMessageMiddleware.cs" />
     <Compile Include="MessagingPipeline\Middleware\StandardMiddleware\BeginMessageMiddleware.cs" />
     <Compile Include="MessagingPipeline\PipelineManagerBase.cs" />
@@ -89,7 +84,6 @@
     <Compile Include="Plugins\IPluginManager.cs" />
     <Compile Include="Plugins\IPlugin.cs" />
     <Compile Include="Plugins\PluginManagerBase.cs" />
-    <Compile Include="Plugins\StandardPlugins\PingPlugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Slack\InitialConnectionStatus.cs" />
     <Compile Include="MessagingPipeline\IPipelineManager.cs" />
@@ -99,7 +93,9 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Plugins\StandardPlugins\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

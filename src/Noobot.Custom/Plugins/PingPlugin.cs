@@ -4,9 +4,10 @@ using System.Collections.Specialized;
 using System.Threading;
 using System.Threading.Tasks;
 using Noobot.Domain.MessagingPipeline.Response;
+using Noobot.Domain.Plugins;
 using Noobot.Domain.Slack;
 
-namespace Noobot.Domain.Plugins.StandardPlugins
+namespace Noobot.Custom.Plugins
 {
     public class PingPlugin : IPlugin
     { 

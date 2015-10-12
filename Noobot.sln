@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Noobot.Tests.Unit", "src\No
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{CED3B884-FB67-458E-A558-FA9BA57E99DD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Noobot.Custom", "src\Noobot.Custom\Noobot.Custom.csproj", "{5794B29F-234C-4B12-AAE4-B31363F78C8D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,6 +31,10 @@ Global
 		{37E2E8FC-64CD-48D0-8784-BCA21D58DFA4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{37E2E8FC-64CD-48D0-8784-BCA21D58DFA4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{37E2E8FC-64CD-48D0-8784-BCA21D58DFA4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5794B29F-234C-4B12-AAE4-B31363F78C8D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5794B29F-234C-4B12-AAE4-B31363F78C8D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5794B29F-234C-4B12-AAE4-B31363F78C8D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5794B29F-234C-4B12-AAE4-B31363F78C8D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,4 +1,5 @@
-﻿using Noobot.Domain.MessagingPipeline;
+﻿using Noobot.Custom;
+using Noobot.Domain.MessagingPipeline;
 using StructureMap.Configuration.DSL;
 using StructureMap.Graph;
 
