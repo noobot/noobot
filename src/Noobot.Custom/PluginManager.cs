@@ -1,7 +1,7 @@
-﻿using Noobot.Domain.Plugins;
-using Noobot.Domain.Plugins.StandardPlugins;
+﻿using Noobot.Custom.Plugins;
+using Noobot.Domain.Plugins;
 
-namespace Noobot.Runner
+namespace Noobot.Custom
 {
     public class PluginManager : PluginManagerBase
     {

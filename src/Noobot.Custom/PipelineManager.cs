@@ -1,7 +1,8 @@
-﻿using Noobot.Domain.MessagingPipeline;
+﻿using Noobot.Custom.Pipeline.Middleware;
+using Noobot.Domain.MessagingPipeline;
 using Noobot.Domain.MessagingPipeline.Middleware.StandardMiddleware;
 
-namespace Noobot.Runner
+namespace Noobot.Custom
 {
     public class PipelineManager : PipelineManagerBase
     {

@@ -1,4 +1,5 @@
-﻿using Noobot.Domain.MessagingPipeline;
+﻿using Noobot.Custom;
+using Noobot.Domain.MessagingPipeline;
 using StructureMap.Configuration.DSL;
 using StructureMap.Graph;
 
@@ -13,6 +14,7 @@ namespace Noobot.Runner.DependencyResolution
                 scan.TheCallingAssembly();
                 scan.WithDefaultConventions();
                 scan.Assembly("Noobot.Domain");
+                scan.Assembly("Noobot.Custom");
             });
 
             For<INoobotHost>()
