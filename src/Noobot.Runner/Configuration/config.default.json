@@ -1,9 +1,10 @@
 ﻿{
+  "logFile":  "log.txt",
   "slack": {
     "apiToken": ""
   },
   "flickr": {
     "apiKey": "",
-    "apiSecret":  ""
+    "apiSecret": ""
   }
 }

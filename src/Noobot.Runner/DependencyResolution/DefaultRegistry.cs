@@ -1,5 +1,6 @@
 ﻿using Noobot.Custom;
 using Noobot.Domain.MessagingPipeline;
+using Noobot.Runner.Logging;
 using StructureMap.Configuration.DSL;
 using StructureMap.Graph;
 
@@ -22,6 +23,9 @@ namespace Noobot.Runner.DependencyResolution
             
             For<IPipelineManager>()
                 .Use<PipelineManager>();
+
+            For<ILogger>()
+                .Use<ConsoleLogger>();
         }
     }
 }

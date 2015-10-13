@@ -1,26 +1,35 @@
 ﻿using Noobot.Runner.DependencyResolution;
+using Noobot.Runner.Logging;
 using Topshelf;
 
 namespace Noobot.Runner
 {
-    class Program
+    public class Program
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
-            HostFactory.Run(x =>
+            using (var logger = Container.Instance.GetInstance<ILogger>())
             {
-                x.Service<INoobotHost>(s =>
-                {
-                    s.ConstructUsing(name => Container.Instance.GetInstance<INoobotHost>());
-                    s.WhenStarted(n => n.Start());
-                    s.WhenStopped(n => n.Stop());
-                });
+                logger.Grapple();
 
-                x.RunAsLocalSystem();
-                x.SetDisplayName("Noobot");
-                x.SetServiceName("Noobot");
-                x.SetDescription("An extensible Slackbot built in C#");
-            });
+                HostFactory.Run(x =>
+                {
+                    x.Service<INoobotHost>(s =>
+                    {
+                        s.ConstructUsing(name => Container.Instance.GetInstance<INoobotHost>());
+                        s.WhenStarted(n => n.Start());
+                        s.WhenStopped(n =>
+                        {
+                            n.Stop();
+                        });
+                    });
+
+                    x.RunAsLocalSystem();
+                    x.SetDisplayName("Noobot");
+                    x.SetServiceName("Noobot");
+                    x.SetDescription("An extensible Slackbot built in C#");
+                });
+            }
         }
     }
 }
