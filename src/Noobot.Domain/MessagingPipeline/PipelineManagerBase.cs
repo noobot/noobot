@@ -21,11 +21,9 @@ namespace Noobot.Domain.MessagingPipeline
             registry.Scan(x =>
             {
                 // scan assemblies that we are loading pipelines from
-                MethodInfo method = x.GetType().GetMethod("AssemblyContainingType", new Type[0]);
                 foreach (Type middlewareType in _pipeline)
                 {
-                    MethodInfo generic = method.MakeGenericMethod(middlewareType);
-                    generic.Invoke(x, null);
+                    x.AssemblyContainingType(middlewareType);
                 }
             });
 

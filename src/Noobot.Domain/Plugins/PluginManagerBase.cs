@@ -17,14 +17,13 @@ namespace Noobot.Domain.Plugins
             registry.Scan(x =>
             {
                 // scan assemblies that we are loading pipelines from
-                MethodInfo method = x.GetType().GetMethod("AssemblyContainingType", new Type[0]);
                 foreach (Type pluginType in _pluginTypes)
                 {
-                    MethodInfo generic = method.MakeGenericMethod(pluginType);
-                    generic.Invoke(x, null);
+                    x.AssemblyContainingType(pluginType);
                 }
             });
 
+            // make all plugins singletons
             foreach (Type pluginType in _pluginTypes)
             {
                 registry
