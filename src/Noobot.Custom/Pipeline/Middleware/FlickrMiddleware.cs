@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using FlickrNet;
 using Noobot.Domain.Configuration;
@@ -40,10 +41,16 @@ namespace Noobot.Custom.Pipeline.Middleware
                 yield return message.ReplyToChannel("Ok, let's find you something about '{0}'", searchTerm);
 
                 var flickr = new Flickr(_flickrConfig.ApiKey);
-                var options = new PhotoSearchOptions { Tags = searchTerm, PerPage = 1, Page = 1 };
+
+                var options = new PhotoSearchOptions { Text = searchTerm, PerPage = 100, Page = 1};
                 PhotoCollection photos = flickr.PhotosSearch(options);
 
-                yield return message.ReplyToChannel(photos.First().LargeUrl);
+                if (photos.Any())
+                {
+                    int i = new Random().Next(0, photos.Count);
+                    Photo photo = photos[i];
+                    yield return message.ReplyToChannel(photo.LargeUrl);
+                }
             }
             
         }
