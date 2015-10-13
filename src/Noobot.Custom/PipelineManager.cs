@@ -8,15 +8,12 @@ namespace Noobot.Custom
     {
         protected override void Initialise()
         {
-            Use<BeginMessageMiddleware>();
-            Use<HelpMiddleware>();
             Use<WelcomeMiddleware>();
             Use<JokeMiddleware>();
             Use<AboutMiddleware>();
             Use<YieldTestMiddleware>();
             Use<PingMiddleware>();
             Use<FlickrMiddleware>();
-            Use<UnhandledMessageMiddleware>();
         }
     }
 }

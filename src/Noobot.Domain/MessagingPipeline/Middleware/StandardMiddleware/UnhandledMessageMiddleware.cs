@@ -8,7 +8,7 @@ namespace Noobot.Domain.MessagingPipeline.Middleware.StandardMiddleware
     /// <summary>
     /// Should always be the last middleware. Simply logs and stops the chain.
     /// </summary>
-    public class UnhandledMessageMiddleware : IMiddleware
+    internal class UnhandledMessageMiddleware : IMiddleware
     {
         public IEnumerable<ResponseMessage> Invoke(IncomingMessage message)
         {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Noobot.Domain.MessagingPipeline.Middleware;
+using Noobot.Domain.MessagingPipeline.Middleware.StandardMiddleware;
 using StructureMap.Configuration.DSL;
 using StructureMap.Pipeline;
 
@@ -28,25 +29,30 @@ namespace Noobot.Domain.MessagingPipeline
                 }
             });
 
+            registry
+                .For<IMiddleware>()
+                .Use<UnhandledMessageMiddleware>();
+
             if (_pipeline.Any())
             {
-                Type firstType = _pipeline.Pop();
-                var firstDeclare = registry.For<IMiddleware>();
-
-                MethodInfo method = firstDeclare.GetType().GetMethod("Use", new Type[0]);
-                MethodInfo generic = method.MakeGenericMethod(firstType);
-                generic.Invoke(firstDeclare, null);
-
                 while (_pipeline.Any())
                 {
                     Type nextType = _pipeline.Pop();
                     var nextDeclare = registry.For<IMiddleware>();
 
                     MethodInfo decorateMethod = nextDeclare.GetType().GetMethod("DecorateAllWith", new[] { typeof(Func<Instance, bool>) });
-                    generic = decorateMethod.MakeGenericMethod(nextType);
+                    MethodInfo generic = decorateMethod.MakeGenericMethod(nextType);
                     generic.Invoke(nextDeclare, new object[] { null });
                 }
             }
+
+            registry
+                .For<IMiddleware>()
+                .DecorateAllWith<HelpMiddleware>();
+
+            registry
+                .For<IMiddleware>()
+                .DecorateAllWith<BeginMessageMiddleware>();
 
             return registry;
         }
