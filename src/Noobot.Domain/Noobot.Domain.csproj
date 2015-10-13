@@ -61,6 +61,7 @@
   <ItemGroup>
     <Compile Include="Configuration\Config.cs" />
     <Compile Include="Configuration\ConfigReader.cs" />
+    <Compile Include="Configuration\FlickrConfig.cs" />
     <Compile Include="Configuration\IConfigReader.cs" />
     <Compile Include="Configuration\SlackConfig.cs" />
     <Compile Include="DependencyResolution\ContainerGenerator.cs" />
@@ -80,7 +81,6 @@
     <Compile Include="MessagingPipeline\PipelineManagerBase.cs" />
     <Compile Include="MessagingPipeline\Response\ResponseMessage.cs" />
     <Compile Include="MessagingPipeline\Response\ResponseType.cs" />
-    <Compile Include="Plugins\IPluginFactory.cs" />
     <Compile Include="Plugins\IPluginManager.cs" />
     <Compile Include="Plugins\IPlugin.cs" />
     <Compile Include="Plugins\PluginManagerBase.cs" />
@@ -93,9 +93,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Plugins\StandardPlugins\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

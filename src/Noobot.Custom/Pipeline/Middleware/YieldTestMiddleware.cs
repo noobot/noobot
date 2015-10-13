@@ -15,14 +15,14 @@ namespace Noobot.Custom.Pipeline.Middleware
             {
                 new HandlerMapping
                 {
-                    ValidHandles = new[] {"yield test"},
+                    ValidHandles = new[] { "/yield", "yield test" },
                     EvaluatorFunc = YieldTest,
                     Description = "Just tests delayed messages"
                 }
             };
         }
 
-        private IEnumerable<ResponseMessage> YieldTest(IncomingMessage incomingMessage)
+        private IEnumerable<ResponseMessage> YieldTest(IncomingMessage incomingMessage, string matchedHandle)
         {
             for (int i = 0; i < 10; i++)
             {

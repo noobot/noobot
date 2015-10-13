@@ -22,9 +22,9 @@ namespace Noobot.Custom.Pipeline.Middleware
             };
         }
 
-        private IEnumerable<ResponseMessage> TestHandler(IncomingMessage message)
+        private IEnumerable<ResponseMessage> TestHandler(IncomingMessage message, string matchedHandle)
         {
-            yield return message.ReplyToChannel(string.Format("Hey @{0}, how you doing?", message.Username));
+            yield return message.ReplyToChannel($"Hey @{message.Username}, how you doing?");
             Thread.Sleep(TimeSpan.FromSeconds(5));
             yield return message.ReplyDirectlyToUser("I know where you live...");
         }

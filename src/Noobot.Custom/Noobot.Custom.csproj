@@ -30,6 +30,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FlickrNet, Version=3.17.0.0, Culture=neutral, PublicKeyToken=2491df59efa5d132, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\FlickrNet.3.17.0\lib\net20\FlickrNet.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="RestSharp, Version=105.2.3.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\RestSharp.105.2.3\lib\net452\RestSharp.dll</HintPath>
       <Private>True</Private>
@@ -46,6 +50,7 @@
   <ItemGroup>
     <Compile Include="PipelineManager.cs" />
     <Compile Include="Pipeline\Middleware\AboutMiddleware.cs" />
+    <Compile Include="Pipeline\Middleware\FlickrMiddleware.cs" />
     <Compile Include="Pipeline\Middleware\JokeMiddleware.cs" />
     <Compile Include="Pipeline\Middleware\PingMiddleware.cs" />
     <Compile Include="Pipeline\Middleware\WelcomeMiddleware.cs" />

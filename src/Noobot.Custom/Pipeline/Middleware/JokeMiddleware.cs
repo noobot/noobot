@@ -15,14 +15,14 @@ namespace Noobot.Custom.Pipeline.Middleware
             {
                 new HandlerMapping
                 {
-                    ValidHandles = new [] {"joke", "tell me a joke"},
+                    ValidHandles = new [] { "/joke", "joke", "tell me a joke"},
                     Description = "Tells a random joke",
                     EvaluatorFunc = JokeHandler
                 }
             };
         }
 
-        private IEnumerable<ResponseMessage> JokeHandler(IncomingMessage message)
+        private IEnumerable<ResponseMessage> JokeHandler(IncomingMessage message, string matchedHandle)
         {
             yield return message.ReplyToChannel("Hmm... let me think");
 

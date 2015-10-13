@@ -12,9 +12,21 @@ namespace Noobot.Domain.MessagingPipeline.Request
         public string Channel { get; set; }
         public string UserChannel { get; set; }
 
+        public ResponseMessage ReplyToChannel(string format, params object[] values)
+        {
+            string text = string.Format(format, values);
+            return ReplyToChannel(text);
+        }
+
         public ResponseMessage ReplyToChannel(string text)
         {
             return ResponseMessage.ChannelMessage(Channel, text);
+        }
+
+        public ResponseMessage ReplyDirectlyToUser(string format, params object[] values)
+        {
+            string text = string.Format(format, values);
+            return ReplyDirectlyToUser(text);
         }
 
         public ResponseMessage ReplyDirectlyToUser(string text)

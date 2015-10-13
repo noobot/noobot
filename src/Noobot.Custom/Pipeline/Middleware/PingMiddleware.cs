@@ -18,26 +18,32 @@ namespace Noobot.Custom.Pipeline.Middleware
             {
                 new HandlerMapping
                 {
-                    ValidHandles = new []{ "ping me" },
-                    Description = "Sends you a ping about every second",
-                    EvaluatorFunc = PingHandler
+                    ValidHandles = new []{ "/ping stop", "stop pinging me" },
+                    Description = "Stops sending you pings",
+                    EvaluatorFunc = StopPingingHandler
                 },
                 new HandlerMapping
                 {
-                    ValidHandles = new []{ "stop pinging me" },
-                    Description = "Stops sending you pings",
-                    EvaluatorFunc = StopPingingHandler
-                }
+                    ValidHandles = new []{ "/ping list", "ping list" },
+                    Description = "Lists all of the people currently being pinged",
+                    EvaluatorFunc = ListPingHandler
+                },
+                new HandlerMapping
+                {
+                    ValidHandles = new []{ "ping me", "/ping" },
+                    Description = "Sends you a ping about every second",
+                    EvaluatorFunc = PingHandler
+                },
             };
         }
 
-        private IEnumerable<ResponseMessage> PingHandler(IncomingMessage message)
+        private IEnumerable<ResponseMessage> PingHandler(IncomingMessage message, string matchedHandle)
         {
             yield return message.ReplyToChannel("Ok, I will start pinging @" + message.Username);
-            _pingPlugin.PingUserId(message.UserId);
+            _pingPlugin.StartPingingUser(message.UserId);
         }
 
-        private IEnumerable<ResponseMessage> StopPingingHandler(IncomingMessage message)
+        private IEnumerable<ResponseMessage> StopPingingHandler(IncomingMessage message, string matchedHandle)
         {
             if (_pingPlugin.StopPingingUser(message.UserId))
             {
@@ -47,6 +53,14 @@ namespace Noobot.Custom.Pipeline.Middleware
             {
                 yield return message.ReplyToChannel("BUT I AM NOT PINGING @" + message.Username);
             }
+        }
+
+        private IEnumerable<ResponseMessage> ListPingHandler(IncomingMessage message, string matchedHandle)
+        {
+            string[] users = _pingPlugin.ListPingedUsers();
+
+            yield return message.ReplyDirectlyToUser("I am currently pinging:");
+            yield return message.ReplyDirectlyToUser(">>>" + string.Join("\n", users));
         }
     }
 }

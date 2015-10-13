@@ -3,5 +3,6 @@
     public class Config
     {
         public SlackConfig Slack { get; set; }
+        public FlickrConfig Flickr { get; set; }
     }
 }

@@ -9,7 +9,7 @@ namespace Noobot.Domain.MessagingPipeline.Middleware
     {
         public string[] ValidHandles { get; set; }
         public string Description { get; set; }
-        public Func<IncomingMessage, IEnumerable<ResponseMessage>> EvaluatorFunc { get; set; }
+        public Func<IncomingMessage, string, IEnumerable<ResponseMessage>> EvaluatorFunc { get; set; }
         public bool ShouldContinueProcessing { get; set; }
     }
 }

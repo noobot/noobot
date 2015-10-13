@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Noobot.Domain.MessagingPipeline.Response;
@@ -14,7 +15,7 @@ namespace Noobot.Custom.Plugins
         private readonly object _lock = new object();
         private bool _isRunning;
         private readonly ISlackConnector _slackConnector;
-        private readonly StringCollection _userIds = new StringCollection();
+        private readonly HashSet<string> _userIds = new HashSet<string>();
 
         public PingPlugin(ISlackConnector slackConnector)
         {
@@ -35,7 +36,8 @@ namespace Noobot.Custom.Plugins
                     {
                         foreach (string userId in _userIds)
                         {
-                            messagesToSend.Add(ResponseMessage.DirectUserMessage(userId, "Ping " + DateTime.Now.ToLongTimeString()));
+                            string message = "Ping " + DateTime.Now.ToLongTimeString();
+                            messagesToSend.Add(ResponseMessage.DirectUserMessage(userId, message));
                         }
                     }
 
@@ -54,7 +56,7 @@ namespace Noobot.Custom.Plugins
             _isRunning = false;
         }
 
-        public void PingUserId(string userId)
+        public void StartPingingUser(string userId)
         {
             lock (_lock)
             {
@@ -77,6 +79,14 @@ namespace Noobot.Custom.Plugins
             }
 
             return false;
+        }
+
+        public string[] ListPingedUsers()
+        {
+            lock (_lock)
+            {
+                return _userIds.ToArray();
+            }
         }
     }
 }
