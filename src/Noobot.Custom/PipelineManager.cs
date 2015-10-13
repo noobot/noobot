@@ -15,6 +15,7 @@ namespace Noobot.Custom
             Use<AboutMiddleware>();
             Use<YieldTestMiddleware>();
             Use<PingMiddleware>();
+            Use<FlickrMiddleware>();
             Use<UnhandledMessageMiddleware>();
         }
     }
