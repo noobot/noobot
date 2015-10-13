@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.Remoting;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -377,6 +375,6 @@ namespace Noobot.Runner.Logging
             return Task.WhenAll(tasks);
         }
 
-        public override Encoding Encoding { get; }
+        public override Encoding Encoding => Encoding.UTF8;
     }
 }

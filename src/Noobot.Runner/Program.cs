@@ -18,10 +18,7 @@ namespace Noobot.Runner
                     {
                         s.ConstructUsing(name => Container.Instance.GetInstance<INoobotHost>());
                         s.WhenStarted(n => n.Start());
-                        s.WhenStopped(n =>
-                        {
-                            n.Stop();
-                        });
+                        s.WhenStopped(n => n.Stop());
                     });
 
                     x.RunAsLocalSystem();
