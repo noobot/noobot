@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using FlickrNet;
 using Noobot.Domain.Configuration;
 using Noobot.Domain.MessagingPipeline.Middleware;
 using Noobot.Domain.MessagingPipeline.Request;
@@ -28,7 +30,21 @@ namespace Noobot.Custom.Pipeline.Middleware
         private IEnumerable<ResponseMessage> FlickrHandler(IncomingMessage message, string matchedHandle)
         {
             string searchTerm = message.Text.Substring(matchedHandle.Length).Trim();
-            yield return message.ReplyToChannel("Ok, let's find you something about '{0}'", searchTerm);
+
+            if (string.IsNullOrEmpty(searchTerm))
+            {
+                yield return message.ReplyToChannel("Please give me something to search, e.g. {0} trains", matchedHandle);
+            }
+            else
+            {
+                yield return message.ReplyToChannel("Ok, let's find you something about '{0}'", searchTerm);
+
+                var flickr = new Flickr(_flickrConfig.ApiKey);
+                var options = new PhotoSearchOptions { Tags = searchTerm, PerPage = 1, Page = 1 };
+                PhotoCollection photos = flickr.PhotosSearch(options);
+
+                yield return message.ReplyToChannel(photos.First().LargeUrl);
+            }
             
         }
     }
