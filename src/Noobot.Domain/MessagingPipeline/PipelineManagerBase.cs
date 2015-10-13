@@ -29,9 +29,7 @@ namespace Noobot.Domain.MessagingPipeline
                 }
             });
 
-            registry
-                .For<IMiddleware>()
-                .Use<UnhandledMessageMiddleware>();
+            registry.For<IMiddleware>().Use<UnhandledMessageMiddleware>();
 
             if (_pipeline.Any())
             {
@@ -46,13 +44,8 @@ namespace Noobot.Domain.MessagingPipeline
                 }
             }
 
-            registry
-                .For<IMiddleware>()
-                .DecorateAllWith<HelpMiddleware>();
-
-            registry
-                .For<IMiddleware>()
-                .DecorateAllWith<BeginMessageMiddleware>();
+            registry.For<IMiddleware>().DecorateAllWith<HelpMiddleware>();
+            registry.For<IMiddleware>().DecorateAllWith<BeginMessageMiddleware>();
 
             return registry;
         }
