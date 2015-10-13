@@ -6,7 +6,7 @@ using Noobot.Domain.MessagingPipeline.Response;
 
 namespace Noobot.Domain.MessagingPipeline.Middleware.StandardMiddleware
 {
-    public class HelpMiddleware : MiddlewareBase
+    internal class HelpMiddleware : MiddlewareBase
     {
         public HelpMiddleware(IMiddleware next) : base(next)
         {

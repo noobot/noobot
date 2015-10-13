@@ -1,6 +1,5 @@
 ﻿using Noobot.Custom.Pipeline.Middleware;
 using Noobot.Domain.MessagingPipeline;
-using Noobot.Domain.MessagingPipeline.Middleware.StandardMiddleware;
 
 namespace Noobot.Custom
 {
@@ -8,15 +7,12 @@ namespace Noobot.Custom
     {
         protected override void Initialise()
         {
-            Use<BeginMessageMiddleware>();
-            Use<HelpMiddleware>();
             Use<WelcomeMiddleware>();
             Use<JokeMiddleware>();
             Use<AboutMiddleware>();
             Use<YieldTestMiddleware>();
             Use<PingMiddleware>();
             Use<FlickrMiddleware>();
-            Use<UnhandledMessageMiddleware>();
         }
     }
 }
