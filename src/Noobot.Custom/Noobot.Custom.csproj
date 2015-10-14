@@ -49,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="PipelineManager.cs" />
+    <Compile Include="Pipeline\Middleware\AutoResponderMiddleware.cs" />
     <Compile Include="Pipeline\Middleware\FlickrMiddleware.cs" />
     <Compile Include="Pipeline\Middleware\JokeMiddleware.cs" />
     <Compile Include="Pipeline\Middleware\PingMiddleware.cs" />

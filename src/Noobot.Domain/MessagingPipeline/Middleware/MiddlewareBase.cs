@@ -29,7 +29,13 @@ namespace Noobot.Domain.MessagingPipeline.Middleware
             {
                 foreach (string map in handlerMapping.ValidHandles)
                 {
-                    if (message.Text.StartsWith(map, StringComparison.InvariantCultureIgnoreCase))
+                    string text = message.Text;
+                    if (handlerMapping.FilterMessagesDirectedAtBot)
+                    {
+                        text = message.FormatTextTargettedAtBot();
+                    }
+
+                    if (text.StartsWith(map, StringComparison.InvariantCultureIgnoreCase))
                     {
                         foreach (var responseMessage in handlerMapping.EvaluatorFunc(message, map))
                         {

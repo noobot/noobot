@@ -7,6 +7,7 @@ namespace Noobot.Custom
     {
         protected override void Initialise()
         {
+            //Use<AutoResponderMiddleware>();
             Use<WelcomeMiddleware>();
             Use<JokeMiddleware>();
             Use<YieldTestMiddleware>();

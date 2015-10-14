@@ -61,7 +61,7 @@ namespace Noobot.Domain.Slack
                 return;
             }
 
-            string text = FilterText(newMessage.text);
+            string text = (newMessage.text ?? "").Trim();
             if (string.IsNullOrEmpty(text))
             {
                 return;
@@ -77,7 +77,9 @@ namespace Noobot.Domain.Slack
                 UserId = newMessage.user,
                 Channel = newMessage.channel,
                 Username = _client.UserLookup[newMessage.user].name,
-                UserChannel = GetUserChannel(newMessage)
+                UserChannel = GetUserChannel(newMessage),
+                BotName = _myName,
+                BotId = _myId
             };
 
             Task.Factory.StartNew(() =>
@@ -100,7 +102,7 @@ namespace Noobot.Domain.Slack
                     channel = JoinDirectMessageChannel(responseMessage.UserId);
                 }
             }
-            
+
             _client.SendMessage(received =>
             {
                 if (received.ok)
@@ -117,7 +119,7 @@ namespace Noobot.Domain.Slack
         public string GetUserIdForUsername(string username)
         {
             var user = _client.Users.FirstOrDefault(x => x.name.Equals(username, StringComparison.InvariantCultureIgnoreCase));
-            return user != null ? user.id : string.Empty; 
+            return user != null ? user.id : string.Empty;
         }
 
         public string GetChannelId(string channelName)
@@ -143,22 +145,6 @@ namespace Noobot.Domain.Slack
             }, userName);
 
             return tcs.Task.Result;
-        }
-
-        private string FilterText(string text)
-        {
-            string[] myNames =
-            {
-                _myName + ":",
-                _myName,
-                string.Format("<@{0}>:", _myId),
-                string.Format("<@{0}>", _myId),
-                string.Format("@{0}:", _myName),
-                string.Format("@{0}", _myName),
-            };
-
-            string match = myNames.FirstOrDefault(x => text.StartsWith(x, StringComparison.InvariantCultureIgnoreCase));
-            return string.IsNullOrEmpty(match) ? string.Empty : text.Substring(match.Length).Trim();
         }
 
         private string GetUserChannel(NewMessage newMessage)

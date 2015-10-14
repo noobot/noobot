@@ -11,11 +11,11 @@ namespace Noobot.Custom.Pipeline.Middleware
 {
     public class FlickrMiddleware : MiddlewareBase
     {
-        private readonly FlickrConfig _flickrConfig;
+        private readonly IConfigReader _configReader;
 
         public FlickrMiddleware(IMiddleware next, IConfigReader configReader) : base(next)
         {
-            _flickrConfig = configReader.GetConfig().Flickr;
+            _configReader = configReader;
 
             HandlerMappings = new []
             {
@@ -40,7 +40,8 @@ namespace Noobot.Custom.Pipeline.Middleware
             {
                 yield return message.ReplyToChannel("Ok, let's find you something about '{0}'", searchTerm);
 
-                var flickr = new Flickr(_flickrConfig.ApiKey);
+                Config config = _configReader.GetConfig();
+                var flickr = new Flickr(config.Flickr.ApiKey);
 
                 var options = new PhotoSearchOptions { Text = searchTerm, PerPage = 100, Page = 1};
                 PhotoCollection photos = flickr.PhotosSearch(options);
