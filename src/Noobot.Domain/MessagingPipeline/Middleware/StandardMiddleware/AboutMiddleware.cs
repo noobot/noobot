@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using Noobot.Domain.MessagingPipeline.Middleware;
 using Noobot.Domain.MessagingPipeline.Request;
 using Noobot.Domain.MessagingPipeline.Response;
 
-namespace Noobot.Custom.Pipeline.Middleware
+namespace Noobot.Domain.MessagingPipeline.Middleware.StandardMiddleware
 {
-    public class AboutMiddleware : MiddlewareBase
+    internal class AboutMiddleware : MiddlewareBase
     {
         public AboutMiddleware(IMiddleware next) : base(next)
         {

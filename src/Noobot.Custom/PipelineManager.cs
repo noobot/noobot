@@ -9,7 +9,6 @@ namespace Noobot.Custom
         {
             Use<WelcomeMiddleware>();
             Use<JokeMiddleware>();
-            Use<AboutMiddleware>();
             Use<YieldTestMiddleware>();
             Use<PingMiddleware>();
             Use<FlickrMiddleware>();
