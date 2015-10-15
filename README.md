@@ -1,10 +1,10 @@
-# noobot
-An extensible Slackbot build in C#
+# Noobot
+Noobot is a SlackBot for C# built on the intention of extensibility; building a bot should be fun.
 
 ## About
-Want to build a useful team slack bot...or just something to make funny jokes? The Noobot host allows you to build your own middleware really easily.
+I wanted to build a bot host/framework that was easy to work with, but also has the potential of being super powerful. 
 
-Noobot supports long running requests (need to execute and wait for something to finish?).
+Noobot supports DI out of the box for all custom elements to ensure all elements could be easily tested and predictable. 
 
 ## Setup
 Please note that you will need to create a config.json file with your bot's api key. This should live under:
@@ -25,11 +25,13 @@ Using the `pipeline` pattern gives `middleware` lots of power over how `incoming
 
 Any `middleware` have to simply implement the interface `IMiddleware` to be compatible.
 
+`Middleware` are built with `StructureMap,` so it fully supports DI. This allows you to communicate easily with any `plugins` you have built. (*`plugins` are ` singletons`, so when you are always communicating with the same `plugin`*)
+
 #### Why would I want to use MiddlewareBase?
 MiddlewareBase is not required for your `middleware` to be supported - you will just have to handle incoming messages and meta information yourself - make sure you don't break the `middleware chain`.
 
 #### How to I setup my `pipeline`?
-Within the project you will find a class called `Noobot.Custom.PipelineManager`, simply add your `middleware` to the `Initialise()` function. 
+Within the project you will find a class called `src/Noobot.Custom.PipelineManager`, simply add your `middleware` to the `Initialise()` function. 
 
 ```
 protected override void Initialise()
