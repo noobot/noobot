@@ -10,14 +10,7 @@ Noobot supports DI out of the box for all custom elements to ensure all elements
 Please note that you will need to create a config.json file with your bot's api key. This should live under:
 `src/Noobot.Runner/Configuration`
 
-To implement a new chat related feature, you simply need to create a new Middleware and plug it into `src/Noobot.Runner/PipelineManager.cs`. Please remember, the ordering of the Pipeline is very important, ensure you put new Middleware between the `BeginMessageMiddleware` and `UnhandledMessageMiddleware`.
-
-Your Middleware simply needs to implement the interface `IMiddleware`, however if you want to inherit 
-some helper/wrapper methods for quick development you can inherit from `MiddlewareBase`.
-
 ## How to customise
-
-
 ### Pipeline & Middleware
 When a message is detected by Noobot a `pipeline` is created, it then passes the `incoming message` through the `pipeline`. The `pipeline` is formed of `middleware` that can intercept a message, modify a message, respond to it or ignore it (*or do all of them*).
 
