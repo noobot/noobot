@@ -27,12 +27,19 @@ Any `middleware` have to simply implement the interface `IMiddleware` to be comp
 
 `Middleware` are built with `StructureMap,` so it fully supports DI. This allows you to communicate easily with any `plugins` you have built. (*`plugins` are ` singletons`, so when you are always communicating with the same `plugin`*)
 
+#### How are messages sent?
+Using the super handy `yield return` method, you can return messages in real time when long running processes are executing without having to wait for an operation to execute:
+```
+yield return incomingMessage.ReplyToChannel("Waiting before");
+Thread.Sleep(TimeSpan.FromSeconds(3));
+yield return incomingMessage.ReplyToChannel("Waiting after");
+```
+
 #### Why would I want to use MiddlewareBase?
 MiddlewareBase is not required for your `middleware` to be supported - you will just have to handle incoming messages and meta information yourself - make sure you don't break the `middleware chain`.
 
 #### How to I setup my `pipeline`?
 Within the project you will find a class called `src/Noobot.Custom/PipelineManager`, simply add your `middleware` to the `Initialise()` function. 
-
 ```
 protected override void Initialise()
 {
@@ -43,8 +50,10 @@ protected override void Initialise()
     Use<FlickrMiddleware>();
 }
 ```
-
 **Please note:** the ordering of the pipeline is important.
+
+#### Async?
+Well, kinda. The `pipeline` is contained within a `TPL Task` which means a response can take as long as it needs.
 
 ### Plugins
 `Plugins` are initialised and run once the bot is connected to Slack. All `plugins` must implement the `IPlugin` interface and are defined to be used in the `PluginManager` found in `src/Noobot.Custom/PluginManager` in a similar fashion to the `PipelineManager`
