@@ -18,7 +18,7 @@ Using the `pipeline` pattern gives `middleware` lots of power over how `incoming
 
 Any `middleware` have to simply implement the interface `IMiddleware` to be compatible.
 
-`Middleware` are built with `StructureMap,` so it fully supports DI. This allows you to communicate easily with any `plugins` you have built. (*`plugins` are ` singletons`, so when you are always communicating with the same `plugin`*)
+`Middleware` are built with `StructureMap,` so it fully supports DI. This allows you to communicate easily with any `plugins` you have built. (*`plugins` are ` singletons`, so when you are communicating with a `plugin` it is always the same `plugin`*)
 
 #### How are messages sent?
 Using the super handy `yield return` method, you can return messages in real time when long running processes are executing without having to wait for an operation to execute:
