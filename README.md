@@ -31,7 +31,7 @@ Any `middleware` have to simply implement the interface `IMiddleware` to be comp
 MiddlewareBase is not required for your `middleware` to be supported - you will just have to handle incoming messages and meta information yourself - make sure you don't break the `middleware chain`.
 
 #### How to I setup my `pipeline`?
-Within the project you will find a class called `src/Noobot.Custom.PipelineManager`, simply add your `middleware` to the `Initialise()` function. 
+Within the project you will find a class called `src/Noobot.Custom/PipelineManager`, simply add your `middleware` to the `Initialise()` function. 
 
 ```
 protected override void Initialise()
@@ -47,4 +47,16 @@ protected override void Initialise()
 **Please note:** the ordering of the pipeline is important.
 
 ### Plugins
-Plugins are
+`Plugins` are initialised and run once the bot is connected to Slack. All `plugins` must implement the `IPlugin` interface and are defined to be used in the `PluginManager` found in `src/Noobot.Custom/PluginManager` in a similar fashion to the `PipelineManager`
+
+```
+protected override void Initialise()
+{
+    Use<PingPlugin>();
+}
+```
+**Please note:** the ordering of the plugins are **NOT** important.
+
+Plugins have a `Start` and a `Stop` method and are only `constructed` **ONCE**, this means if you add a dependency to a `plugin` in `middleware`, then you will always get the same `plugin`. This enables you to communicate, store and manipulate data in a single place for a domain.
+
+For `plugins` to communicate with Slack, it must take a `dependency` on `ISlackConnector` which will give the `plugin` methods for sending messages, getting channel ids and user ids *(more functionality will be added when required)*. 
