@@ -46,10 +46,6 @@
       <HintPath>..\..\packages\Should.1.1.20\lib\Should.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="SlackAPI, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\SlackAPI.Workshop2.1.0.0.0\lib\net45\SlackAPI.dll</HintPath>
-    </Reference>
     <Reference Include="StructureMap, Version=3.1.6.186, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\structuremap.3.1.6.186\lib\net40\StructureMap.dll</HintPath>
       <Private>True</Private>
@@ -69,7 +65,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Domain\Configuration\ConfigReaderTests.cs" />
-    <Compile Include="Domain\Slack\ListenerTests.cs" />
     <Compile Include="Domain\Slack\SlackConnectorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Stubs\MessagingPipeline\PipelineFactoryStub.cs" />
@@ -80,6 +75,7 @@
       <Link>Configuration\config.json</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

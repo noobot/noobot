@@ -3,11 +3,11 @@ using Noobot.Domain.MessagingPipeline.Response;
 
 namespace Noobot.Domain.Slack
 {
-    public interface ISlackConnector
+    public interface ISlackWrapper
     {
-        Task<InitialConnectionStatus> Connect();
+        Task Connect();
         void Disconnect();
-        void SendMessage(ResponseMessage responseMessage);
+        Task SendMessage(ResponseMessage responseMessage);
         string GetUserIdForUsername(string username);
         string GetChannelId(string channelName);
     }

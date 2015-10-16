@@ -32,7 +32,7 @@ namespace Noobot.Domain.DependencyResolution
             registry = _pluginManager.Initialise(registry);
 
             registry
-                .For<ISlackConnector>()
+                .For<ISlackWrapper>()
                 .Singleton();
 
             registry

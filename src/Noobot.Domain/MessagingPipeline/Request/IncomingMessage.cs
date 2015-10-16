@@ -6,12 +6,12 @@ namespace Noobot.Domain.MessagingPipeline.Request
 {
     public class IncomingMessage
     {
-        public int MessageId { get; set; }
         public string UserId { get; set; }
         public string Username { get; set; }
         public string Text { get; set; }
         public string Channel { get; set; }
         public string UserChannel { get; set; }
+        public bool BotIsMentioned { get; set; }
         public string BotName { get; set; }
         public string BotId { get; set; }
 
@@ -40,7 +40,6 @@ namespace Noobot.Domain.MessagingPipeline.Request
             return _formattedText ?? string.Empty;
         }
 
-
         public ResponseMessage ReplyToChannel(string format, params object[] values)
         {
             string text = string.Format(format, values);
@@ -60,6 +59,7 @@ namespace Noobot.Domain.MessagingPipeline.Request
 
         public ResponseMessage ReplyDirectlyToUser(string text)
         {
+            //return ResponseMessage.ChannelMessage(Channel, text); //TODO
             return ResponseMessage.DirectUserMessage(UserChannel, UserId, text);
         }
     }

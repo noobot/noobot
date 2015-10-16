@@ -55,7 +55,7 @@ namespace Noobot.Domain.MessagingPipeline.Middleware
                 yield return responseMessage;
             }
         }
-        
+
         public IEnumerable<CommandDescription> GetSupportedCommands()
         {
             foreach (var handlerMapping in HandlerMappings)

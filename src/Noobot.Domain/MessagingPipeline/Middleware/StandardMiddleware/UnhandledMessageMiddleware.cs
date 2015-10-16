@@ -12,7 +12,7 @@ namespace Noobot.Domain.MessagingPipeline.Middleware.StandardMiddleware
     {
         public IEnumerable<ResponseMessage> Invoke(IncomingMessage message)
         {
-            Console.WriteLine("[{0}] Unhandled", message.MessageId);
+            Console.WriteLine("Unhandled");
             return new ResponseMessage[0];
         }
 

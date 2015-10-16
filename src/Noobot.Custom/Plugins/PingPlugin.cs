@@ -14,12 +14,12 @@ namespace Noobot.Custom.Plugins
     { 
         private readonly object _lock = new object();
         private bool _isRunning;
-        private readonly ISlackConnector _slackConnector;
+        private readonly ISlackWrapper _slackWrapper;
         private readonly HashSet<string> _userIds = new HashSet<string>();
 
-        public PingPlugin(ISlackConnector slackConnector)
+        public PingPlugin(ISlackWrapper slackWrapper)
         {
-            _slackConnector = slackConnector;
+            _slackWrapper = slackWrapper;
         }
 
         public void Start()
@@ -43,7 +43,7 @@ namespace Noobot.Custom.Plugins
 
                     foreach (var message in messagesToSend)
                     {
-                        _slackConnector.SendMessage(message);
+                        _slackWrapper.SendMessage(message);
                     }
 
                     Thread.Sleep(TimeSpan.FromSeconds(1));
