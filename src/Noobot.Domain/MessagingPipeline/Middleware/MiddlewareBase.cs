@@ -30,12 +30,10 @@ namespace Noobot.Domain.MessagingPipeline.Middleware
                 foreach (string map in handlerMapping.ValidHandles)
                 {
                     string text = message.Text;
-
-                    //TODO
-                    if (handlerMapping.FilterMessagesDirectedAtBot && message.BotIsMentioned || !handlerMapping.FilterMessagesDirectedAtBot)
+                    if (handlerMapping.FilterMessagesDirectedAtBot)
                     {
-                       // text = message.FormatTextTargettedAtBot(); TODO
-                    //}
+                        text = message.FormatTextTargettedAtBot();
+                    }
 
                     if (text.StartsWith(map, StringComparison.InvariantCultureIgnoreCase))
                     {
@@ -49,7 +47,6 @@ namespace Noobot.Domain.MessagingPipeline.Middleware
                             yield break;
                         }
                     }
-}
                 }
             }
 
@@ -58,7 +55,7 @@ namespace Noobot.Domain.MessagingPipeline.Middleware
                 yield return responseMessage;
             }
         }
-        
+
         public IEnumerable<CommandDescription> GetSupportedCommands()
         {
             foreach (var handlerMapping in HandlerMappings)
