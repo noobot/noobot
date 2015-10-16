@@ -59,7 +59,7 @@ namespace Noobot.Domain.MessagingPipeline.Request
 
         public ResponseMessage ReplyDirectlyToUser(string text)
         {
-            return ResponseMessage.ChannelMessage(Channel, text);
+            return ResponseMessage.ChannelMessage(Channel, text); //TODO
             return ResponseMessage.DirectUserMessage(UserChannel, UserId, text);
         }
     }
