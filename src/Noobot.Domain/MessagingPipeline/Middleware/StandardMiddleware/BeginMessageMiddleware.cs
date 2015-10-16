@@ -12,7 +12,7 @@ namespace Noobot.Domain.MessagingPipeline.Middleware.StandardMiddleware
 
         public override IEnumerable<ResponseMessage> Invoke(IncomingMessage message)
         {
-            Console.WriteLine("[{0}] Message from {1}: {2}", message.MessageId, message.Username, message.Text);
+            Console.WriteLine("Message from {0}: {1}",  message.Username, message.Text);
             return Next(message);
         }
     }
