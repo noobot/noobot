@@ -5,7 +5,7 @@ namespace Noobot.Domain.Slack
 {
     public interface ISlackWrapper
     {
-        Task<InitialConnectionStatus> Connect();
+        Task Connect();
         void Disconnect();
         Task SendMessage(ResponseMessage responseMessage);
         string GetUserIdForUsername(string username);

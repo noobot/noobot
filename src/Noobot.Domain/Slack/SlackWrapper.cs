@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Linq;
 using System.Threading.Tasks;
 using Noobot.Domain.Configuration;
 using Noobot.Domain.MessagingPipeline;
 using Noobot.Domain.MessagingPipeline.Middleware;
 using Noobot.Domain.MessagingPipeline.Request;
 using Noobot.Domain.MessagingPipeline.Response;
-using SlackAPI;
-using SlackAPI.WebSocketMessages;
 using SlackConnector;
 using SlackConnector.Models;
 
@@ -25,7 +22,7 @@ namespace Noobot.Domain.Slack
             _pipelineFactory = pipelineFactory;
         }
 
-        public async Task<InitialConnectionStatus> Connect()
+        public async Task Connect()
         {
             var config = _configReader.GetConfig();
 
@@ -34,29 +31,6 @@ namespace Noobot.Domain.Slack
             _client.OnConnectionStatusChanged += ConnectionStatusChanged;
 
             await _client.Connect(config.Slack.ApiToken);
-
-            return null;
-
-
-            //LoginResponse loginResponse;
-            //_client.Connect(response =>
-            //{
-            //    //This is called once the client has emitted the RTM start command
-            //    loginResponse = response;
-            //    _myId = loginResponse.self.id;
-            //    _myName = loginResponse.self.name;
-            //},
-            //() =>
-            //{
-            //    //This is called once the Real Time Messaging client has connected to the end point
-            //    _client.OnMessageReceived += ClientOnOnMessageReceived;
-
-            //    //TODO: Populate with useful information and display/log it somewhere
-            //    var connectionStatus = new InitialConnectionStatus();
-            //    tcs.SetResult(connectionStatus);
-            //});
-
-            //return await tcs.Task;
         }
 
         private void ConnectionStatusChanged(bool isConnected)
@@ -76,15 +50,23 @@ namespace Noobot.Domain.Slack
                 UserId = message.User.Id,
                 Username = _client.UserNameCache[message.User.Id],
                 Channel = message.ChatHub.Id,
+                //TODO
                // UserChannel = _client.ConnectedDMs.FirstOrDefault(x => x.Name.Equals(_client.UserNameCache[message.User.Id])).Id,
                 BotName = _client.UserName,
                 BotId = _client.UserId,
                 BotIsMentioned = message.MentionsBot
             };
 
-            foreach (ResponseMessage responseMessage in pipeline.Invoke(incomingMessage))
+            try
             {
-                await SendMessage(responseMessage);
+                foreach (ResponseMessage responseMessage in pipeline.Invoke(incomingMessage))
+                {
+                    await SendMessage(responseMessage);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("ERROR: {0}", ex);
             }
 
             Console.WriteLine("[[[Message ended]]]");

@@ -23,14 +23,14 @@ namespace Noobot.Custom.Pipeline.Middleware
                 {
                     ValidHandles = new [] { "/flickr", "flickr", "/pic", "pic"},
                     Description = "Finds a pics from flickr - usage: /flickr birds",
-                    EvaluatorFunc = FlickrHandler
+                    EvaluatorFunc = FlickrHandler,
                 }
             };
         }
 
         private IEnumerable<ResponseMessage> FlickrHandler(IncomingMessage message, string matchedHandle)
         {
-            string searchTerm = message.Text.Substring(matchedHandle.Length).Trim();
+            string searchTerm = message.FormatTextTargettedAtBot().Substring(matchedHandle.Length).Trim();
 
             if (string.IsNullOrEmpty(searchTerm))
             {

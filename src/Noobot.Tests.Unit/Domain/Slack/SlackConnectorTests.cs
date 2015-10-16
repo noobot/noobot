@@ -23,7 +23,7 @@ namespace Noobot.Tests.Unit.Domain.Slack
             task.Wait();
 
             // then
-            Assert.That(task.Result, Is.Not.Null);
+
         }
     }
 }

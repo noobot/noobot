@@ -98,7 +98,6 @@
     <Compile Include="Plugins\IPlugin.cs" />
     <Compile Include="Plugins\PluginManagerBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Slack\InitialConnectionStatus.cs" />
     <Compile Include="MessagingPipeline\IPipelineManager.cs" />
     <Compile Include="Slack\ISlackWrapper.cs" />
     <Compile Include="Slack\SlackWrapper.cs" />
