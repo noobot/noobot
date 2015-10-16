@@ -30,6 +30,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Bazam, Version=2.6.9.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Bazam.2.6.9.0\lib\net45\Bazam.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
@@ -40,6 +44,10 @@
     </Reference>
     <Reference Include="SlackAPI">
       <HintPath>..\..\packages\SlackAPI.Workshop2.1.0.0.0\lib\net45\SlackAPI.dll</HintPath>
+    </Reference>
+    <Reference Include="SlackConnector, Version=1.0.5767.27312, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\SlackConnector.1.0.5767.27312\lib\net452\SlackConnector.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="StructureMap, Version=3.1.6.186, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\structuremap.3.1.6.186\lib\net40\StructureMap.dll</HintPath>
@@ -57,6 +65,10 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="websocket-sharp-with-proxy-support, Version=1.0.2.28248, Culture=neutral, PublicKeyToken=5660b08a1845a91e, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\websocket-sharp-with-proxy-support.1.9.1\lib\net35-client\websocket-sharp-with-proxy-support.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configuration\Config.cs" />
@@ -92,6 +104,7 @@
     <Compile Include="Slack\SlackConnector.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />
