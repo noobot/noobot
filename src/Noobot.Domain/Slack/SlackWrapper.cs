@@ -51,8 +51,7 @@ namespace Noobot.Domain.Slack
                 UserId = message.User.Id,
                 Username = _client.UserNameCache[message.User.Id],
                 Channel = message.ChatHub.Id,
-                //TODO
-                // UserChannel = _client.ConnectedDMs.FirstOrDefault(x => x.Name.Equals(_client.UserNameCache[message.User.Id])).Id,
+                UserChannel = (await GetUserChatHub(message.User.Id, false) ?? new SlackChatHub()).Id,
                 BotName = _client.UserName,
                 BotId = _client.UserId,
                 BotIsMentioned = message.MentionsBot
@@ -79,14 +78,17 @@ namespace Noobot.Domain.Slack
 
             if (responseMessage.ResponseType == ResponseType.Channel)
             {
-                chatHub = SlackChatHub.FromID(responseMessage.Channel);
+                chatHub = SlackChatHub.FromId(responseMessage.Channel);
             }
             else if (responseMessage.ResponseType == ResponseType.DirectMessage)
             {
-                if (_client.UserNameCache.ContainsKey(responseMessage.UserId))
+                if (string.IsNullOrEmpty(responseMessage.Channel))
                 {
-                    string username = "@" + _client.UserNameCache[responseMessage.UserId];
-                    chatHub = _client.ConnectedDMs.FirstOrDefault(x => x.Name.Equals(username, StringComparison.InvariantCultureIgnoreCase));
+                    chatHub = await GetUserChatHub(responseMessage.UserId);
+                }
+                else
+                {
+                    chatHub = SlackChatHub.FromId(responseMessage.Channel);
                 }
             }
 
@@ -94,7 +96,7 @@ namespace Noobot.Domain.Slack
             {
                 var botMessage = new BotMessage
                 {
-                    ChatHub = _client.ConnectedHubs[responseMessage.Channel],
+                    ChatHub = chatHub,
                     Text = responseMessage.Text
                 };
 
@@ -104,28 +106,24 @@ namespace Noobot.Domain.Slack
             {
                 Console.WriteLine("Unable to find channel for message '{0}'. Message not sent", responseMessage.Text);
             }
+        }
 
+        private async Task<SlackChatHub> GetUserChatHub(string userId, bool joinChannel = true)
+        {
+            SlackChatHub chatHub = null;
 
-            //string channel = responseMessage.Channel;
-            //if (responseMessage.ResponseType == ResponseType.DirectMessage)
-            //{
-            //    if (string.IsNullOrEmpty(channel) || !_client.DirectMessageLookup.ContainsKey(channel))
-            //    {
-            //        channel = JoinDirectMessageChannel(responseMessage.UserId);
-            //    }
-            //}
+            if (_client.UserNameCache.ContainsKey(userId))
+            {
+                string username = "@" + _client.UserNameCache[userId];
+                chatHub = _client.ConnectedDMs.FirstOrDefault(x => x.Name.Equals(username, StringComparison.InvariantCultureIgnoreCase));
+            }
 
-            //_client.SendMessage(received =>
-            //{
-            //    if (received.ok)
-            //    {
-            //        Console.WriteLine(@"Message: '{0}' received", responseMessage.Text);
-            //    }
-            //    else
-            //    {
-            //        Console.WriteLine(@"FAILED TO DELIVER MESSAGE '{0}'", responseMessage.Text);
-            //    }
-            //}, channel, responseMessage.Text);
+            if (chatHub == null && joinChannel)
+            {
+                chatHub = await _client.JoinDirectMessageChannel(userId);
+            }
+
+            return chatHub;
         }
 
         public string GetUserIdForUsername(string username)
@@ -140,7 +138,6 @@ namespace Noobot.Domain.Slack
             return channel != null ? channel.Id : string.Empty;
         }
 
-        //private string JoinDirectMessageChannel(string userName)
         //{
         //    var tcs = new TaskCompletionSource<string>();
 
