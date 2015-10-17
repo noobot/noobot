@@ -46,6 +46,10 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="xFunc.Maths, Version=2.15.16.0, Culture=neutral, PublicKeyToken=a8643d6339aa5b3b, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\xFunc.Maths.2.15.16\lib\net451\xFunc.Maths.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="PipelineManager.cs" />
@@ -53,6 +57,7 @@
     <Compile Include="Pipeline\Middleware\FlickrMiddleware.cs" />
     <Compile Include="Pipeline\Middleware\JokeMiddleware.cs" />
     <Compile Include="Pipeline\Middleware\PingMiddleware.cs" />
+    <Compile Include="Pipeline\Middleware\CalculatorMiddleware.cs" />
     <Compile Include="Pipeline\Middleware\WelcomeMiddleware.cs" />
     <Compile Include="Pipeline\Middleware\YieldTestMiddleware.cs" />
     <Compile Include="PluginManager.cs" />

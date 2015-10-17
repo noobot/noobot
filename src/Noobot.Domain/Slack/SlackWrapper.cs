@@ -36,7 +36,7 @@ namespace Noobot.Domain.Slack
 
         private void ConnectionStatusChanged(bool isConnected)
         {
-            Console.WriteLine(isConnected ? "CONNECTED :) x999" : "Bot is no longer connected :(");
+            Console.WriteLine(isConnected ? "CONNECTED :-) x999" : "Bot is no longer connected :-(");
         }
 
         private async Task MessageReceived(ResponseContext messageContext)
