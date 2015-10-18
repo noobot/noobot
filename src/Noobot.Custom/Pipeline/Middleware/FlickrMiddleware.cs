@@ -34,11 +34,11 @@ namespace Noobot.Custom.Pipeline.Middleware
 
             if (string.IsNullOrEmpty(searchTerm))
             {
-                yield return message.ReplyToChannel("Please give me something to search, e.g. {0} trains", matchedHandle);
+                yield return message.ReplyToChannel($"Please give me something to search, e.g. {matchedHandle} trains");
             }
             else
             {
-                yield return message.ReplyToChannel("Ok, let's find you something about '{0}'", searchTerm);
+                yield return message.ReplyToChannel($"Ok, let's find you something about '{searchTerm}'");
 
                 Config config = _configReader.GetConfig();
                 var flickr = new Flickr(config.Flickr.ApiKey);
@@ -51,6 +51,10 @@ namespace Noobot.Custom.Pipeline.Middleware
                     int i = new Random().Next(0, photos.Count);
                     Photo photo = photos[i];
                     yield return message.ReplyToChannel(photo.LargeUrl);
+                }
+                else
+                {
+                    yield return message.ReplyToChannel($"Sorry {message.Username}, I couldn't find anything about {searchTerm}");
                 }
             }
             

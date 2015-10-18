@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Noobot.Domain.Configuration;
 using Noobot.Domain.MessagingPipeline;
@@ -47,7 +48,7 @@ namespace Noobot.Domain.Slack
             IMiddleware pipeline = _pipelineFactory.GetPipeline();
             var incomingMessage = new IncomingMessage
             {
-                Text = message.Text,
+                Text = WebUtility.HtmlDecode(message.Text),
                 UserId = message.User.Id,
                 Username = _client.UserNameCache[message.User.Id],
                 Channel = message.ChatHub.Id,

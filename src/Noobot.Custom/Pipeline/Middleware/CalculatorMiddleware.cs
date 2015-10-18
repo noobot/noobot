@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net;
 using Noobot.Domain.MessagingPipeline.Middleware;
 using Noobot.Domain.MessagingPipeline.Request;
 using Noobot.Domain.MessagingPipeline.Response;
@@ -17,9 +16,10 @@ namespace Noobot.Custom.Pipeline.Middleware
             {
                 new HandlerMapping
                 {
-                    ValidHandles = new []{"/calc", "calc"},
+                    ValidHandles = new []{"calc"},
                     Description = "Calculate mathematical expressions - usage: calc ((1+2)*3)/4",
-                    EvaluatorFunc = CalculateHandler
+                    EvaluatorFunc = CalculateHandler,
+                    FilterMessagesDirectedAtBot = false
                 }
             };
         }
@@ -27,14 +27,13 @@ namespace Noobot.Custom.Pipeline.Middleware
         private IEnumerable<ResponseMessage> CalculateHandler(IncomingMessage message, string matchedHandle)
         {
             string response;
-            // TODO: Remove HtmlDecode if messages are Decoded elsewhere.
-            string expression = WebUtility.HtmlDecode(message.FormatTextTargettedAtBot().Substring(matchedHandle.Length).Trim());
+            string expression = message.Text.Substring(matchedHandle.Length).Trim();
             Parser parser = new Parser();
 
             try
             {
-                IExpression parsedExpression = parser.Parse(expression);                
-                object result = parsedExpression.Calculate();                
+                IExpression parsedExpression = parser.Parse(expression);
+                object result = parsedExpression.Calculate();
                 response = $"{parsedExpression} = {result}";
             }
             catch (Exception e)
@@ -42,7 +41,7 @@ namespace Noobot.Custom.Pipeline.Middleware
                 response = $"Who taught you maths? {e.Message}";
             }
 
-            yield return message.ReplyToChannel($"@{message.Username}: {response}");           
+            yield return message.ReplyToChannel($"@{message.Username}: {response}");
         }
     }
 }
