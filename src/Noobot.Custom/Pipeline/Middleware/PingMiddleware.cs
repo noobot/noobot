@@ -39,7 +39,7 @@ namespace Noobot.Custom.Pipeline.Middleware
 
         private IEnumerable<ResponseMessage> PingHandler(IncomingMessage message, string matchedHandle)
         {
-            yield return message.ReplyToChannel("Ok, I will start pinging @" + message.Username);
+            yield return message.ReplyToChannel($"Ok, I will start pinging @{message.Username}");
             _pingPlugin.StartPingingUser(message.UserId);
         }
 
@@ -47,11 +47,11 @@ namespace Noobot.Custom.Pipeline.Middleware
         {
             if (_pingPlugin.StopPingingUser(message.UserId))
             {
-                yield return message.ReplyToChannel("Ok, I will stop pinging @" + message.Username);
+                yield return message.ReplyToChannel($"Ok, I will stop pinging @{message.Username}");
             }
             else
             {
-                yield return message.ReplyToChannel("BUT I AM NOT PINGING @" + message.Username);
+                yield return message.ReplyToChannel($"BUT I AM NOT PINGING @{message.Username}");
             }
         }
 

@@ -39,25 +39,31 @@ namespace Noobot.Custom.Pipeline.Middleware
             else
             {
                 yield return message.ReplyToChannel($"Ok, let's find you something about '{searchTerm}'");
+                string apiKey = _configReader.GetConfig().Flickr?.ApiKey;
 
-                Config config = _configReader.GetConfig();
-                var flickr = new Flickr(config.Flickr.ApiKey);
-
-                var options = new PhotoSearchOptions { Text = searchTerm, PerPage = 100, Page = 1};
-                PhotoCollection photos = flickr.PhotosSearch(options);
-
-                if (photos.Any())
+                if (string.IsNullOrEmpty(apiKey))
                 {
-                    int i = new Random().Next(0, photos.Count);
-                    Photo photo = photos[i];
-                    yield return message.ReplyToChannel(photo.LargeUrl);
+                    yield return message.ReplyToChannel("Woops, looks like a Flickr API Key has not been entered. Please ask the admin to fix this");
                 }
                 else
                 {
-                    yield return message.ReplyToChannel($"Sorry {message.Username}, I couldn't find anything about {searchTerm}");
+                    var flickr = new Flickr(apiKey);
+
+                    var options = new PhotoSearchOptions {Text = searchTerm, PerPage = 100, Page = 1};
+                    PhotoCollection photos = flickr.PhotosSearch(options);
+
+                    if (photos.Any())
+                    {
+                        int i = new Random().Next(0, photos.Count);
+                        Photo photo = photos[i];
+                        yield return message.ReplyToChannel(photo.LargeUrl);
+                    }
+                    else
+                    {
+                        yield return message.ReplyToChannel($"Sorry @{message.Username}, I couldn't find anything about {searchTerm}");
+                    }
                 }
             }
-            
         }
     }
 }

@@ -36,7 +36,7 @@ namespace Noobot.Custom.Pipeline.Middleware
             }
             else
             {
-                yield return message.ReplyToChannel(string.Format("Dam, I can't think of one. [{0}]", result.StatusCode));
+                yield return message.ReplyToChannel($"Dam, I can't think of one. [{result.StatusCode}]");
             }
         }
 
