@@ -31,7 +31,7 @@ namespace Noobot.Domain.MessagingPipeline.Request
         public string Text { get; set; }
 
         /// <summary>
-        /// Contains the text minus as Bot targetting text (e.g. @Noobot: {blah})
+        /// Contains the text minus any Bot targetting text (e.g. @Noobot: {blah})
         /// </summary>
         public string TargetedText { get; set; }
 
