@@ -48,6 +48,7 @@ namespace Noobot.Domain.Slack
             IMiddleware pipeline = _pipelineFactory.GetPipeline();
             var incomingMessage = new IncomingMessage
             {
+                RawText = message.Text,
                 Text = WebUtility.HtmlDecode(message.Text),
                 UserId = message.User.Id,
                 Username = _client.UserNameCache[message.User.Id],
@@ -57,6 +58,9 @@ namespace Noobot.Domain.Slack
                 BotId = _client.UserId,
                 BotIsMentioned = message.MentionsBot
             };
+
+            //TODO: Mode functionality to here? Extension?
+            incomingMessage.TargettedText = incomingMessage.FormatTextTargettedAtBot();
 
             try
             {

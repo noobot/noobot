@@ -9,6 +9,8 @@ namespace Noobot.Domain.MessagingPipeline.Request
         public string UserId { get; set; }
         public string Username { get; set; }
         public string Text { get; set; }
+        public string RawText { get; set; }
+        public string TargettedText { get; set; }
         public string Channel { get; set; }
         public string UserChannel { get; set; }
         public bool BotIsMentioned { get; set; }
