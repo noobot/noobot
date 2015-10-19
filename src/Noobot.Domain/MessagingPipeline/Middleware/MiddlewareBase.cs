@@ -29,7 +29,7 @@ namespace Noobot.Domain.MessagingPipeline.Middleware
                 foreach (string map in handlerMapping.ValidHandles)
                 {
                     string text = message.FullText;
-                    if (handlerMapping.FilterMessagesDirectedAtBot)
+                    if (handlerMapping.MessageShouldTargetBot)
                     {
                         text = message.TargetedText;
                     }

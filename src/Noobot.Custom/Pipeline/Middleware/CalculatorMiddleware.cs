@@ -19,7 +19,7 @@ namespace Noobot.Custom.Pipeline.Middleware
                     ValidHandles = new []{"calc"},
                     Description = "Calculate mathematical expressions - usage: calc ((1+2)*3)/4",
                     EvaluatorFunc = CalculateHandler,
-                    FilterMessagesDirectedAtBot = false
+                    MessageShouldTargetBot = false
                 }
             };
         }

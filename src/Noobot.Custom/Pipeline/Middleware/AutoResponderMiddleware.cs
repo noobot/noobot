@@ -16,7 +16,7 @@ namespace Noobot.Custom.Pipeline.Middleware
                     ValidHandles = new [] { ""},
                     Description = "Annoys the heck out of everyone",
                     EvaluatorFunc = AutoResponseHandler,
-                    FilterMessagesDirectedAtBot = false,
+                    MessageShouldTargetBot = false,
                     ShouldContinueProcessing = true
                 }
             };
