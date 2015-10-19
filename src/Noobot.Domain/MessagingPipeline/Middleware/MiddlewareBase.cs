@@ -37,6 +37,8 @@ namespace Noobot.Domain.MessagingPipeline.Middleware
 
                     if (text.StartsWith(map, StringComparison.InvariantCultureIgnoreCase))
                     {
+                        Console.WriteLine($"Matched '{map}' on '{this.GetType().Name}'");
+
                         foreach (var responseMessage in handlerMapping.EvaluatorFunc(message, map))
                         {
                             yield return responseMessage;
