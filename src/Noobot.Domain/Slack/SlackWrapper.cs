@@ -53,7 +53,7 @@ namespace Noobot.Domain.Slack
                 UserId = message.User.Id,
                 Username = _client.UserNameCache[message.User.Id],
                 Channel = message.ChatHub.Id,
-                UserChannel = (await GetUserChatHub(message.User.Id, false) ?? new SlackChatHub()).Id,
+                UserChannel = (await GetUserChatHub(message.User.Id, joinChannel: false) ?? new SlackChatHub()).Id,
                 BotName = _client.UserName,
                 BotId = _client.UserId,
                 BotIsMentioned = message.MentionsBot

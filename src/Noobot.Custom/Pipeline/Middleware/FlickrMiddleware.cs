@@ -30,7 +30,7 @@ namespace Noobot.Custom.Pipeline.Middleware
 
         private IEnumerable<ResponseMessage> FlickrHandler(IncomingMessage message, string matchedHandle)
         {
-            string searchTerm = message.FormatTextTargettedAtBot().Substring(matchedHandle.Length).Trim();
+            string searchTerm = message.TargettedText.Substring(matchedHandle.Length).Trim();
 
             if (string.IsNullOrEmpty(searchTerm))
             {
