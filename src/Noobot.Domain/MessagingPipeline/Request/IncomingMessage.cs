@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using Noobot.Domain.MessagingPipeline.Response;
+﻿using Noobot.Domain.MessagingPipeline.Response;
 
 namespace Noobot.Domain.MessagingPipeline.Request
 {
@@ -35,7 +33,7 @@ namespace Noobot.Domain.MessagingPipeline.Request
         /// <summary>
         /// Contains the text minus as Bot targetting text (e.g. @Noobot: {blah})
         /// </summary>
-        public string TargettedText { get; set; }
+        public string TargetedText { get; set; }
 
         /// <summary>
         /// The 'channel' the message occured on. This might be a DirectMessage channel.
@@ -56,29 +54,6 @@ namespace Noobot.Domain.MessagingPipeline.Request
         /// The Bot's UserId
         /// </summary>
         public string BotId { get; set; }
-
-        public string FormatTextTargettedAtBot()
-        {
-            string formattedText = Text ?? string.Empty;
-
-            string[] myNames =
-            {
-                BotName + ":",
-                BotName,
-                string.Format("<@{0}>:", BotId),
-                string.Format("<@{0}>", BotId),
-                string.Format("@{0}:", BotName),
-                string.Format("@{0}", BotName),
-            };
-
-            string handle = myNames.FirstOrDefault(x => formattedText.StartsWith(x, StringComparison.InvariantCultureIgnoreCase));
-            if (!string.IsNullOrEmpty(handle))
-            {
-                formattedText = formattedText.Substring(handle.Length).Trim();
-            }
-
-            return formattedText;
-        }
         
         /// <summary>
         /// Will generate a message to be sent the current channel the message arrived from

@@ -31,7 +31,7 @@ namespace Noobot.Domain.MessagingPipeline.Middleware
                     string text = message.Text;
                     if (handlerMapping.FilterMessagesDirectedAtBot)
                     {
-                        text = message.TargettedText;
+                        text = message.TargetedText;
                     }
 
                     if (text.StartsWith(map, StringComparison.InvariantCultureIgnoreCase))

@@ -6,6 +6,7 @@ using Noobot.Domain.Configuration;
 using Noobot.Domain.MessagingPipeline;
 using Noobot.Domain.MessagingPipeline.Middleware;
 using Noobot.Domain.MessagingPipeline.Request;
+using Noobot.Domain.MessagingPipeline.Request.Extensions;
 using Noobot.Domain.MessagingPipeline.Response;
 using SlackConnector;
 using SlackConnector.Models;
@@ -60,7 +61,7 @@ namespace Noobot.Domain.Slack
             };
 
             //TODO: Mode functionality to here? Extension?
-            incomingMessage.TargettedText = incomingMessage.FormatTextTargettedAtBot();
+            incomingMessage.TargetedText = incomingMessage.GetTargetedText();
 
             try
             {
