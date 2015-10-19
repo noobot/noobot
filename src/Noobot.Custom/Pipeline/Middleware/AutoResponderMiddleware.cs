@@ -24,7 +24,7 @@ namespace Noobot.Custom.Pipeline.Middleware
 
         private IEnumerable<ResponseMessage> AutoResponseHandler(IncomingMessage message, string matchedHandle)
         {
-            yield return message.ReplyDirectlyToUser(message.Text);
+            yield return message.ReplyDirectlyToUser(message.FullText);
         }
     }
 }

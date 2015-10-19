@@ -27,7 +27,7 @@ namespace Noobot.Custom.Pipeline.Middleware
         private IEnumerable<ResponseMessage> CalculateHandler(IncomingMessage message, string matchedHandle)
         {
             string response;
-            string expression = message.Text.Substring(matchedHandle.Length).Trim();
+            string expression = message.FullText.Substring(matchedHandle.Length).Trim();
             Parser parser = new Parser();
 
             try

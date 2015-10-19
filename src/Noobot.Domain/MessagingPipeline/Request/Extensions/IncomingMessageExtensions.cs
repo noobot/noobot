@@ -7,7 +7,7 @@ namespace Noobot.Domain.MessagingPipeline.Request.Extensions
     {
         public static string GetTargetedText(this IncomingMessage incomingMessage)
         {
-            string formattedText = incomingMessage.Text ?? string.Empty;
+            string formattedText = incomingMessage.FullText ?? string.Empty;
 
             string[] myNames =
             {

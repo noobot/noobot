@@ -21,17 +21,17 @@ namespace Noobot.Domain.MessagingPipeline.Request
         public string UserChannel { get; set; }
 
         /// <summary>
-        /// Contains the untainted raw Text that comes in from Slack. This hasn't been URL decoded
+        /// Contains the untainted raw Text that comes in from Slack. This hasn't been URL decoded.
         /// </summary>
         public string RawText { get; set; }
 
         /// <summary>
         /// Contains the URL decoded text from the message.
         /// </summary>
-        public string Text { get; set; }
+        public string FullText { get; set; }
 
         /// <summary>
-        /// Contains the text minus any Bot targetting text (e.g. @Noobot: {blah})
+        /// Contains the text minus any Bot targetting text (e.g. "@Noobot: {blah}" turns into "{blah}")
         /// </summary>
         public string TargetedText { get; set; }
 
