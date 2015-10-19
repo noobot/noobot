@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Noobot.Domain.MessagingPipeline.Middleware.StandardMiddleware;
 using Noobot.Domain.MessagingPipeline.Request;
 using Noobot.Domain.MessagingPipeline.Response;
 
@@ -32,11 +31,13 @@ namespace Noobot.Domain.MessagingPipeline.Middleware
                     string text = message.Text;
                     if (handlerMapping.FilterMessagesDirectedAtBot)
                     {
-                        text = message.FormatTextTargettedAtBot();
+                        text = message.TargetedText;
                     }
 
                     if (text.StartsWith(map, StringComparison.InvariantCultureIgnoreCase))
                     {
+                        Console.WriteLine($"Matched '{map}' on '{this.GetType().Name}'");
+
                         foreach (var responseMessage in handlerMapping.EvaluatorFunc(message, map))
                         {
                             yield return responseMessage;

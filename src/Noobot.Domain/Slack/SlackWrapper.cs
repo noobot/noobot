@@ -6,6 +6,7 @@ using Noobot.Domain.Configuration;
 using Noobot.Domain.MessagingPipeline;
 using Noobot.Domain.MessagingPipeline.Middleware;
 using Noobot.Domain.MessagingPipeline.Request;
+using Noobot.Domain.MessagingPipeline.Request.Extensions;
 using Noobot.Domain.MessagingPipeline.Response;
 using SlackConnector;
 using SlackConnector.Models;
@@ -48,15 +49,18 @@ namespace Noobot.Domain.Slack
             IMiddleware pipeline = _pipelineFactory.GetPipeline();
             var incomingMessage = new IncomingMessage
             {
+                RawText = message.Text,
                 Text = WebUtility.HtmlDecode(message.Text),
                 UserId = message.User.Id,
-                Username = _client.UserNameCache[message.User.Id],
+                Username = GetUsername(message),
                 Channel = message.ChatHub.Id,
-                UserChannel = (await GetUserChatHub(message.User.Id, false) ?? new SlackChatHub()).Id,
+                UserChannel = await GetUserChannel(message),
                 BotName = _client.UserName,
                 BotId = _client.UserId,
                 BotIsMentioned = message.MentionsBot
             };
+            
+            incomingMessage.TargetedText = incomingMessage.GetTargetedText();
 
             try
             {
@@ -71,6 +75,16 @@ namespace Noobot.Domain.Slack
             }
 
             Console.WriteLine("[[[Message ended]]]");
+        }
+
+        private string GetUsername(SlackMessage message)
+        {
+            return _client.UserNameCache.ContainsKey(message.User.Id) ? _client.UserNameCache[message.User.Id] : string.Empty;
+        }
+
+        private async Task<string> GetUserChannel(SlackMessage message)
+        {
+            return (await GetUserChatHub(message.User.Id, joinChannel: false) ?? new SlackChatHub()).Id;
         }
 
         public async Task SendMessage(ResponseMessage responseMessage)
@@ -138,36 +152,7 @@ namespace Noobot.Domain.Slack
             var channel = _client.ConnectedChannels.FirstOrDefault(x => x.Name.Equals(channelName, StringComparison.InvariantCultureIgnoreCase));
             return channel != null ? channel.Id : string.Empty;
         }
-
-        //{
-        //    var tcs = new TaskCompletionSource<string>();
-
-        //    _client.JoinDirectMessageChannel(response =>
-        //    {
-        //        if (response.ok)
-        //        {
-        //            tcs.SetResult(response.channel.id);
-        //        }
-        //        else
-        //        {
-        //            tcs.SetResult(string.Empty);
-        //        }
-        //    }, userName);
-
-        //    return tcs.Task.Result;
-        //}
-
-        //private string GetUserChannel(NewMessage newMessage)
-        //{
-        //    var channel = _client.DirectMessages.FirstOrDefault(x => x.user == newMessage.user);
-        //    if (channel != null)
-        //    {
-        //        return channel.id;
-        //    }
-
-        //    return newMessage.user;
-        //}
-
+        
         public void Disconnect()
         {
             if (_client != null && _client.IsConnected)
