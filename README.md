@@ -1,8 +1,8 @@
 # Noobot
 Noobot is a SlackBot for C# built on the intention of extensibility; building a bot should be fun.
-<div style="text-align:center">
+<p align="center">
 <img src="https://github.com/Workshop2/noobot/blob/master/img/noobot-small.png" alt="Noobot" />
-</div>
+</p>
 
 ## About
 I wanted to build a bot host/framework that was easy to work with, but also has the potential of being super powerful. 
