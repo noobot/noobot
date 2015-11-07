@@ -54,7 +54,7 @@ namespace Noobot.Domain.Slack
             var incomingMessage = new IncomingMessage
             {
                 RawText = message.Text,
-                FullText = WebUtility.HtmlDecode(message.Text),
+                FullText = message.Text,
                 UserId = message.User.Id,
                 Username = GetUsername(message),
                 Channel = message.ChatHub.Id,
