@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using Noobot.Domain.Configuration;
+﻿using Noobot.Domain.Configuration;
 using Noobot.Domain.Slack;
 using Noobot.Tests.Unit.Stubs.MessagingPipeline;
 using NUnit.Framework;
