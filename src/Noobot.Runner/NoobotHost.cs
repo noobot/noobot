@@ -28,8 +28,6 @@ namespace Noobot.Runner
                 {
                     if (task.IsCompleted && !task.IsFaulted)
                     {
-                        Console.WriteLine("CONNECTED :-)");
-
                         _plugins = container.GetPlugins();
                         foreach (IPlugin plugin in _plugins)
                         {
