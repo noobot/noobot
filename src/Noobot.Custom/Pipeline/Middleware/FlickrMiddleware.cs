@@ -17,7 +17,7 @@ namespace Noobot.Custom.Pipeline.Middleware
         {
             _configReader = configReader;
 
-            HandlerMappings = new []
+            HandlerMappings = new[]
             {
                 new HandlerMapping
                 {
@@ -49,7 +49,7 @@ namespace Noobot.Custom.Pipeline.Middleware
                 {
                     var flickr = new Flickr(apiKey);
 
-                    var options = new PhotoSearchOptions {Text = searchTerm, PerPage = 100, Page = 1};
+                    var options = new PhotoSearchOptions { Tags = searchTerm, PerPage = 50, Page = 1};
                     PhotoCollection photos = flickr.PhotosSearch(options);
 
                     if (photos.Any())
