@@ -39,12 +39,16 @@ namespace Noobot.Domain.Slack
         private void ConnectionStatusChanged(bool isConnected)
         {
             Console.WriteLine(isConnected ? "CONNECTED :-) x999" : "Bot is no longer connected :-(");
+            if (isConnected)
+            {
+                Console.WriteLine($"Bots Name: {_client.UserName}");
+                Console.WriteLine($"Team Name: {_client.TeamName}");
+            }
         }
 
-        private async Task MessageReceived(ResponseContext messageContext)
+        private async Task MessageReceived(SlackMessage message)
         {
             Console.WriteLine("[[[Message started]]]");
-            SlackMessage message = messageContext.Message;
 
             IMiddleware pipeline = _pipelineFactory.GetPipeline();
             var incomingMessage = new IncomingMessage
@@ -59,7 +63,7 @@ namespace Noobot.Domain.Slack
                 BotId = _client.UserId,
                 BotIsMentioned = message.MentionsBot
             };
-            
+
             incomingMessage.TargetedText = incomingMessage.GetTargetedText();
 
             try
@@ -93,7 +97,7 @@ namespace Noobot.Domain.Slack
 
             if (responseMessage.ResponseType == ResponseType.Channel)
             {
-                chatHub = SlackChatHub.FromId(responseMessage.Channel);
+                chatHub = new SlackChatHub { Id = responseMessage.Channel };
             }
             else if (responseMessage.ResponseType == ResponseType.DirectMessage)
             {
@@ -103,7 +107,7 @@ namespace Noobot.Domain.Slack
                 }
                 else
                 {
-                    chatHub = SlackChatHub.FromId(responseMessage.Channel);
+                    chatHub = new SlackChatHub { Id = responseMessage.Channel };
                 }
             }
 
@@ -152,7 +156,7 @@ namespace Noobot.Domain.Slack
             var channel = _client.ConnectedChannels.FirstOrDefault(x => x.Name.Equals(channelName, StringComparison.InvariantCultureIgnoreCase));
             return channel != null ? channel.Id : string.Empty;
         }
-        
+
         public void Disconnect()
         {
             if (_client != null && _client.IsConnected)
