@@ -1,4 +1,6 @@
-﻿using Noobot.Runner.DependencyResolution;
+﻿using System;
+using System.IO;
+using Noobot.Runner.DependencyResolution;
 using Noobot.Runner.Logging;
 using Topshelf;
 
@@ -8,6 +10,8 @@ namespace Noobot.Runner
     {
         public static void Main(string[] args)
         {
+            Directory.SetCurrentDirectory(System.AppDomain.CurrentDomain.BaseDirectory);
+
             using (var logger = Container.Instance.GetInstance<ILogger>())
             {
                 logger.Grapple();
@@ -21,7 +25,7 @@ namespace Noobot.Runner
                         s.WhenStopped(n => n.Stop());
                     });
 
-                    x.RunAsLocalSystem();
+                    x.RunAsNetworkService();
                     x.SetDisplayName("Noobot");
                     x.SetServiceName("Noobot");
                     x.SetDescription("An extensible Slackbot built in C#");
