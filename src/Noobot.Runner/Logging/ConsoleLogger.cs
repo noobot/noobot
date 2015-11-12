@@ -39,6 +39,7 @@ namespace Noobot.Runner.Logging
             }
             catch (Exception)
             {
+                Console.WriteLine("Unable to write to log file, THIS IS NOT LOGGING TO FILE");
                 return null;
             }
         }
