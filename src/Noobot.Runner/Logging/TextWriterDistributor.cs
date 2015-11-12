@@ -12,7 +12,7 @@ namespace Noobot.Runner.Logging
 
         public TextWriterDistributor(params TextWriter[] writers)
         {
-            _writers = writers;
+            _writers = writers.Where(x => x != null).ToArray();
         }
 
         public override void WriteLine()

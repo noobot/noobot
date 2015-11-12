@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Net;
+using Newtonsoft.Json;
 using Noobot.Domain.MessagingPipeline.Middleware;
 using Noobot.Domain.MessagingPipeline.Request;
 using Noobot.Domain.MessagingPipeline.Response;
@@ -11,7 +13,7 @@ namespace Noobot.Custom.Pipeline.Middleware
     {
         public JokeMiddleware(IMiddleware next) : base(next)
         {
-            HandlerMappings = new []
+            HandlerMappings = new[]
             {
                 new HandlerMapping
                 {
@@ -26,23 +28,37 @@ namespace Noobot.Custom.Pipeline.Middleware
         {
             yield return message.ReplyToChannel("Hmm... let me think");
 
-            var client = new RestClient("http://tambal.azurewebsites.net");
-            var request = new RestRequest("/joke/random", Method.GET);
-            var result = client.Execute<JokeContainer>(request);
-            if (result.StatusCode == HttpStatusCode.OK)
+            IRestResponse jokeResponse = new Random().Next(0, 100) < 70 ? GetTambalJoke() : GetMommaJoke();
+            if (jokeResponse.StatusCode == HttpStatusCode.OK)
             {
+                var joke = JsonConvert.DeserializeObject<JokeContainer>(jokeResponse.Content);
+
                 yield return message.ReplyToChannel("Ok...");
-                yield return message.ReplyToChannel(result.Data.Joke);
+                yield return message.ReplyToChannel(joke.Joke);
             }
             else
             {
-                yield return message.ReplyToChannel($"Dam, I can't think of one. [{result.StatusCode}]");
+                yield return message.ReplyToChannel($"Dam, I can't think of one. [{jokeResponse.StatusCode}]");
             }
+        }
+
+        private IRestResponse GetTambalJoke()
+        {
+            var client = new RestClient("http://tambal.azurewebsites.net");
+            var request = new RestRequest("/joke/random", Method.GET);
+            return client.Execute(request);
+        }
+
+        private IRestResponse GetMommaJoke()
+        {
+            var client = new RestClient("http://api.yomomma.info");
+            var request = new RestRequest("/", Method.GET);
+            return client.Execute(request);
         }
 
         private class JokeContainer
         {
-            public string Joke { get; set; } 
+            public string Joke { get; set; }
         }
     }
 }

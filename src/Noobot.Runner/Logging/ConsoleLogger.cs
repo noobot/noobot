@@ -16,19 +16,33 @@ namespace Noobot.Runner.Logging
 
         public void Grapple()
         {
-            string logFile = Path.Combine(Environment.CurrentDirectory, _configReader.GetConfig().LogFile);
-
-            if (File.Exists(logFile))
-            {
-                File.Delete(logFile);
-            }
-
-            var logStream = new FileStream(logFile, FileMode.OpenOrCreate, FileAccess.Write);
-            var fileWriter = new StreamWriter(logStream) { AutoFlush = true };
-
+            TextWriter fileWriter = TryGetLogWriter();
             _distributor = new TextWriterDistributor(fileWriter, Console.Out);
             Console.SetOut(_distributor);
         }
+
+        private TextWriter TryGetLogWriter()
+        {
+            try
+            {
+                string logFile = Path.Combine(Environment.CurrentDirectory, _configReader.GetConfig().LogFile);
+
+                if (File.Exists(logFile))
+                {
+                    File.Delete(logFile);
+                }
+
+                var logStream = new FileStream(logFile, FileMode.OpenOrCreate, FileAccess.Write);
+                var fileWriter = new StreamWriter(logStream) { AutoFlush = true };
+                return fileWriter;
+
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
 
         public void Dispose()
         {
