@@ -64,11 +64,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Configuration\Config.cs" />
     <Compile Include="Configuration\ConfigReader.cs" />
-    <Compile Include="Configuration\FlickrConfig.cs" />
     <Compile Include="Configuration\IConfigReader.cs" />
-    <Compile Include="Configuration\SlackConfig.cs" />
     <Compile Include="DependencyResolution\ContainerGenerator.cs" />
     <Compile Include="DependencyResolution\INoobotContainer.cs" />
     <Compile Include="DependencyResolution\IContainerGenerator.cs" />

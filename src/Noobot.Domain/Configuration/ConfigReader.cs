@@ -1,20 +1,20 @@
 ﻿using System;
 using System.IO;
-using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Noobot.Domain.Configuration
 {
     public class ConfigReader : IConfigReader
     {
-        private dynamic Current { get; set; }
+        private JObject Current { get; set; }
 
-        public dynamic GetConfig()
+        public JObject GetConfig()
         {
             if (Current == null)
             {
                 string fileName = Path.Combine(Environment.CurrentDirectory, @"configuration\config.json");
                 string json = File.ReadAllText(fileName);
-                Current = JsonConvert.DeserializeObject<dynamic>(json);
+                Current = JObject.Parse(json);
             }
 
             return Current;

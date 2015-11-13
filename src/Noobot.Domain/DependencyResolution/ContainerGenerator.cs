@@ -1,4 +1,5 @@
 ﻿using System;
+using Noobot.Domain.Configuration;
 using Noobot.Domain.MessagingPipeline;
 using Noobot.Domain.Plugins;
 using Noobot.Domain.Slack;
@@ -37,6 +38,10 @@ namespace Noobot.Domain.DependencyResolution
 
             registry
                 .For<IPipelineFactory>()
+                .Singleton();
+
+            registry
+                .For<IConfigReader>()
                 .Singleton();
 
             Type[] pluginTypes = _pluginManager.ListPluginTypes();

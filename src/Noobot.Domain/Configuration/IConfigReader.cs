@@ -1,7 +1,9 @@
-﻿namespace Noobot.Domain.Configuration
+﻿using Newtonsoft.Json.Linq;
+
+namespace Noobot.Domain.Configuration
 {
     public interface IConfigReader
     {
-        dynamic GetConfig();
+        JObject GetConfig();
     }
 }

@@ -25,7 +25,7 @@ namespace Noobot.Runner.Logging
         {
             try
             {
-                string logFile = Path.Combine(Environment.CurrentDirectory, _configReader.GetConfig().LogFile);
+                string logFile = Path.Combine(Environment.CurrentDirectory, _configReader.GetConfig().Value<string>("LogFile"));
 
                 if (File.Exists(logFile))
                 {
