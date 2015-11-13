@@ -1,5 +1,7 @@
 Import-Module -Name ".\build\Invoke-MsBuild.psm1"
 
+nuget restore
+
 Write-Host "Building..."
 $buildSucceeded = Invoke-MsBuild -Path ".\Noobot.sln" -MsBuildParameters "/target:Clean;Build /property:Configuration=Release;Platform=""Any CPU"" /verbosity:Minimal"
 if ($buildSucceeded)
