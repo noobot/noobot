@@ -2,6 +2,6 @@
 {
     public interface IConfigReader
     {
-        Config GetConfig();
+        dynamic GetConfig();
     }
 }

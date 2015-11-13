@@ -6,15 +6,15 @@ namespace Noobot.Domain.Configuration
 {
     public class ConfigReader : IConfigReader
     {
-        private Config Current { get; set; }
+        private dynamic Current { get; set; }
 
-        public Config GetConfig()
+        public dynamic GetConfig()
         {
             if (Current == null)
             {
                 string fileName = Path.Combine(Environment.CurrentDirectory, @"configuration\config.json");
                 string json = File.ReadAllText(fileName);
-                Current = JsonConvert.DeserializeObject<Config>(json);
+                Current = JsonConvert.DeserializeObject<dynamic>(json);
             }
 
             return Current;
