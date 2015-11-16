@@ -16,7 +16,7 @@ Noobot supports DI out of the box for all custom elements to ensure all elements
 
  - Is super exensible
  - DI support out of the box
- - Is super easy to install as a [Windows Service](/noobot/noobot/wiki/Install-as-Windows-Service) (thanks to [TopShelf](https://github.com/Topshelf/Topshelf))
+ - Is super easy to install as a [Windows Service](https://github.com/noobot/noobot/wiki/Install-as-Windows-Service) (thanks to [TopShelf](https://github.com/Topshelf/Topshelf))
  - Automatically builds up `help` text with all supported commands
 
 ## Download & setup
