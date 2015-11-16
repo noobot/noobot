@@ -45,7 +45,6 @@ namespace Noobot.Runner
         {
             Console.WriteLine("Disconnecting...");
             _slackWrapper.Disconnect();
-            Console.WriteLine("DISCONNECTED :(");
 
             foreach (IPlugin plugin in _plugins)
             {
