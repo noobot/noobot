@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using Noobot.Domain.Configuration;
@@ -18,7 +17,7 @@ namespace Noobot.Domain.Slack
     {
         private readonly IConfigReader _configReader;
         private readonly IPipelineFactory _pipelineFactory;
-        private ISlackConnector _client;
+        private ISlackConnection _connection;
 
         public SlackWrapper(IConfigReader configReader, IPipelineFactory pipelineFactory)
         {
@@ -29,12 +28,12 @@ namespace Noobot.Domain.Slack
         public async Task Connect()
         {
             JObject config = _configReader.GetConfig();
+            string slackKey = config["slack"].Value<string>("apiToken");
 
-            _client = new SlackConnector.SlackConnector();
-            _client.OnMessageReceived += MessageReceived;
-            _client.OnConnectionStatusChanged += ConnectionStatusChanged;
-
-            await _client.Connect(config["slack"].Value<string>("apiToken"));
+            var connector = new SlackConnector.SlackConnector();
+            _connection = await connector.Connect(slackKey);
+            _connection.OnMessageReceived += MessageReceived;
+            _connection.OnConnectionStatusChanged += ConnectionStatusChanged;
         }
 
         private void ConnectionStatusChanged(bool isConnected)
@@ -42,8 +41,8 @@ namespace Noobot.Domain.Slack
             Console.WriteLine(isConnected ? "CONNECTED :-) x999" : "Bot is no longer connected :-(");
             if (isConnected)
             {
-                Console.WriteLine($"Bots Name: {_client.UserName}");
-                Console.WriteLine($"Team Name: {_client.TeamName}");
+                Console.WriteLine($"Bots Name: {_connection.Self.Name}");
+                Console.WriteLine($"Team Name: {_connection.Team.Name}");
             }
         }
 
@@ -60,8 +59,8 @@ namespace Noobot.Domain.Slack
                 Username = GetUsername(message),
                 Channel = message.ChatHub.Id,
                 UserChannel = await GetUserChannel(message),
-                BotName = _client.UserName,
-                BotId = _client.UserId,
+                BotName = _connection.Self.Name,
+                BotId = _connection.Self.Id,
                 BotIsMentioned = message.MentionsBot
             };
 
@@ -84,7 +83,7 @@ namespace Noobot.Domain.Slack
 
         private string GetUsername(SlackMessage message)
         {
-            return _client.UserNameCache.ContainsKey(message.User.Id) ? _client.UserNameCache[message.User.Id] : string.Empty;
+            return _connection.UserNameCache.ContainsKey(message.User.Id) ? _connection.UserNameCache[message.User.Id] : string.Empty;
         }
 
         private async Task<string> GetUserChannel(SlackMessage message)
@@ -120,7 +119,7 @@ namespace Noobot.Domain.Slack
                     Text = responseMessage.Text
                 };
 
-                await _client.Say(botMessage);
+                await _connection.Say(botMessage);
             }
             else
             {
@@ -132,15 +131,15 @@ namespace Noobot.Domain.Slack
         {
             SlackChatHub chatHub = null;
 
-            if (_client.UserNameCache.ContainsKey(userId))
+            if (_connection.UserNameCache.ContainsKey(userId))
             {
-                string username = "@" + _client.UserNameCache[userId];
-                chatHub = _client.ConnectedDMs.FirstOrDefault(x => x.Name.Equals(username, StringComparison.InvariantCultureIgnoreCase));
+                string username = "@" + _connection.UserNameCache[userId];
+                chatHub = _connection.ConnectedDMs().FirstOrDefault(x => x.Name.Equals(username, StringComparison.InvariantCultureIgnoreCase));
             }
 
             if (chatHub == null && joinChannel)
             {
-                chatHub = await _client.JoinDirectMessageChannel(userId);
+                chatHub = await _connection.JoinDirectMessageChannel(userId);
             }
 
             return chatHub;
@@ -148,21 +147,21 @@ namespace Noobot.Domain.Slack
 
         public string GetUserIdForUsername(string username)
         {
-            var user = _client.UserNameCache.FirstOrDefault(x => x.Value.Equals(username, StringComparison.InvariantCultureIgnoreCase));
+            var user = _connection.UserNameCache.FirstOrDefault(x => x.Value.Equals(username, StringComparison.InvariantCultureIgnoreCase));
             return string.IsNullOrEmpty(user.Key) ? string.Empty : user.Key;
         }
 
         public string GetChannelId(string channelName)
         {
-            var channel = _client.ConnectedChannels.FirstOrDefault(x => x.Name.Equals(channelName, StringComparison.InvariantCultureIgnoreCase));
+            var channel = _connection.ConnectedChannels().FirstOrDefault(x => x.Name.Equals(channelName, StringComparison.InvariantCultureIgnoreCase));
             return channel != null ? channel.Id : string.Empty;
         }
 
         public void Disconnect()
         {
-            if (_client != null && _client.IsConnected)
+            if (_connection != null && _connection.IsConnected)
             {
-                _client.Disconnect();
+                _connection.Disconnect();
             }
         }
     }

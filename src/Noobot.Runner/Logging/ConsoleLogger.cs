@@ -43,8 +43,7 @@ namespace Noobot.Runner.Logging
                 return null;
             }
         }
-
-
+        
         public void Dispose()
         {
             _distributor?.Dispose();
