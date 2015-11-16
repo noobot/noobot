@@ -30,15 +30,25 @@ namespace Noobot.Domain.Storage
                 File.Create(filePath).Dispose();
             }
 
-            using (var stream = new FileStream(filePath, FileMode.Open))
+            IFlatFileEngine engine = GetFlatFileEngine<T>();
+            MethodInfo decorateMethod = engine.GetType().GetMethod("Read");
+            MethodInfo generic = decorateMethod.MakeGenericMethod(typeof(T));
+
+            try
             {
-                IFlatFileEngine engine = GetFlatFileEngine<T>();
+                using (var stream = new FileStream(filePath, FileMode.Open))
+                {
+                    var results = generic.Invoke(engine, new object[] { stream }) as IEnumerable<T>;
+                    return results.ToArray();
+                }
+            }
+            catch (FormatException ex)
+            {
+                Console.WriteLine($"Error while loading file {filePath}, deleting file to ensure it doesn't happen again.");
+                Console.WriteLine(ex);
 
-                MethodInfo decorateMethod = engine.GetType().GetMethod("Read");
-                MethodInfo generic = decorateMethod.MakeGenericMethod(typeof(T));
-                var results = generic.Invoke(engine, new object[] { stream }) as IEnumerable<T>;
-
-                return results.ToArray();
+                File.Delete(filePath);
+                return new T[0];
             }
         }
 
