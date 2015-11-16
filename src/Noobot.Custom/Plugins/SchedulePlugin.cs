@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Timers;
 using FlatFile.Delimited.Attributes;
 using Noobot.Domain.MessagingPipeline.Response;
@@ -43,12 +44,21 @@ namespace Noobot.Custom.Plugins
             Save();
         }
 
-        public void Addchedule(ScheduleEntry schedule)
+        public void AddSchedule(ScheduleEntry schedule)
         {
             lock (_lock)
             {
                 _schedules.Add(schedule);
                 Save();
+            }
+        }
+
+        public ScheduleEntry[] ListSchedulesForChannel(string channel)
+        {
+            lock (_lock)
+            {
+                ScheduleEntry[] schedules = _schedules.Where(x => x.Channel == channel).ToArray();
+                return schedules;
             }
         }
 
@@ -70,8 +80,8 @@ namespace Noobot.Custom.Plugins
                             User = new SlackUser { Id = schedule.UserId, Name = schedule.UserName },
                             ChatHub = new SlackChatHub {Id = schedule.Channel,Type = channelType},
                         };
-                        _slackWrapper.MessageReceived(slackMessage);
 
+                        _slackWrapper.MessageReceived(slackMessage).Wait();
                         schedule.LastRun = DateTime.Now;
                     }
                 }
@@ -96,6 +106,7 @@ namespace Noobot.Custom.Plugins
             {
                 shouldRun = DateTime.Now.TimeOfDay > new TimeSpan(0) && DateTime.Now.TimeOfDay < TimeSpan.FromHours(4);
             }
+
             return shouldRun;
         }
 

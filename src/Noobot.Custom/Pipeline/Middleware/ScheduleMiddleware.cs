@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using Noobot.Custom.Plugins;
 using Noobot.Domain.MessagingPipeline.Middleware;
 using Noobot.Domain.MessagingPipeline.Request;
@@ -35,6 +37,12 @@ namespace Noobot.Custom.Pipeline.Middleware
                     Description = "Schedule a command to execute every day on the current channel",
                     EvaluatorFunc = NightlyHandler,
                 },
+                new HandlerMapping
+                {
+                    ValidHandles = new [] { "schedule list"},
+                    Description = "List all schedules on the current channel",
+                    EvaluatorFunc = ListHandlerForChannel,
+                },
             };
         }
 
@@ -51,6 +59,28 @@ namespace Noobot.Custom.Pipeline.Middleware
         private IEnumerable<ResponseMessage> NightlyHandler(IncomingMessage message, string matchedHandle)
         {
             yield return CreateSchedule(message, matchedHandle, TimeSpan.FromDays(1), true);
+        }
+
+        private IEnumerable<ResponseMessage> ListHandlerForChannel(IncomingMessage message, string matchedHandle)
+        {
+            SchedulePlugin.ScheduleEntry[] schedules = _schedulePlugin.ListSchedulesForChannel(message.Channel);
+
+            if (schedules.Any())
+            {
+                yield return message.ReplyToChannel("Schedules for channel:");
+                yield return message.ReplyToChannel(">>>" + string.Join("\n", FormatSchedulesForText(schedules)));
+            }
+            else
+            {
+                yield return message.ReplyToChannel("No schedules set for this channel.");
+            }
+        }
+
+        private static string[] FormatSchedulesForText(SchedulePlugin.ScheduleEntry[] schedules)
+        {
+            return schedules
+                  .Select(x => $"Running command '{x.Command}' every '{x.RunEvery}'. Last run at '{x.LastRun}'. Runs only at night: {x.RunOnlyAtNight.ToString()}.")
+                  .ToArray();
         }
 
         private ResponseMessage CreateSchedule(IncomingMessage message, string matchedHandle, TimeSpan timeSpan, bool runOnlyAtNight)
@@ -73,7 +103,7 @@ namespace Noobot.Custom.Pipeline.Middleware
             }
             else
             {
-                _schedulePlugin.Addchedule(schedule);
+                _schedulePlugin.AddSchedule(schedule);
                 return message.ReplyToChannel($"Schedule created for command '{schedule.Command}'.");
             }
         }
