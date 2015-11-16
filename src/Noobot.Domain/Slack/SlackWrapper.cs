@@ -48,7 +48,7 @@ namespace Noobot.Domain.Slack
             }
         }
 
-        private async Task MessageReceived(SlackMessage message)
+        public async Task MessageReceived(SlackMessage message)
         {
             Console.WriteLine("[[[Message started]]]");
 
@@ -60,6 +60,7 @@ namespace Noobot.Domain.Slack
                 UserId = message.User.Id,
                 Username = GetUsername(message),
                 Channel = message.ChatHub.Id,
+                ChannelType = message.ChatHub.Type == SlackChatHubType.DM ? ResponseType.DirectMessage : ResponseType.Channel,
                 UserChannel = await GetUserChannel(message),
                 BotName = _connection.Self.Name,
                 BotId = _connection.Self.Id,

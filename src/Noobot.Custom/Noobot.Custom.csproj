@@ -58,6 +58,10 @@
       <HintPath>..\..\packages\RestSharp.105.2.3\lib\net452\RestSharp.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="SlackConnector, Version=3.0.5798.7019, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\SlackConnector.3.0.5798.7019\lib\net452\SlackConnector.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -66,6 +70,10 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="websocket-sharp-with-proxy-support, Version=1.0.2.28248, Culture=neutral, PublicKeyToken=5660b08a1845a91e, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\websocket-sharp-with-proxy-support.1.9.1\lib\net35-client\websocket-sharp-with-proxy-support.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="xFunc.Maths, Version=2.15.16.0, Culture=neutral, PublicKeyToken=a8643d6339aa5b3b, processorArchitecture=MSIL">
       <HintPath>..\..\packages\xFunc.Maths.2.15.16\lib\net451\xFunc.Maths.dll</HintPath>
       <Private>True</Private>
@@ -78,10 +86,12 @@
     <Compile Include="Pipeline\Middleware\JokeMiddleware.cs" />
     <Compile Include="Pipeline\Middleware\PingMiddleware.cs" />
     <Compile Include="Pipeline\Middleware\CalculatorMiddleware.cs" />
+    <Compile Include="Pipeline\Middleware\ScheduleMiddleware.cs" />
     <Compile Include="Pipeline\Middleware\WelcomeMiddleware.cs" />
     <Compile Include="Pipeline\Middleware\YieldTestMiddleware.cs" />
     <Compile Include="PluginManager.cs" />
     <Compile Include="Plugins\PingPlugin.cs" />
+    <Compile Include="Plugins\SchedulePlugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

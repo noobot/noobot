@@ -41,6 +41,11 @@ namespace Noobot.Domain.MessagingPipeline.Request
         public string Channel { get; set; }
 
         /// <summary>
+        /// The type of channel the message arrived on
+        /// </summary>
+        public ResponseType ChannelType { get; set; }
+
+        /// <summary>
         /// Detects if the bot's name is mentioned anywhere in the text
         /// </summary>
         public bool BotIsMentioned { get; set; }
@@ -54,7 +59,7 @@ namespace Noobot.Domain.MessagingPipeline.Request
         /// The Bot's UserId
         /// </summary>
         public string BotId { get; set; }
-        
+
         /// <summary>
         /// Will generate a message to be sent the current channel the message arrived from
         /// </summary>
