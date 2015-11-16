@@ -12,7 +12,14 @@ I wanted to build a bot host/framework that was easy to work with, but also has 
 
 Noobot supports DI out of the box for all custom elements to ensure all elements could be easily tested and predictable. 
 
-## How to setup
+## Features
+
+ - Is super exensible
+ - DI support out of the box
+ - Is super easy to install as a Windows Service (thanks to [TopShelf](https://github.com/Topshelf/Topshelf))
+ - Automatically builds up `help` text with all supported commands
+
+## Download & setup
 We have compilled releases ready for you to use, all you need to do is fill out the `Configuration/config.json` file found in the zip file. Run over to [releases](https://github.com/noobot/noobot/releases) section to download the latest build.
 
 ## Setup for development
