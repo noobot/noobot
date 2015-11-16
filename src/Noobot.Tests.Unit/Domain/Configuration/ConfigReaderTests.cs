@@ -18,8 +18,7 @@ namespace Noobot.Tests.Unit.Domain.Configuration
 
             // then
             config.ShouldNotBeNull();
-            config.Slack.ShouldNotBeNull();
-            config.Slack.ApiToken.ShouldNotBeNull();
+            config["slack"].Value<string>("apiToken").ShouldNotBeNull();
         }
     }
 }
