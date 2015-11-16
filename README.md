@@ -12,7 +12,10 @@ I wanted to build a bot host/framework that was easy to work with, but also has 
 
 Noobot supports DI out of the box for all custom elements to ensure all elements could be easily tested and predictable. 
 
-## Setup
+## How to setup
+We have compilled releases ready for you to use, all you need to do is fill out the `Configuration/config.json` file found in the zip file. Run over to [releases](https://github.com/noobot/noobot/releases) section to download the latest build.
+
+## Setup for development
 Please note that you will need to create a config.json file with your bot's api key. This should live under:
 `src/Noobot.Runner/Configuration`
 
