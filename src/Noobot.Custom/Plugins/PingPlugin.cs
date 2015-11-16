@@ -1,30 +1,43 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using FlatFile.Delimited.Attributes;
 using Noobot.Domain.MessagingPipeline.Response;
 using Noobot.Domain.Plugins;
 using Noobot.Domain.Slack;
+using Noobot.Domain.Storage;
 
 namespace Noobot.Custom.Plugins
 {
     public class PingPlugin : IPlugin
-    { 
+    {
         private readonly object _lock = new object();
         private bool _isRunning;
         private readonly ISlackWrapper _slackWrapper;
+        private readonly IStorageHelper _storageHelper;
         private readonly HashSet<string> _userIds = new HashSet<string>();
+        private const string _pingFilename = "pingy";
 
-        public PingPlugin(ISlackWrapper slackWrapper)
+        public PingPlugin(ISlackWrapper slackWrapper, IStorageHelper storageHelper)
         {
             _slackWrapper = slackWrapper;
+            _storageHelper = storageHelper;
         }
 
         public void Start()
         {
             _isRunning = true;
+
+            lock (_lock)
+            {
+                var users = _storageHelper.ReadFile<PingModel>(_pingFilename);
+                foreach (PingModel user in users)
+                {
+                    _userIds.Add(user.UserId);
+                }
+            }
 
             Task.Factory.StartNew(() =>
             {
@@ -54,6 +67,12 @@ namespace Noobot.Custom.Plugins
         public void Stop()
         {
             _isRunning = false;
+
+            lock (_lock)
+            {
+                var users = _userIds.Select(x => new PingModel { UserId = x }).ToArray();
+                _storageHelper.SaveFile(_pingFilename, users);
+            }
         }
 
         public void StartPingingUser(string userId)
@@ -87,6 +106,13 @@ namespace Noobot.Custom.Plugins
             {
                 return _userIds.ToArray();
             }
+        }
+
+        [DelimitedFile(Delimiter = ";", Quotes = "\"")]
+        private class PingModel
+        {
+            [DelimitedField(1)]
+            public string UserId { get; set; }
         }
     }
 }

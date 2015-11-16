@@ -30,6 +30,34 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ExpectedObjects, Version=1.1.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ExpectedObjects.1.1.1\lib\net40\ExpectedObjects.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FlatFile.Core, Version=0.2.16.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\FlatFile.Core.0.2.16\lib\net45\FlatFile.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FlatFile.Core.Attributes, Version=0.2.16.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\FlatFile.Core.Attributes.0.2.16\lib\net45\FlatFile.Core.Attributes.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FlatFile.Delimited, Version=0.2.16.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\FlatFile.Delimited.0.2.16\lib\net45\FlatFile.Delimited.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FlatFile.Delimited.Attributes, Version=0.2.16.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\FlatFile.Delimited.Attributes.0.2.16\lib\net45\FlatFile.Delimited.Attributes.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FlatFile.FixedLength, Version=0.2.16.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\FlatFile.FixedLength.0.2.16\lib\net45\FlatFile.FixedLength.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FlatFile.FixedLength.Attributes, Version=0.2.16.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\FlatFile.FixedLength.Attributes.0.2.16\lib\net45\FlatFile.FixedLength.Attributes.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Moq, Version=4.2.1507.118, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Moq.4.2.1507.0118\lib\net40\Moq.dll</HintPath>
       <Private>True</Private>
@@ -46,8 +74,16 @@
       <HintPath>..\..\packages\Should.1.1.20\lib\Should.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="SpecsFor, Version=4.3.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\SpecsFor.4.3.2\lib\net40\SpecsFor.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="StructureMap, Version=3.1.6.186, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\structuremap.3.1.6.186\lib\net40\StructureMap.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="StructureMap.AutoMocking.Moq, Version=3.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\structuremap.automocking.moq.3.1.0.133\lib\net40\StructureMap.AutoMocking.Moq.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="StructureMap.Net4, Version=3.1.6.186, Culture=neutral, processorArchitecture=MSIL">
@@ -66,6 +102,8 @@
   <ItemGroup>
     <Compile Include="Domain\Configuration\ConfigReaderTests.cs" />
     <Compile Include="Domain\Slack\SlackConnectorTests.cs" />
+    <Compile Include="Domain\Storage\StorageHelperTests.cs" />
+    <Compile Include="Domain\Storage\StorageObject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Stubs\MessagingPipeline\PipelineFactoryStub.cs" />
     <Compile Include="Stubs\MessagingPipeline\PipelineManagerStub.cs" />

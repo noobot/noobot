@@ -3,6 +3,7 @@ using Noobot.Domain.Configuration;
 using Noobot.Domain.MessagingPipeline;
 using Noobot.Domain.Plugins;
 using Noobot.Domain.Slack;
+using Noobot.Domain.Storage;
 using StructureMap.Configuration.DSL;
 using StructureMap.Graph;
 
@@ -42,6 +43,10 @@ namespace Noobot.Domain.DependencyResolution
 
             registry
                 .For<IConfigReader>()
+                .Singleton();
+
+            registry
+                .For<IStorageHelper>()
                 .Singleton();
 
             Type[] pluginTypes = _pluginManager.ListPluginTypes();

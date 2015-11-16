@@ -30,6 +30,30 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FlatFile.Core, Version=0.2.16.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\FlatFile.Core.0.2.16\lib\net45\FlatFile.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FlatFile.Core.Attributes, Version=0.2.16.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\FlatFile.Core.Attributes.0.2.16\lib\net45\FlatFile.Core.Attributes.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FlatFile.Delimited, Version=0.2.16.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\FlatFile.Delimited.0.2.16\lib\net45\FlatFile.Delimited.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FlatFile.Delimited.Attributes, Version=0.2.16.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\FlatFile.Delimited.Attributes.0.2.16\lib\net45\FlatFile.Delimited.Attributes.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FlatFile.FixedLength, Version=0.2.16.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\FlatFile.FixedLength.0.2.16\lib\net45\FlatFile.FixedLength.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FlatFile.FixedLength.Attributes, Version=0.2.16.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\FlatFile.FixedLength.Attributes.0.2.16\lib\net45\FlatFile.FixedLength.Attributes.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
@@ -92,6 +116,8 @@
     <Compile Include="MessagingPipeline\IPipelineManager.cs" />
     <Compile Include="Slack\ISlackWrapper.cs" />
     <Compile Include="Slack\SlackWrapper.cs" />
+    <Compile Include="Storage\IStorageHelper.cs" />
+    <Compile Include="Storage\StorageHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
