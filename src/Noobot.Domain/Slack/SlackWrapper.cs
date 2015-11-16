@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
 using Noobot.Domain.Configuration;
 using Noobot.Domain.MessagingPipeline;
 using Noobot.Domain.MessagingPipeline.Middleware;
@@ -27,13 +28,13 @@ namespace Noobot.Domain.Slack
 
         public async Task Connect()
         {
-            var config = _configReader.GetConfig();
+            JObject config = _configReader.GetConfig();
 
             _client = new SlackConnector.SlackConnector();
             _client.OnMessageReceived += MessageReceived;
             _client.OnConnectionStatusChanged += ConnectionStatusChanged;
 
-            await _client.Connect(config.Slack.ApiToken);
+            await _client.Connect(config["slack"].Value<string>("apiToken"));
         }
 
         private void ConnectionStatusChanged(bool isConnected)

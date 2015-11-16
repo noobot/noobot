@@ -39,7 +39,7 @@ namespace Noobot.Custom.Pipeline.Middleware
             else
             {
                 yield return message.ReplyToChannel($"Ok, let's find you something about '{searchTerm}'");
-                string apiKey = _configReader.GetConfig().Flickr?.ApiKey;
+                string apiKey = _configReader.GetConfig()["flickr"].Value<string>("apiKey");
 
                 if (string.IsNullOrEmpty(apiKey))
                 {
