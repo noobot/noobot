@@ -34,15 +34,17 @@ namespace Noobot.Domain.Slack
             _connection = await connector.Connect(slackKey);
             _connection.OnMessageReceived += MessageReceived;
             _connection.OnConnectionStatusChanged += ConnectionStatusChanged;
+
+            Console.WriteLine("Connected!");
+            Console.WriteLine($"Bots Name: {_connection.Self.Name}");
+            Console.WriteLine($"Team Name: {_connection.Team.Name}");
         }
 
         private void ConnectionStatusChanged(bool isConnected)
         {
-            Console.WriteLine(isConnected ? "CONNECTED :-) x999" : "Bot is no longer connected :-(");
-            if (isConnected)
+            if (!isConnected)
             {
-                Console.WriteLine($"Bots Name: {_connection.Self.Name}");
-                Console.WriteLine($"Team Name: {_connection.Team.Name}");
+                Console.WriteLine("Disconnected from server");
             }
         }
 
