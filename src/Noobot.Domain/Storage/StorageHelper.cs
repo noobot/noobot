@@ -25,6 +25,10 @@ namespace Noobot.Domain.Storage
         public T[] ReadFile<T>(string fileName) where T : class, new()
         {
             string filePath = GetFilePath(fileName);
+            if (!File.Exists(filePath))
+            {
+                File.Create(filePath).Dispose();
+            }
 
             using (var stream = new FileStream(filePath, FileMode.Open))
             {
