@@ -20,12 +20,14 @@ namespace Noobot.Domain.MessagingPipeline.Request.Extensions
             };
 
             string handle = myNames.FirstOrDefault(x => formattedText.StartsWith(x, StringComparison.InvariantCultureIgnoreCase));
-            if (!string.IsNullOrEmpty(handle))
+            if (string.IsNullOrEmpty(handle))
             {
-                formattedText = formattedText.Substring(handle.Length).Trim();
+                return string.Empty;
             }
-
-            return formattedText;
+            else
+            {
+                return formattedText.Substring(handle.Length).Trim();
+            }
         }
     }
 }
