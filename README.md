@@ -18,6 +18,8 @@ Noobot supports DI out of the box for all custom elements to ensure all elements
  - DI support out of the box
  - Is super easy to install as a [Windows Service](https://github.com/noobot/noobot/wiki/Install-as-Windows-Service) (thanks to [TopShelf](https://github.com/Topshelf/Topshelf))
  - Automatically builds up `help` text with all supported commands
+ - Middleware can send multiple messages for each message received
+ - Supports long running processes (async)
 
 ## Download & setup
 We have compilled releases ready for you to use, all you need to do is fill out the `Configuration/config.json` file found in the zip file. Run over to [releases](https://github.com/noobot/noobot/releases) section to download the latest build.
