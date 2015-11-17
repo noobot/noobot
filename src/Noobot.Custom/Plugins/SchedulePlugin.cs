@@ -49,8 +49,9 @@ namespace Noobot.Custom.Plugins
             lock (_lock)
             {
                 _schedules.Add(schedule);
-                Save();
             }
+            
+            Save();
         }
 
         public ScheduleEntry[] ListSchedulesForChannel(string channel)
