@@ -50,7 +50,7 @@ namespace Noobot.Custom.Plugins
             {
                 _schedules.Add(schedule);
             }
-            
+
             Save();
         }
 
@@ -58,9 +58,24 @@ namespace Noobot.Custom.Plugins
         {
             lock (_lock)
             {
-                ScheduleEntry[] schedules = _schedules.Where(x => x.Channel == channel).ToArray();
+                ScheduleEntry[] schedules = _schedules
+                                                .Where(x => x.Channel == channel)
+                                                .OrderBy(x => x.RunEvery)
+                                                .ThenByDescending(x => x.LastRun)
+                                                .ThenBy(x => x.Command)
+                                                .ToArray();
                 return schedules;
             }
+        }
+
+        public void DeleteSchedule(ScheduleEntry scheduleEntry)
+        {
+            lock (_lock)
+            {
+                _schedules.Remove(scheduleEntry);
+            }
+
+            Save();
         }
 
         private void RunSchedules(object sender, ElapsedEventArgs e)
@@ -69,26 +84,33 @@ namespace Noobot.Custom.Plugins
             {
                 foreach (var schedule in _schedules)
                 {
-                    if (ShouldRunSchedule(schedule))
-                    {
-                        SlackChatHubType channelType = schedule.ChannelType == ResponseType.Channel
-                            ? SlackChatHubType.Channel
-                            : SlackChatHubType.DM;
-
-                        var slackMessage = new SlackMessage
-                        {
-                            Text = schedule.Command,
-                            User = new SlackUser { Id = schedule.UserId, Name = schedule.UserName },
-                            ChatHub = new SlackChatHub {Id = schedule.Channel,Type = channelType},
-                        };
-
-                        _slackWrapper.MessageReceived(slackMessage).Wait();
-                        schedule.LastRun = DateTime.Now;
-                    }
+                    ExecuteSchedule(schedule);
                 }
             }
 
             Save();
+        }
+
+        private void ExecuteSchedule(ScheduleEntry schedule)
+        {
+            if (ShouldRunSchedule(schedule))
+            {
+                Console.WriteLine($"Running schedule: {schedule}");
+
+                SlackChatHubType channelType = schedule.ChannelType == ResponseType.Channel
+                    ? SlackChatHubType.Channel
+                    : SlackChatHubType.DM;
+
+                var slackMessage = new SlackMessage
+                {
+                    Text = schedule.Command,
+                    User = new SlackUser {Id = schedule.UserId, Name = schedule.UserName},
+                    ChatHub = new SlackChatHub {Id = schedule.Channel, Type = channelType},
+                };
+
+                _slackWrapper.MessageReceived(slackMessage);
+                schedule.LastRun = DateTime.Now;
+            }
         }
 
         private static bool ShouldRunSchedule(ScheduleEntry schedule)
@@ -105,10 +127,15 @@ namespace Noobot.Custom.Plugins
 
             if (shouldRun & schedule.RunOnlyAtNight)
             {
-                shouldRun = DateTime.Now.TimeOfDay > new TimeSpan(0) && DateTime.Now.TimeOfDay < TimeSpan.FromHours(4);
+                shouldRun = IsCurrentlyNight();
             }
 
             return shouldRun;
+        }
+
+        private static bool IsCurrentlyNight()
+        {
+            return DateTime.Now.TimeOfDay > new TimeSpan(20, 00, 00) && DateTime.Now.TimeOfDay < TimeSpan.FromHours(5);
         }
 
         private void Save()
@@ -138,6 +165,15 @@ namespace Noobot.Custom.Plugins
             public string UserName { get; set; }
             [DelimitedField(8)]
             public bool RunOnlyAtNight { get; set; }
+
+            public override string ToString()
+            {
+                return $"Running command `'{Command}'` every `'{RunEvery}'`. Last run at `'{LastRun}'`. Runs only at night: `{RunOnlyAtNight}`.";
+            }
+            public string ToString(int id)
+            {
+                return $"Id: `{id}`. {this}";
+            }
         }
     }
 }
