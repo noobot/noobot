@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Noobot.Custom.Plugins;
 using Noobot.Domain.MessagingPipeline.Middleware;
 using Noobot.Domain.MessagingPipeline.Request;
@@ -22,19 +21,19 @@ namespace Noobot.Custom.Pipeline.Middleware
                 new HandlerMapping
                 {
                     ValidHandles = new [] { "schedule hourly"},
-                    Description = "Schedule a command to execute every hour on the current channel",
+                    Description = "Schedule a command to execute every hour on the current channel. Usage: _schedule hourly @{bot} tell me a joke_",
                     EvaluatorFunc = HourlyHandler,
                 },
                 new HandlerMapping
                 {
                     ValidHandles = new [] { "schedule daily"},
-                    Description = "Schedule a command to execute every day on the current channel",
+                    Description = "Schedule a command to execute every day on the current channel. Usage: _schedule daily @{bot} tell me a joke_",
                     EvaluatorFunc = DayHandler,
                 },
                 new HandlerMapping
                 {
                     ValidHandles = new [] { "schedule nightly"},
-                    Description = "Schedule a command to execute every day on the current channel",
+                    Description = "Schedule a command to execute every day on the current channel. Usage: _schedule nightly @{bot} tell me a joke_",
                     EvaluatorFunc = NightlyHandler,
                 },
                 new HandlerMapping
@@ -42,6 +41,12 @@ namespace Noobot.Custom.Pipeline.Middleware
                     ValidHandles = new [] { "schedule list"},
                     Description = "List all schedules on the current channel",
                     EvaluatorFunc = ListHandlerForChannel,
+                },
+                new HandlerMapping
+                {
+                    ValidHandles = new [] { "schedule delete"},
+                    Description = "Delete a schedule in this channel. You must enter a valid {id}",
+                    EvaluatorFunc = DeleteHandlerForChannel,
                 },
             };
         }
@@ -68,7 +73,9 @@ namespace Noobot.Custom.Pipeline.Middleware
             if (schedules.Any())
             {
                 yield return message.ReplyToChannel("Schedules for channel:");
-                yield return message.ReplyToChannel(">>>" + string.Join("\n", FormatSchedulesForText(schedules)));
+
+                string[] scheduleStrings = schedules.Select((x, i) => x.ToString(i)).ToArray();
+                yield return message.ReplyToChannel(">>>" + string.Join("\n", scheduleStrings));
             }
             else
             {
@@ -76,11 +83,42 @@ namespace Noobot.Custom.Pipeline.Middleware
             }
         }
 
-        private static string[] FormatSchedulesForText(SchedulePlugin.ScheduleEntry[] schedules)
+        private IEnumerable<ResponseMessage> DeleteHandlerForChannel(IncomingMessage message, string matchedHandle)
         {
-            return schedules
-                  .Select(x => $"Running command '{x.Command}' every '{x.RunEvery}'. Last run at '{x.LastRun}'. Runs only at night: {x.RunOnlyAtNight.ToString()}.")
-                  .ToArray();
+            string idString = message.TargetedText.Substring(matchedHandle.Length).Trim();
+
+            int? id = ConvertToInt(idString);
+
+            if (id.HasValue)
+            {
+                SchedulePlugin.ScheduleEntry[] schedules = _schedulePlugin.ListSchedulesForChannel(message.Channel);
+
+                if (id < 0 || id > (schedules.Length - 1))
+                {
+                    yield return message.ReplyToChannel($"Woops, unable to delete schedule with id of `{id.Value}`");
+                }
+                else
+                {
+                    _schedulePlugin.DeleteSchedule(schedules[id.Value]);
+                    yield return message.ReplyToChannel($"Removed schedule: {schedules[id.Value]}");
+                }
+            }
+            else
+            {
+                yield return message.ReplyToChannel($"Invalid id entered. Try using `schedule list`. ({idString})");
+            }
+        }
+
+        private static int? ConvertToInt(string value)
+        {
+            try
+            {
+                return Convert.ToInt32(value);
+            }
+            catch (FormatException)
+            {
+                return null;
+            }
         }
 
         private ResponseMessage CreateSchedule(IncomingMessage message, string matchedHandle, TimeSpan timeSpan, bool runOnlyAtNight)
