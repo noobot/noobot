@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Noobot.Custom.Plugins;
 using Noobot.Domain.MessagingPipeline.Middleware;
 using Noobot.Domain.MessagingPipeline.Request;
@@ -22,19 +21,19 @@ namespace Noobot.Custom.Pipeline.Middleware
                 new HandlerMapping
                 {
                     ValidHandles = new [] { "schedule hourly"},
-                    Description = "Schedule a command to execute every hour on the current channel",
+                    Description = "Schedule a command to execute every hour on the current channel. Usage: _schedule hourly @{bot} tell me a joke_",
                     EvaluatorFunc = HourlyHandler,
                 },
                 new HandlerMapping
                 {
                     ValidHandles = new [] { "schedule daily"},
-                    Description = "Schedule a command to execute every day on the current channel",
+                    Description = "Schedule a command to execute every day on the current channel. Usage: _schedule daily @{bot} tell me a joke_",
                     EvaluatorFunc = DayHandler,
                 },
                 new HandlerMapping
                 {
                     ValidHandles = new [] { "schedule nightly"},
-                    Description = "Schedule a command to execute every day on the current channel",
+                    Description = "Schedule a command to execute every day on the current channel. Usage: _schedule nightly @{bot} tell me a joke_",
                     EvaluatorFunc = NightlyHandler,
                 },
                 new HandlerMapping

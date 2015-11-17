@@ -63,7 +63,7 @@ namespace Noobot.Domain.MessagingPipeline.Middleware
             {
                 yield return new CommandDescription
                 {
-                    Command = string.Join(" | ", handlerMapping.ValidHandles.OrderBy(x => x)),
+                    Command = string.Join(" | ", handlerMapping.ValidHandles.Select(x => $"`{x}`").OrderBy(x => x)),
                     Description = handlerMapping.Description
                 };
             }
