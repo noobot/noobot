@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
+using System.Reflection;
 using Noobot.Runner.DependencyResolution;
 using Noobot.Runner.Logging;
 using Topshelf;
@@ -14,6 +16,7 @@ namespace Noobot.Runner
             using (var logger = Container.Instance.GetInstance<ILogger>())
             {
                 logger.Grapple();
+                Console.WriteLine($"Noobot assembly version: {Assembly.GetExecutingAssembly().GetName().Version}");
 
                 HostFactory.Run(x =>
                 {
