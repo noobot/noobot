@@ -33,19 +33,16 @@ namespace Noobot.Domain.Slack
             var connector = new SlackConnector.SlackConnector();
             _connection = await connector.Connect(slackKey);
             _connection.OnMessageReceived += MessageReceived;
-            _connection.OnConnectionStatusChanged += ConnectionStatusChanged;
+            _connection.OnDisconnect += OnDisconnect;
 
             Console.WriteLine("Connected!");
             Console.WriteLine($"Bots Name: {_connection.Self.Name}");
             Console.WriteLine($"Team Name: {_connection.Team.Name}");
         }
 
-        private void ConnectionStatusChanged(bool isConnected)
+        private void OnDisconnect()
         {
-            if (!isConnected)
-            {
-                Console.WriteLine("Disconnected from server");
-            }
+            Console.WriteLine("Disconnected from server");
         }
 
         public async Task MessageReceived(SlackMessage message)
@@ -96,11 +93,38 @@ namespace Noobot.Domain.Slack
 
         public async Task SendMessage(ResponseMessage responseMessage)
         {
+            SlackChatHub chatHub = await GetChatHub(responseMessage);
+
+            if (chatHub != null)
+            {
+                if (responseMessage is TypingIndicatorMessage)
+                {
+                    await _connection.IndicateTyping(chatHub);
+                }
+                else
+                {
+                    var botMessage = new BotMessage
+                    {
+                        ChatHub = chatHub,
+                        Text = responseMessage.Text
+                    };
+
+                    await _connection.Say(botMessage);
+                }
+            }
+            else
+            {
+                Console.WriteLine("Unable to find channel for message '{0}'. Message not sent", responseMessage.Text);
+            }
+        }
+
+        private async Task<SlackChatHub> GetChatHub(ResponseMessage responseMessage)
+        {
             SlackChatHub chatHub = null;
 
             if (responseMessage.ResponseType == ResponseType.Channel)
             {
-                chatHub = new SlackChatHub { Id = responseMessage.Channel };
+                chatHub = new SlackChatHub {Id = responseMessage.Channel};
             }
             else if (responseMessage.ResponseType == ResponseType.DirectMessage)
             {
@@ -110,24 +134,11 @@ namespace Noobot.Domain.Slack
                 }
                 else
                 {
-                    chatHub = new SlackChatHub { Id = responseMessage.Channel };
+                    chatHub = new SlackChatHub {Id = responseMessage.Channel};
                 }
             }
 
-            if (chatHub != null)
-            {
-                var botMessage = new BotMessage
-                {
-                    ChatHub = chatHub,
-                    Text = responseMessage.Text
-                };
-
-                await _connection.Say(botMessage);
-            }
-            else
-            {
-                Console.WriteLine("Unable to find channel for message '{0}'. Message not sent", responseMessage.Text);
-            }
+            return chatHub;
         }
 
         private async Task<SlackChatHub> GetUserChatHub(string userId, bool joinChannel = true)

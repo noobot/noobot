@@ -18,7 +18,7 @@ namespace Noobot.Custom.Plugins
         private readonly ISlackWrapper _slackWrapper;
         private readonly object _lock = new object();
         private readonly List<ScheduleEntry> _schedules = new List<ScheduleEntry>();
-        private readonly Timer _timer = new Timer(TimeSpan.FromMinutes(1).TotalMilliseconds);
+        private readonly Timer _timer = new Timer(TimeSpan.FromSeconds(20).TotalMilliseconds);
 
         public SchedulePlugin(IStorageHelper storageHelper, ISlackWrapper slackWrapper)
         {

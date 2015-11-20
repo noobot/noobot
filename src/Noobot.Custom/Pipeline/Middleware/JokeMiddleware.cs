@@ -26,14 +26,13 @@ namespace Noobot.Custom.Pipeline.Middleware
 
         private IEnumerable<ResponseMessage> JokeHandler(IncomingMessage message, string matchedHandle)
         {
-            yield return message.ReplyToChannel("Hmm... let me think");
+            yield return message.IndicateTypingOnChannel();
 
             IRestResponse jokeResponse = new Random().Next(0, 100) < 70 ? GetTambalJoke() : GetMommaJoke();
             if (jokeResponse.StatusCode == HttpStatusCode.OK)
             {
                 var joke = JsonConvert.DeserializeObject<JokeContainer>(jokeResponse.Content);
-
-                yield return message.ReplyToChannel("Ok...");
+                
                 yield return message.ReplyToChannel(joke.Joke);
             }
             else
