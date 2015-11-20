@@ -73,7 +73,23 @@ namespace Noobot.Domain.MessagingPipeline.Request
         /// </summary>
         public ResponseMessage ReplyDirectlyToUser(string text)
         {
-            return ResponseMessage.DirectUserMessage(UserChannel, UserId, text);
+            return ResponseMessage.DirectUserMessage(UserId, text);
+        }
+
+        /// <summary>
+        /// Will display on Slack that the bot is typing on the current channel. Good for letting the end users know the bot is doing something.
+        /// </summary>
+        public ResponseMessage IndicateTypingOnChannel()
+        {
+            return ResponseMessage.ChannelMessage(Channel, string.Empty, new TypingIndicatorMessage());
+        }
+
+        /// <summary>
+        /// Indicates on the DM channel that the bot is typing. Good for letting the end users know the bot is doing something.
+        /// </summary>
+        public ResponseMessage IndicateTypingOnDirectMessage()
+        {
+            return ResponseMessage.DirectUserMessage(UserChannel, UserId, string.Empty, new TypingIndicatorMessage());
         }
     }
 }

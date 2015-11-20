@@ -62,8 +62,8 @@
       <HintPath>..\..\packages\RestSharp.105.2.3\lib\net452\RestSharp.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="SlackConnector, Version=3.0.5798.7019, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\SlackConnector.3.0.5798.7019\lib\net452\SlackConnector.dll</HintPath>
+    <Reference Include="SlackConnector, Version=3.0.5801.42524, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\SlackConnector.3.0.5801.42524\lib\net452\SlackConnector.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="StructureMap, Version=3.1.6.186, Culture=neutral, processorArchitecture=MSIL">
@@ -109,6 +109,7 @@
     <Compile Include="MessagingPipeline\PipelineManagerBase.cs" />
     <Compile Include="MessagingPipeline\Response\ResponseMessage.cs" />
     <Compile Include="MessagingPipeline\Response\ResponseType.cs" />
+    <Compile Include="MessagingPipeline\Response\TypingIndicatorMessage.cs" />
     <Compile Include="Plugins\IPluginManager.cs" />
     <Compile Include="Plugins\IPlugin.cs" />
     <Compile Include="Plugins\PluginManagerBase.cs" />

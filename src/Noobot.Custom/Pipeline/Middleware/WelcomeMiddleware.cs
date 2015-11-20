@@ -17,12 +17,12 @@ namespace Noobot.Custom.Pipeline.Middleware
                 {
                     ValidHandles = new []{"hi", "hey", "hello", "wuzzup"},
                     Description = "Try saying hi and see what happens",
-                    EvaluatorFunc = TestHandler
+                    EvaluatorFunc = WelcomeHandler
                 }
             };
         }
 
-        private IEnumerable<ResponseMessage> TestHandler(IncomingMessage message, string matchedHandle)
+        private IEnumerable<ResponseMessage> WelcomeHandler(IncomingMessage message, string matchedHandle)
         {
             yield return message.ReplyToChannel($"Hey @{message.Username}, how you doing?");
             Thread.Sleep(TimeSpan.FromSeconds(5));

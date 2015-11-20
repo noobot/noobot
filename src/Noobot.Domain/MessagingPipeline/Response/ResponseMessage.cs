@@ -7,30 +7,32 @@
         public string UserId { get; set; }
         public ResponseType ResponseType { get; set; }
 
-        public static ResponseMessage DirectUserMessage(string userId, string text)
+        public static ResponseMessage DirectUserMessage(string userId, string text, ResponseMessage message = null)
         {
-            return DirectUserMessage(string.Empty, userId, text);
+            return DirectUserMessage(string.Empty, userId, text, message);
         }
 
-        public static ResponseMessage DirectUserMessage(string userChannel, string userId, string text)
+        public static ResponseMessage DirectUserMessage(string userChannel, string userId, string text, ResponseMessage message = null)
         {
-            return new ResponseMessage
-            {
-                Channel = userChannel,
-                ResponseType = ResponseType.DirectMessage,
-                UserId = userId,
-                Text = text
-            };
+            if(message == null)
+                message = new ResponseMessage();
+
+            message.Channel = userChannel;
+            message.ResponseType = ResponseType.DirectMessage;
+            message.UserId = userId;
+            message.Text = text;
+            return message;
         }
 
-        public static ResponseMessage ChannelMessage(string channel, string text)
+        public static ResponseMessage ChannelMessage(string channel, string text, ResponseMessage message = null)
         {
-            return new ResponseMessage
-            {
-                Channel = channel,
-                ResponseType = ResponseType.Channel,
-                Text = text
-            };
+            if (message == null)
+                message = new ResponseMessage();
+
+            message.Channel = channel;
+            message.ResponseType = ResponseType.Channel;
+            message.Text = text;
+            return message;
         }
     }
 }
