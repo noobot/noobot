@@ -20,6 +20,7 @@ Noobot supports DI out of the box for all custom elements to ensure all elements
  - Automatically builds up `help` text with all supported commands
  - Middleware can send multiple messages for each message received
  - Supports long running processes (async)
+ - Typing Indicator - indicate to the end user that the bot has received the message and is processing the request
 
 ## Download & setup
 We have compilled releases ready for you to use, all you need to do is fill out the `Configuration/config.json` file found in the zip file. Run over to [releases](https://github.com/noobot/noobot/releases) section to download the latest build.
