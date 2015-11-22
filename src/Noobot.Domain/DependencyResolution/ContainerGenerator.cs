@@ -3,7 +3,6 @@ using Noobot.Domain.Configuration;
 using Noobot.Domain.MessagingPipeline;
 using Noobot.Domain.Plugins;
 using Noobot.Domain.Slack;
-using Noobot.Domain.Storage;
 using StructureMap.Configuration.DSL;
 using StructureMap.Graph;
 
@@ -13,6 +12,13 @@ namespace Noobot.Domain.DependencyResolution
     {
         private readonly IPipelineManager _pipelineManager;
         private readonly IPluginManager _pluginManager;
+
+        private readonly Type[] _singletons = 
+        {
+            typeof(ISlackWrapper),
+            typeof(IPipelineFactory),
+            typeof(IConfigReader),
+        };
 
         public ContainerGenerator(IPipelineManager pipelineManager, IPluginManager pluginManager)
         {
@@ -33,21 +39,10 @@ namespace Noobot.Domain.DependencyResolution
             registry = _pipelineManager.Initialise(registry);
             registry = _pluginManager.Initialise(registry);
 
-            registry
-                .For<ISlackWrapper>()
-                .Singleton();
-
-            registry
-                .For<IPipelineFactory>()
-                .Singleton();
-
-            registry
-                .For<IConfigReader>()
-                .Singleton();
-
-            registry
-                .For<IStorageHelper>()
-                .Singleton();
+            foreach (Type type in _singletons)
+            {
+                registry.For(type).Singleton();
+            }
 
             Type[] pluginTypes = _pluginManager.ListPluginTypes();
             var container = new NoobotContainer(registry, pluginTypes);
