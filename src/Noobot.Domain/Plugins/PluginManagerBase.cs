@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Reflection;
+using Noobot.Domain.Plugins.StandardPlugins;
 using StructureMap.Configuration.DSL;
 
 namespace Noobot.Domain.Plugins
@@ -13,6 +13,7 @@ namespace Noobot.Domain.Plugins
         public Registry Initialise(Registry registry)
         {
             Initialise();
+            _pluginTypes.Add(typeof(SchedulePlugin));
 
             registry.Scan(x =>
             {

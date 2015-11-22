@@ -4,21 +4,20 @@ using System.Linq;
 using System.Timers;
 using FlatFile.Delimited.Attributes;
 using Noobot.Domain.MessagingPipeline.Response;
-using Noobot.Domain.Plugins;
 using Noobot.Domain.Slack;
 using Noobot.Domain.Storage;
 using SlackConnector.Models;
 
-namespace Noobot.Custom.Plugins
+namespace Noobot.Domain.Plugins.StandardPlugins
 {
-    public class SchedulePlugin : IPlugin
+    internal class SchedulePlugin : IPlugin
     {
         private string FileName { get; } = "schedules";
         private readonly IStorageHelper _storageHelper;
         private readonly ISlackWrapper _slackWrapper;
         private readonly object _lock = new object();
         private readonly List<ScheduleEntry> _schedules = new List<ScheduleEntry>();
-        private readonly Timer _timer = new Timer(TimeSpan.FromSeconds(20).TotalMilliseconds);
+        private readonly Timer _timer = new Timer(TimeSpan.FromSeconds(10).TotalMilliseconds);
 
         public SchedulePlugin(IStorageHelper storageHelper, ISlackWrapper slackWrapper)
         {
@@ -135,7 +134,7 @@ namespace Noobot.Custom.Plugins
 
         private static bool IsCurrentlyNight()
         {
-            return DateTime.Now.TimeOfDay > new TimeSpan(20, 00, 00) && DateTime.Now.TimeOfDay < TimeSpan.FromHours(5);
+            return DateTime.Now.TimeOfDay > new TimeSpan(20, 00, 00) || DateTime.Now.TimeOfDay < TimeSpan.FromHours(5);
         }
 
         private void Save()

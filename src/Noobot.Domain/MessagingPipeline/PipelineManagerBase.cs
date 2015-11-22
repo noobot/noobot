@@ -43,6 +43,7 @@ namespace Noobot.Domain.MessagingPipeline
             }
 
             registry.For<IMiddleware>().DecorateAllWith<AboutMiddleware>();
+            registry.For<IMiddleware>().DecorateAllWith<ScheduleMiddleware>();
             registry.For<IMiddleware>().DecorateAllWith<HelpMiddleware>();
             registry.For<IMiddleware>().DecorateAllWith<BeginMessageMiddleware>();
 
