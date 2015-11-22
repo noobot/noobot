@@ -8,7 +8,6 @@ namespace Noobot.Custom
         protected override void Initialise()
         {
             Use<PingPlugin>();
-            Use<SchedulePlugin>();
         }
     }
 }

@@ -100,6 +100,7 @@
     <Compile Include="MessagingPipeline\Middleware\HandlerMapping.cs" />
     <Compile Include="MessagingPipeline\Middleware\StandardMiddleware\AboutMiddleware.cs" />
     <Compile Include="MessagingPipeline\Middleware\StandardMiddleware\HelpMiddleware.cs" />
+    <Compile Include="MessagingPipeline\Middleware\StandardMiddleware\ScheduleMiddleware.cs" />
     <Compile Include="MessagingPipeline\PipelineFactory.cs" />
     <Compile Include="MessagingPipeline\Request\Extensions\IncomingMessageExtensions.cs" />
     <Compile Include="MessagingPipeline\Request\IncomingMessage.cs" />
@@ -113,6 +114,7 @@
     <Compile Include="Plugins\IPluginManager.cs" />
     <Compile Include="Plugins\IPlugin.cs" />
     <Compile Include="Plugins\PluginManagerBase.cs" />
+    <Compile Include="Plugins\StandardPlugins\SchedulePlugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="MessagingPipeline\IPipelineManager.cs" />
     <Compile Include="Slack\ISlackWrapper.cs" />

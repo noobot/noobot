@@ -13,7 +13,6 @@ namespace Noobot.Custom
             Use<YieldTestMiddleware>();
             Use<PingMiddleware>();
             Use<FlickrMiddleware>();
-            Use<ScheduleMiddleware>();
             Use<CalculatorMiddleware>();
         }
     }

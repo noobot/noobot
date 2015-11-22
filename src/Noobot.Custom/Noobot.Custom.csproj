@@ -86,12 +86,10 @@
     <Compile Include="Pipeline\Middleware\JokeMiddleware.cs" />
     <Compile Include="Pipeline\Middleware\PingMiddleware.cs" />
     <Compile Include="Pipeline\Middleware\CalculatorMiddleware.cs" />
-    <Compile Include="Pipeline\Middleware\ScheduleMiddleware.cs" />
     <Compile Include="Pipeline\Middleware\WelcomeMiddleware.cs" />
     <Compile Include="Pipeline\Middleware\YieldTestMiddleware.cs" />
     <Compile Include="PluginManager.cs" />
     <Compile Include="Plugins\PingPlugin.cs" />
-    <Compile Include="Plugins\SchedulePlugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
