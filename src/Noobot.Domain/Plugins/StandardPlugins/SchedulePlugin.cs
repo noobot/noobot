@@ -14,14 +14,16 @@ namespace Noobot.Domain.Plugins.StandardPlugins
         private string FileName { get; } = "schedules";
         private readonly StoragePlugin _storagePlugin;
         private readonly ISlackWrapper _slackWrapper;
+        private readonly StatsPlugin _statsPlugin;
         private readonly object _lock = new object();
         private readonly List<ScheduleEntry> _schedules = new List<ScheduleEntry>();
         private readonly Timer _timer = new Timer(TimeSpan.FromSeconds(10).TotalMilliseconds);
 
-        public SchedulePlugin(StoragePlugin storagePlugin, ISlackWrapper slackWrapper)
+        public SchedulePlugin(StoragePlugin storagePlugin, ISlackWrapper slackWrapper, StatsPlugin statsPlugin)
         {
             _storagePlugin = storagePlugin;
             _slackWrapper = slackWrapper;
+            _statsPlugin = statsPlugin;
         }
 
         public void Start()
@@ -80,6 +82,9 @@ namespace Noobot.Domain.Plugins.StandardPlugins
         {
             lock (_lock)
             {
+                _statsPlugin.RecordStat("Schedules:LastRun", DateTime.Now.ToString("G"));
+                _statsPlugin.RecordStat("Schedules:IsCurrentlyNight", IsCurrentlyNight().ToString());
+
                 foreach (var schedule in _schedules)
                 {
                     ExecuteSchedule(schedule);
@@ -102,8 +107,8 @@ namespace Noobot.Domain.Plugins.StandardPlugins
                 var slackMessage = new SlackMessage
                 {
                     Text = schedule.Command,
-                    User = new SlackUser {Id = schedule.UserId, Name = schedule.UserName},
-                    ChatHub = new SlackChatHub {Id = schedule.Channel, Type = channelType},
+                    User = new SlackUser { Id = schedule.UserId, Name = schedule.UserName },
+                    ChatHub = new SlackChatHub { Id = schedule.Channel, Type = channelType },
                 };
 
                 _slackWrapper.MessageReceived(slackMessage);
@@ -141,6 +146,7 @@ namespace Noobot.Domain.Plugins.StandardPlugins
             lock (_lock)
             {
                 _storagePlugin.SaveFile(FileName, _schedules.ToArray());
+                _statsPlugin.RecordStat("Schedules:Active", $"{_schedules.Count}");
             }
         }
 

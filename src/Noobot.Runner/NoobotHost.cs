@@ -1,6 +1,7 @@
 ﻿using System;
 using Noobot.Domain.DependencyResolution;
 using Noobot.Domain.Plugins;
+using Noobot.Domain.Plugins.StandardPlugins;
 using Noobot.Domain.Slack;
 
 namespace Noobot.Runner
@@ -33,6 +34,8 @@ namespace Noobot.Runner
                         {
                             plugin.Start();
                         }
+
+                        container.GetInstance<StatsPlugin>().RecordStat("Connected since", DateTime.Now.ToString("G"));
                     }
                     else
                     {

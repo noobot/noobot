@@ -24,6 +24,14 @@ namespace Noobot.Domain.Plugins.StandardPlugins
             }
         }
 
+        public void RecordStat(string key, string value)
+        {
+            lock (_lock)
+            {
+                _stats[key] = value;
+            }
+        }
+
         public string[] GetStats()
         {
             var list = new List<string>(_stats.Count);
@@ -37,14 +45,12 @@ namespace Noobot.Domain.Plugins.StandardPlugins
         }
 
         public void Start()
-        {
-            
-        }
+        { }
 
         public void Stop()
         {
             Console.WriteLine("End stats:");
-            Console.WriteLine(string.Join(Environment.NewLine, GetStats()));
+            Console.WriteLine(string.Join(Environment.NewLine + "   ", GetStats()));
         }
     }
 }
