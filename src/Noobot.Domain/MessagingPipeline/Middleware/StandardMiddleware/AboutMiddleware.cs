@@ -13,7 +13,7 @@ namespace Noobot.Domain.MessagingPipeline.Middleware.StandardMiddleware
             {
                 new HandlerMapping
                 {
-                    ValidHandles = new []{ "/about", "about" },
+                    ValidHandles = new []{ "about" },
                     Description = "Tells you some stuff about this bot :-)",
                     EvaluatorFunc = AboutHandler
                 }

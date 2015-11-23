@@ -14,7 +14,7 @@ namespace Noobot.Domain.MessagingPipeline.Middleware.StandardMiddleware
             {
                 new HandlerMapping
                 {
-                    ValidHandles = new[] {"/help", "help", "yo tell me more"},
+                    ValidHandles = new[] {"help", "yo tell me more"},
                     Description = "Returns supported commands and descriptions of how to use them",
                     EvaluatorFunc = HelpHandler
                 }

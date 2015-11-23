@@ -24,7 +24,7 @@ namespace Noobot.Custom.Pipeline.Middleware
             {
                 new HandlerMapping
                 {
-                    ValidHandles = new [] { "/flickr", "flickr", "/pic", "pic"},
+                    ValidHandles = new [] { "flickr", "pic"},
                     Description = "Finds a pics from flickr - usage: /flickr birds",
                     EvaluatorFunc = FlickrHandler,
                 }

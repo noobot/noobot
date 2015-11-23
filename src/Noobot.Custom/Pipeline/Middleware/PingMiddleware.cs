@@ -18,19 +18,19 @@ namespace Noobot.Custom.Pipeline.Middleware
             {
                 new HandlerMapping
                 {
-                    ValidHandles = new []{ "/ping stop", "stop pinging me" },
+                    ValidHandles = new []{ "ping stop", "stop pinging me" },
                     Description = "Stops sending you pings",
                     EvaluatorFunc = StopPingingHandler
                 },
                 new HandlerMapping
                 {
-                    ValidHandles = new []{ "/ping list", "ping list" },
+                    ValidHandles = new []{ "ping list" },
                     Description = "Lists all of the people currently being pinged",
                     EvaluatorFunc = ListPingHandler
                 },
                 new HandlerMapping
                 {
-                    ValidHandles = new []{ "ping me", "/ping" },
+                    ValidHandles = new []{ "ping me" },
                     Description = "Sends you a ping about every second",
                     EvaluatorFunc = PingHandler
                 },

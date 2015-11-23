@@ -17,7 +17,7 @@ namespace Noobot.Domain.MessagingPipeline.Middleware.StandardMiddleware
             {
                 new HandlerMapping
                 {
-                    ValidHandles = new []{ "/stats", "stats" },
+                    ValidHandles = new []{ "stats" },
                     Description = "Returns interesting stats about your noobot installation",
                     EvaluatorFunc = StatsHandler
                 }
