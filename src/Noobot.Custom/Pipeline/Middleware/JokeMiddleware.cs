@@ -5,19 +5,23 @@ using Newtonsoft.Json;
 using Noobot.Domain.MessagingPipeline.Middleware;
 using Noobot.Domain.MessagingPipeline.Request;
 using Noobot.Domain.MessagingPipeline.Response;
+using Noobot.Domain.Plugins.StandardPlugins;
 using RestSharp;
 
 namespace Noobot.Custom.Pipeline.Middleware
 {
     public class JokeMiddleware : MiddlewareBase
     {
-        public JokeMiddleware(IMiddleware next) : base(next)
+        private readonly StatsPlugin _statsPlugin;
+
+        public JokeMiddleware(IMiddleware next, StatsPlugin statsPlugin) : base(next)
         {
+            _statsPlugin = statsPlugin;
             HandlerMappings = new[]
             {
                 new HandlerMapping
                 {
-                    ValidHandles = new [] { "/joke", "joke", "tell me a joke"},
+                    ValidHandles = new [] { "joke", "tell me a joke"},
                     Description = "Tells a random joke",
                     EvaluatorFunc = JokeHandler
                 }
@@ -28,15 +32,17 @@ namespace Noobot.Custom.Pipeline.Middleware
         {
             yield return message.IndicateTypingOnChannel();
 
-            IRestResponse jokeResponse = new Random().Next(0, 100) < 70 ? GetTambalJoke() : GetMommaJoke();
+            IRestResponse jokeResponse = new Random().Next(0, 100) < 80 ? GetTambalJoke() : GetMommaJoke();
             if (jokeResponse.StatusCode == HttpStatusCode.OK)
             {
+                _statsPlugin.RecordStat("Jokes:Told", 1);
                 var joke = JsonConvert.DeserializeObject<JokeContainer>(jokeResponse.Content);
-                
+
                 yield return message.ReplyToChannel(joke.Joke);
             }
             else
             {
+                _statsPlugin.RecordStat("Jokes:Failed", 1);
                 yield return message.ReplyToChannel($"Dam, I can't think of one. [{jokeResponse.StatusCode}]");
             }
         }

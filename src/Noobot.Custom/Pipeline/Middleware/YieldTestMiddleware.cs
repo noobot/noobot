@@ -15,7 +15,7 @@ namespace Noobot.Custom.Pipeline.Middleware
             {
                 new HandlerMapping
                 {
-                    ValidHandles = new[] { "/yield", "yield test" },
+                    ValidHandles = new[] { "yield test" },
                     EvaluatorFunc = YieldTest,
                     Description = "Just tests delayed messages"
                 }

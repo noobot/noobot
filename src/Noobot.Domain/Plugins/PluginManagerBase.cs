@@ -12,8 +12,11 @@ namespace Noobot.Domain.Plugins
         protected abstract void Initialise();
         public Registry Initialise(Registry registry)
         {
-            Initialise();
+            _pluginTypes.Add(typeof(StoragePlugin));
             _pluginTypes.Add(typeof(SchedulePlugin));
+            _pluginTypes.Add(typeof(StatsPlugin));
+
+            Initialise();
 
             registry.Scan(x =>
             {

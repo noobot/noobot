@@ -6,22 +6,25 @@ using Noobot.Domain.Configuration;
 using Noobot.Domain.MessagingPipeline.Middleware;
 using Noobot.Domain.MessagingPipeline.Request;
 using Noobot.Domain.MessagingPipeline.Response;
+using Noobot.Domain.Plugins.StandardPlugins;
 
 namespace Noobot.Custom.Pipeline.Middleware
 {
     public class FlickrMiddleware : MiddlewareBase
     {
         private readonly IConfigReader _configReader;
+        private readonly StatsPlugin _statsPlugin;
 
-        public FlickrMiddleware(IMiddleware next, IConfigReader configReader) : base(next)
+        public FlickrMiddleware(IMiddleware next, IConfigReader configReader, StatsPlugin statsPlugin) : base(next)
         {
             _configReader = configReader;
+            _statsPlugin = statsPlugin;
 
             HandlerMappings = new[]
             {
                 new HandlerMapping
                 {
-                    ValidHandles = new [] { "/flickr", "flickr", "/pic", "pic"},
+                    ValidHandles = new [] { "flickr", "pic"},
                     Description = "Finds a pics from flickr - usage: /flickr birds",
                     EvaluatorFunc = FlickrHandler,
                 }
@@ -43,6 +46,7 @@ namespace Noobot.Custom.Pipeline.Middleware
 
                 if (string.IsNullOrEmpty(apiKey))
                 {
+                    _statsPlugin.RecordStat("Flickr:Failed", 1);
                     yield return message.ReplyToChannel("Woops, looks like a Flickr API Key has not been entered. Please ask the admin to fix this");
                 }
                 else
@@ -54,12 +58,15 @@ namespace Noobot.Custom.Pipeline.Middleware
 
                     if (photos.Any())
                     {
+                        _statsPlugin.RecordStat("Flickr:Sent", 1);
+
                         int i = new Random().Next(0, photos.Count);
                         Photo photo = photos[i];
                         yield return message.ReplyToChannel(photo.LargeUrl);
                     }
                     else
                     {
+                        _statsPlugin.RecordStat("Flickr:Failed", 1);
                         yield return message.ReplyToChannel($"Sorry @{message.Username}, I couldn't find anything about {searchTerm}");
                     }
                 }

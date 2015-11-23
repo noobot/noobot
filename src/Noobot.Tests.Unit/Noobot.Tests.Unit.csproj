@@ -102,7 +102,7 @@
   <ItemGroup>
     <Compile Include="Domain\Configuration\ConfigReaderTests.cs" />
     <Compile Include="Domain\Slack\SlackConnectorTests.cs" />
-    <Compile Include="Domain\Storage\StorageHelperTests.cs" />
+    <Compile Include="Domain\Storage\StoragePluginTests.cs" />
     <Compile Include="Domain\Storage\StorageObject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Stubs\MessagingPipeline\PipelineFactoryStub.cs" />

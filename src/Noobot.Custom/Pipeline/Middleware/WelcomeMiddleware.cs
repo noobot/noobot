@@ -4,13 +4,17 @@ using System.Threading;
 using Noobot.Domain.MessagingPipeline.Middleware;
 using Noobot.Domain.MessagingPipeline.Request;
 using Noobot.Domain.MessagingPipeline.Response;
+using Noobot.Domain.Plugins.StandardPlugins;
 
 namespace Noobot.Custom.Pipeline.Middleware
 {
     public class WelcomeMiddleware : MiddlewareBase
     {
-        public WelcomeMiddleware(IMiddleware next) : base(next)
+        private readonly StatsPlugin _statsPlugin;
+
+        public WelcomeMiddleware(IMiddleware next, StatsPlugin statsPlugin) : base(next)
         {
+            _statsPlugin = statsPlugin;
             HandlerMappings = new[]
             {
                 new HandlerMapping
@@ -24,6 +28,8 @@ namespace Noobot.Custom.Pipeline.Middleware
 
         private IEnumerable<ResponseMessage> WelcomeHandler(IncomingMessage message, string matchedHandle)
         {
+            _statsPlugin.RecordStat("Hello", 1);
+
             yield return message.ReplyToChannel($"Hey @{message.Username}, how you doing?");
             Thread.Sleep(TimeSpan.FromSeconds(5));
             yield return message.ReplyDirectlyToUser("I know where you live...");

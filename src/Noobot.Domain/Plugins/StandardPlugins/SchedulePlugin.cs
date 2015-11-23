@@ -5,7 +5,6 @@ using System.Timers;
 using FlatFile.Delimited.Attributes;
 using Noobot.Domain.MessagingPipeline.Response;
 using Noobot.Domain.Slack;
-using Noobot.Domain.Storage;
 using SlackConnector.Models;
 
 namespace Noobot.Domain.Plugins.StandardPlugins
@@ -13,23 +12,25 @@ namespace Noobot.Domain.Plugins.StandardPlugins
     internal class SchedulePlugin : IPlugin
     {
         private string FileName { get; } = "schedules";
-        private readonly IStorageHelper _storageHelper;
+        private readonly StoragePlugin _storagePlugin;
         private readonly ISlackWrapper _slackWrapper;
+        private readonly StatsPlugin _statsPlugin;
         private readonly object _lock = new object();
         private readonly List<ScheduleEntry> _schedules = new List<ScheduleEntry>();
         private readonly Timer _timer = new Timer(TimeSpan.FromSeconds(10).TotalMilliseconds);
 
-        public SchedulePlugin(IStorageHelper storageHelper, ISlackWrapper slackWrapper)
+        public SchedulePlugin(StoragePlugin storagePlugin, ISlackWrapper slackWrapper, StatsPlugin statsPlugin)
         {
-            _storageHelper = storageHelper;
+            _storagePlugin = storagePlugin;
             _slackWrapper = slackWrapper;
+            _statsPlugin = statsPlugin;
         }
 
         public void Start()
         {
             lock (_lock)
             {
-                ScheduleEntry[] schedules = _storageHelper.ReadFile<ScheduleEntry>(FileName);
+                ScheduleEntry[] schedules = _storagePlugin.ReadFile<ScheduleEntry>(FileName);
                 _schedules.AddRange(schedules);
 
                 _timer.Elapsed += RunSchedules;
@@ -81,6 +82,9 @@ namespace Noobot.Domain.Plugins.StandardPlugins
         {
             lock (_lock)
             {
+                _statsPlugin.RecordStat("Schedules:LastRun", DateTime.Now.ToString("G"));
+                _statsPlugin.RecordStat("Schedules:IsCurrentlyNight", IsCurrentlyNight().ToString());
+
                 foreach (var schedule in _schedules)
                 {
                     ExecuteSchedule(schedule);
@@ -103,8 +107,8 @@ namespace Noobot.Domain.Plugins.StandardPlugins
                 var slackMessage = new SlackMessage
                 {
                     Text = schedule.Command,
-                    User = new SlackUser {Id = schedule.UserId, Name = schedule.UserName},
-                    ChatHub = new SlackChatHub {Id = schedule.Channel, Type = channelType},
+                    User = new SlackUser { Id = schedule.UserId, Name = schedule.UserName },
+                    ChatHub = new SlackChatHub { Id = schedule.Channel, Type = channelType },
                 };
 
                 _slackWrapper.MessageReceived(slackMessage);
@@ -141,7 +145,8 @@ namespace Noobot.Domain.Plugins.StandardPlugins
         {
             lock (_lock)
             {
-                _storageHelper.SaveFile(FileName, _schedules.ToArray());
+                _storagePlugin.SaveFile(FileName, _schedules.ToArray());
+                _statsPlugin.RecordStat("Schedules:Active", $"{_schedules.Count}");
             }
         }
 

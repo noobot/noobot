@@ -124,7 +124,7 @@ namespace Noobot.Domain.Slack
 
             if (responseMessage.ResponseType == ResponseType.Channel)
             {
-                chatHub = new SlackChatHub {Id = responseMessage.Channel};
+                chatHub = new SlackChatHub { Id = responseMessage.Channel };
             }
             else if (responseMessage.ResponseType == ResponseType.DirectMessage)
             {
@@ -134,7 +134,7 @@ namespace Noobot.Domain.Slack
                 }
                 else
                 {
-                    chatHub = new SlackChatHub {Id = responseMessage.Channel};
+                    chatHub = new SlackChatHub { Id = responseMessage.Channel };
                 }
             }
 

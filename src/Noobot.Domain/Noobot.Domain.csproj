@@ -98,6 +98,7 @@
     <Compile Include="MessagingPipeline\Middleware\CommandDescription.cs" />
     <Compile Include="MessagingPipeline\Middleware\IMiddleware.cs" />
     <Compile Include="MessagingPipeline\Middleware\HandlerMapping.cs" />
+    <Compile Include="MessagingPipeline\Middleware\StandardMiddleware\StatsMiddleware.cs" />
     <Compile Include="MessagingPipeline\Middleware\StandardMiddleware\AboutMiddleware.cs" />
     <Compile Include="MessagingPipeline\Middleware\StandardMiddleware\HelpMiddleware.cs" />
     <Compile Include="MessagingPipeline\Middleware\StandardMiddleware\ScheduleMiddleware.cs" />
@@ -119,8 +120,8 @@
     <Compile Include="MessagingPipeline\IPipelineManager.cs" />
     <Compile Include="Slack\ISlackWrapper.cs" />
     <Compile Include="Slack\SlackWrapper.cs" />
-    <Compile Include="Storage\IStorageHelper.cs" />
-    <Compile Include="Storage\StorageHelper.cs" />
+    <Compile Include="Plugins\StandardPlugins\StatsPlugin.cs" />
+    <Compile Include="Plugins\StandardPlugins\StoragePlugin.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

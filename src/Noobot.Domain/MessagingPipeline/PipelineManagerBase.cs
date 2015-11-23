@@ -35,7 +35,7 @@ namespace Noobot.Domain.MessagingPipeline
                 {
                     Type nextType = _pipeline.Pop();
                     var nextDeclare = registry.For<IMiddleware>();
-
+                    
                     MethodInfo decorateMethod = nextDeclare.GetType().GetMethod("DecorateAllWith", new[] { typeof(Func<Instance, bool>) });
                     MethodInfo generic = decorateMethod.MakeGenericMethod(nextType);
                     generic.Invoke(nextDeclare, new object[] { null });
@@ -44,6 +44,7 @@ namespace Noobot.Domain.MessagingPipeline
 
             registry.For<IMiddleware>().DecorateAllWith<AboutMiddleware>();
             registry.For<IMiddleware>().DecorateAllWith<ScheduleMiddleware>();
+            registry.For<IMiddleware>().DecorateAllWith<StatsMiddleware>();
             registry.For<IMiddleware>().DecorateAllWith<HelpMiddleware>();
             registry.For<IMiddleware>().DecorateAllWith<BeginMessageMiddleware>();
 

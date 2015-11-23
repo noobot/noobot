@@ -7,13 +7,14 @@ using FlatFile.Core;
 using FlatFile.Delimited.Attributes;
 using FlatFile.Delimited.Implementation;
 
-namespace Noobot.Domain.Storage
+namespace Noobot.Domain.Plugins.StandardPlugins
 {
-    public class StorageHelper : IStorageHelper
+    public class StoragePlugin : IPlugin
     {
-        private readonly string _directory;
+        private string _directory;
 
-        public StorageHelper()
+
+        public void Start()
         {
             _directory = Path.Combine(Environment.CurrentDirectory, "data");
             if (!Directory.Exists(_directory))
@@ -21,6 +22,9 @@ namespace Noobot.Domain.Storage
                 Directory.CreateDirectory(_directory);
             }
         }
+
+        public void Stop()
+        { }
 
         public T[] ReadFile<T>(string fileName) where T : class, new()
         {

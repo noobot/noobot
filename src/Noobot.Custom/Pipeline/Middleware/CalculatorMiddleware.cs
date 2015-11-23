@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Noobot.Domain.MessagingPipeline.Middleware;
 using Noobot.Domain.MessagingPipeline.Request;
 using Noobot.Domain.MessagingPipeline.Response;
-using RestSharp.Extensions;
+using Noobot.Domain.Plugins.StandardPlugins;
 using xFunc.Maths;
 using xFunc.Maths.Expressions;
 
@@ -11,8 +11,11 @@ namespace Noobot.Custom.Pipeline.Middleware
 {
     public class CalculatorMiddleware : MiddlewareBase
     {
-        public CalculatorMiddleware(IMiddleware next) : base(next)
+        private readonly StatsPlugin _statsPlugin;
+
+        public CalculatorMiddleware(IMiddleware next, StatsPlugin statsPlugin) : base(next)
         {
+            _statsPlugin = statsPlugin;
             HandlerMappings = new[]
             {
                 new HandlerMapping
@@ -54,6 +57,7 @@ namespace Noobot.Custom.Pipeline.Middleware
 
                     if (showErrors)
                     {
+                        _statsPlugin.RecordStat("Calc:Failed", 1);
                         response = $"Who taught you maths? {e.Message}";
                     }
                 }
@@ -61,6 +65,7 @@ namespace Noobot.Custom.Pipeline.Middleware
 
             if (!string.IsNullOrEmpty(response))
             {
+                _statsPlugin.RecordStat("Calc:Calced", 1);
                 yield return message.ReplyToChannel($"@{message.Username}: {response}");
             }
         }
