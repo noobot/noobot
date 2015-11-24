@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Noobot.Domain.MessagingPipeline.Middleware.StandardMiddleware;
 using Noobot.Domain.MessagingPipeline.Request;
 using Noobot.Domain.MessagingPipeline.Response;
 
@@ -59,13 +60,16 @@ namespace Noobot.Domain.MessagingPipeline.Middleware
 
         public IEnumerable<CommandDescription> GetSupportedCommands()
         {
-            foreach (var handlerMapping in HandlerMappings)
+            if (!(this is AdminMiddleware))
             {
-                yield return new CommandDescription
+                foreach (var handlerMapping in HandlerMappings)
                 {
-                    Command = string.Join(" | ", handlerMapping.ValidHandles.Select(x => $"`{x}`").OrderBy(x => x)),
-                    Description = handlerMapping.Description
-                };
+                    yield return new CommandDescription
+                    {
+                        Command = string.Join(" | ", handlerMapping.ValidHandles.Select(x => $"`{x}`").OrderBy(x => x)),
+                        Description = handlerMapping.Description
+                    };
+                }
             }
 
             foreach (var commandDescription in _next.GetSupportedCommands())
