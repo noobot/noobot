@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
-using Newtonsoft.Json.Linq;
-using Noobot.Domain.Configuration;
+using System.Linq;
 using Noobot.Domain.MessagingPipeline.Request;
 using Noobot.Domain.MessagingPipeline.Response;
 using Noobot.Domain.Plugins.StandardPlugins;
@@ -10,32 +9,39 @@ namespace Noobot.Domain.MessagingPipeline.Middleware.StandardMiddleware
     internal class AdminMiddleware : MiddlewareBase
     {
         private readonly AdminPlugin _adminPlugin;
+        private readonly SchedulePlugin _schedulePlugin;
 
-        public AdminMiddleware(IMiddleware next, AdminPlugin adminPlugin) : base(next)
+        public AdminMiddleware(IMiddleware next, AdminPlugin adminPlugin, SchedulePlugin schedulePlugin) : base(next)
         {
             _adminPlugin = adminPlugin;
+            _schedulePlugin = schedulePlugin;
 
             HandlerMappings = new[]
             {
                 new HandlerMapping
                 {
                     ValidHandles = new []{ "admin pin" },
-                    EvaluatorFunc = AdminPinHandler
+                    EvaluatorFunc = PinHandler
+                },
+                new HandlerMapping
+                {
+                    ValidHandles = new []{ "admin schedules list" },
+                    EvaluatorFunc = SchedulesListHandler
                 }
             };
         }
 
-        private IEnumerable<ResponseMessage> AdminPinHandler(IncomingMessage message, string matchedHandle)
+        private IEnumerable<ResponseMessage> PinHandler(IncomingMessage message, string matchedHandle)
         {
             if (!_adminPlugin.AdminModeEnabled())
             {
                 yield return message.ReplyToChannel("Admin mode isn't enabled.");
                 yield break;
             }
-            
+
             string pinString = message.TargetedText.Substring(matchedHandle.Length).Trim();
 
-            int pin = 0;
+            int pin;
             if (int.TryParse(pinString, out pin))
             {
                 if (_adminPlugin.AuthoriseUser(message.UserId, pin))
@@ -52,6 +58,22 @@ namespace Noobot.Domain.MessagingPipeline.Middleware.StandardMiddleware
                 yield return message.ReplyToChannel($"Unable to parse pin '{pinString}'");
             }
         }
-        
+
+        private IEnumerable<ResponseMessage> SchedulesListHandler(IncomingMessage message, string matchedHandle)
+        {
+            if (!_adminPlugin.AuthenticateUser(message.UserId))
+            {
+                yield return message.ReplyToChannel($"Sorry {message.Username}, only admins can use this function.");
+                yield break;
+            }
+
+            yield return message.IndicateTypingOnChannel();
+
+            var schedules = _schedulePlugin.ListAllSchedules();
+            string[] scheduleStrings = schedules.Select((x, i) => x.ToString(i) + $" Channel: '{x.Channel}'.").ToArray();
+
+            yield return message.ReplyToChannel("All Schedules:");
+            yield return message.ReplyToChannel(">>>" + string.Join("\n", scheduleStrings));
+        }
     }
 }

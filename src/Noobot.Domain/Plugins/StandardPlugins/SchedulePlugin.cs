@@ -68,6 +68,19 @@ namespace Noobot.Domain.Plugins.StandardPlugins
             }
         }
 
+        public ScheduleEntry[] ListAllSchedules()
+        {
+            lock (_lock)
+            {
+                ScheduleEntry[] schedules = _schedules
+                                                .OrderBy(x => x.RunEvery)
+                                                .ThenByDescending(x => x.LastRun)
+                                                .ThenBy(x => x.Command)
+                                                .ToArray();
+                return schedules;
+            }
+        }
+
         public void DeleteSchedule(ScheduleEntry scheduleEntry)
         {
             lock (_lock)

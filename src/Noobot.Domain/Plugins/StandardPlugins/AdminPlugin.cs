@@ -10,7 +10,7 @@ namespace Noobot.Domain.Plugins.StandardPlugins
         private readonly IConfigReader _configReader;
         private readonly HashSet<string> _admins = new HashSet<string>();
         private readonly object _lock = new object();
-        private int? _adminPin = null;
+        private int? _adminPin;
 
         public AdminPlugin(IConfigReader configReader)
         {
@@ -40,7 +40,7 @@ namespace Noobot.Domain.Plugins.StandardPlugins
             return _adminPin.HasValue;
         }
 
-        public bool AuthoriseUser(string user, int pin)
+        public bool AuthoriseUser(string userId, int pin)
         {
             bool authorised = false;
 
@@ -52,7 +52,7 @@ namespace Noobot.Domain.Plugins.StandardPlugins
                 {
                     lock (_lock)
                     {
-                        _admins.Add(user);
+                        _admins.Add(userId);
                     }
                 }
             }
@@ -60,11 +60,11 @@ namespace Noobot.Domain.Plugins.StandardPlugins
             return authorised;
         }
 
-        public bool AuthenticateUser(string user)
+        public bool AuthenticateUser(string userId)
         {
             lock (_lock)
             {
-                return _admins.Contains(user);
+                return _admins.Contains(userId);
             }
         }
     }
