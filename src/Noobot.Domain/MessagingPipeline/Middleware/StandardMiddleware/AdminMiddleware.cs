@@ -3,43 +3,55 @@ using Newtonsoft.Json.Linq;
 using Noobot.Domain.Configuration;
 using Noobot.Domain.MessagingPipeline.Request;
 using Noobot.Domain.MessagingPipeline.Response;
+using Noobot.Domain.Plugins.StandardPlugins;
 
 namespace Noobot.Domain.MessagingPipeline.Middleware.StandardMiddleware
 {
     internal class AdminMiddleware : MiddlewareBase
     {
-        private readonly IConfigReader _configReader;
-        private static int? _adminPin = null;
+        private readonly AdminPlugin _adminPlugin;
 
-        public AdminMiddleware(IMiddleware next, IConfigReader configReader) : base(next)
+        public AdminMiddleware(IMiddleware next, AdminPlugin adminPlugin) : base(next)
         {
-            _configReader = configReader;
+            _adminPlugin = adminPlugin;
+
             HandlerMappings = new[]
             {
                 new HandlerMapping
                 {
-                    ValidHandles = new []{ "admin" },
-                    EvaluatorFunc = AdminHandler
+                    ValidHandles = new []{ "admin pin" },
+                    EvaluatorFunc = AdminPinHandler
                 }
             };
         }
 
-        private IEnumerable<ResponseMessage> AdminHandler(IncomingMessage message, string matchedHandle)
+        private IEnumerable<ResponseMessage> AdminPinHandler(IncomingMessage message, string matchedHandle)
         {
-            int adminPin = GetAdminPin();
-
-            yield return message.ReplyDirectlyToUser("Admin area");
-        }
-
-        private int GetAdminPin()
-        {
-            JObject config = _configReader.GetConfig();
-            if (!_adminPin.HasValue)
+            if (!_adminPlugin.AdminModeEnabled())
             {
-                _adminPin = config.Value<int>("adminPin");
+                yield return message.ReplyToChannel("Admin mode isn't enabled.");
+                yield break;
             }
+            
+            string pinString = message.TargetedText.Substring(matchedHandle.Length).Trim();
 
-            return _adminPin.Value;
+            int pin = 0;
+            if (int.TryParse(pinString, out pin))
+            {
+                if (_adminPlugin.AuthoriseUser(message.UserId, pin))
+                {
+                    yield return message.ReplyToChannel($"{message.Username} - you now have admin rights.");
+                }
+                else
+                {
+                    yield return message.ReplyToChannel("Incorrect admin pin entered.");
+                }
+            }
+            else
+            {
+                yield return message.ReplyToChannel($"Unable to parse pin '{pinString}'");
+            }
         }
+        
     }
 }
