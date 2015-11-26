@@ -33,6 +33,11 @@ namespace Noobot.Domain.MessagingPipeline.Middleware.StandardMiddleware
                 },
                 new HandlerMapping
                 {
+                    ValidHandles = new []{ "admin schedules delete" },
+                    EvaluatorFunc = DeleteSchedulesHandler
+                },
+                new HandlerMapping
+                {
                     ValidHandles = new []{ "admin channels" },
                     EvaluatorFunc = ChannelsHandler
                 }
@@ -74,12 +79,26 @@ namespace Noobot.Domain.MessagingPipeline.Middleware.StandardMiddleware
                 yield return message.ReplyToChannel($"Sorry {message.Username}, only admins can use this function.");
                 yield break;
             }
-            
+
             var schedules = _schedulePlugin.ListAllSchedules();
             string[] scheduleStrings = schedules.Select((x, i) => x.ToString(i) + $" Channel: '{x.Channel}'.").ToArray();
 
             yield return message.ReplyToChannel("All Schedules:");
             yield return message.ReplyToChannel(">>>" + string.Join("\n", scheduleStrings));
+        }
+
+        private IEnumerable<ResponseMessage> DeleteSchedulesHandler(IncomingMessage message, string matchedHandle)
+        {
+            if (!_adminPlugin.AuthenticateUser(message.UserId))
+            {
+                yield return message.ReplyToChannel($"Sorry {message.Username}, only admins can use this function.");
+                yield break;
+            }
+
+            var schedules = _schedulePlugin.ListAllSchedules();
+            _schedulePlugin.DeleteSchedules(schedules);
+
+            yield return message.ReplyToChannel("All schedules deleted");
         }
 
         private IEnumerable<ResponseMessage> ChannelsHandler(IncomingMessage message, string matchedHandle)
