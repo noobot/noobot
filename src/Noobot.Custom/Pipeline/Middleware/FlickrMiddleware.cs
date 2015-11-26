@@ -46,7 +46,7 @@ namespace Noobot.Custom.Pipeline.Middleware
 
                 if (string.IsNullOrEmpty(apiKey))
                 {
-                    _statsPlugin.RecordStat("Flickr:Failed", 1);
+                    _statsPlugin.IncrementState("Flickr:Failed");
                     yield return message.ReplyToChannel("Woops, looks like a Flickr API Key has not been entered. Please ask the admin to fix this");
                 }
                 else
@@ -58,7 +58,7 @@ namespace Noobot.Custom.Pipeline.Middleware
 
                     if (photos.Any())
                     {
-                        _statsPlugin.RecordStat("Flickr:Sent", 1);
+                        _statsPlugin.IncrementState("Flickr:Sent");
 
                         int i = new Random().Next(0, photos.Count);
                         Photo photo = photos[i];
@@ -66,7 +66,7 @@ namespace Noobot.Custom.Pipeline.Middleware
                     }
                     else
                     {
-                        _statsPlugin.RecordStat("Flickr:Failed", 1);
+                        _statsPlugin.IncrementState("Flickr:Failed");
                         yield return message.ReplyToChannel($"Sorry @{message.Username}, I couldn't find anything about {searchTerm}");
                     }
                 }

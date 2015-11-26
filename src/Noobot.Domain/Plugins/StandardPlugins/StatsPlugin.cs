@@ -11,17 +11,7 @@ namespace Noobot.Domain.Plugins.StandardPlugins
 
         public void RecordStat(string key, int value)
         {
-            lock (_lock)
-            {
-                int? value2Store = null;
-                if (_stats.ContainsKey(key))
-                {
-                    value2Store = _stats[key] as int?;
-                    value2Store = value2Store + value;
-                }
-
-                _stats[key] = value2Store.HasValue ? value2Store : value;
-            }
+            RecordStat(key, value.ToString());
         }
 
         public void RecordStat(string key, string value)
@@ -29,6 +19,21 @@ namespace Noobot.Domain.Plugins.StandardPlugins
             lock (_lock)
             {
                 _stats[key] = value;
+            }
+        }
+
+        public void IncrementState(string key)
+        {
+            lock (_lock)
+            {
+                int? value2Store = null;
+                if (_stats.ContainsKey(key))
+                {
+                    value2Store = _stats[key] as int?;
+                    value2Store += 1;
+                }
+
+                _stats[key] = value2Store.HasValue ? value2Store : 1;
             }
         }
 

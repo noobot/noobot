@@ -17,12 +17,12 @@ namespace Noobot.Domain.MessagingPipeline.Middleware.StandardMiddleware
 
         public override IEnumerable<ResponseMessage> Invoke(IncomingMessage message)
         {
-            _statsPlugin.RecordStat("Messages:Received", 1);
+            _statsPlugin.IncrementState("Messages:Received");
             Console.WriteLine("Message from {0}: {1}",  message.Username, message.FullText);
 
             foreach (ResponseMessage responseMessage in Next(message))
             {
-                _statsPlugin.RecordStat("Messages:Sent", 1);
+                _statsPlugin.IncrementState("Messages:Sent");
                 yield return responseMessage;
             }
         }

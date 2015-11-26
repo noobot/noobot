@@ -28,7 +28,7 @@ namespace Noobot.Custom.Pipeline.Middleware
 
         private IEnumerable<ResponseMessage> WelcomeHandler(IncomingMessage message, string matchedHandle)
         {
-            _statsPlugin.RecordStat("Hello", 1);
+            _statsPlugin.IncrementState("Hello");
 
             yield return message.ReplyToChannel($"Hey @{message.Username}, how you doing?");
             Thread.Sleep(TimeSpan.FromSeconds(5));
