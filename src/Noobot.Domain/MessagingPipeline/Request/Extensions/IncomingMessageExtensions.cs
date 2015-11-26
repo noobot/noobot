@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Noobot.Domain.MessagingPipeline.Response;
 
 namespace Noobot.Domain.MessagingPipeline.Request.Extensions
 {
@@ -7,7 +8,8 @@ namespace Noobot.Domain.MessagingPipeline.Request.Extensions
     {
         public static string GetTargetedText(this IncomingMessage incomingMessage)
         {
-            string formattedText = incomingMessage.FullText ?? string.Empty;
+            string messageText = incomingMessage.FullText ?? string.Empty;
+            bool isOnPrivateChannel = incomingMessage.ChannelType == ResponseType.DirectMessage;
 
             string[] myNames =
             {
@@ -19,15 +21,18 @@ namespace Noobot.Domain.MessagingPipeline.Request.Extensions
                 $"@{incomingMessage.BotName}",
             };
 
-            string handle = myNames.FirstOrDefault(x => formattedText.StartsWith(x, StringComparison.InvariantCultureIgnoreCase));
-            if (string.IsNullOrEmpty(handle))
+            string handle = myNames.FirstOrDefault(x => messageText.StartsWith(x, StringComparison.InvariantCultureIgnoreCase));
+            if (string.IsNullOrEmpty(handle) && !isOnPrivateChannel)
             {
                 return string.Empty;
             }
-            else
+
+            if (string.IsNullOrEmpty(handle) && isOnPrivateChannel)
             {
-                return formattedText.Substring(handle.Length).Trim();
+                return messageText;
             }
+
+            return messageText.Substring(handle.Length).Trim();
         }
     }
 }
