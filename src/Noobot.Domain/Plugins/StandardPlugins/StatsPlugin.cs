@@ -9,11 +9,17 @@ namespace Noobot.Domain.Plugins.StandardPlugins
         private readonly Dictionary<string, object> _stats = new Dictionary<string, object>();
         private readonly object _lock = new object();
 
+        /// <summary>
+        /// Sets a key to the given value
+        /// </summary>
         public void RecordStat(string key, int value)
         {
             RecordStat(key, value.ToString());
         }
 
+        /// <summary>
+        /// Sets a key to the given int value
+        /// </summary>
         public void RecordStat(string key, string value)
         {
             lock (_lock)
@@ -22,6 +28,9 @@ namespace Noobot.Domain.Plugins.StandardPlugins
             }
         }
 
+        /// <summary>
+        /// Assumes current stat is a number and increments it by 1. Defaults to 1 if key doesn't exist.
+        /// </summary>
         public void IncrementState(string key)
         {
             lock (_lock)
