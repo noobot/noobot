@@ -15,6 +15,7 @@ namespace Noobot.Domain.Plugins
             _pluginTypes.Add(typeof(StoragePlugin));
             _pluginTypes.Add(typeof(SchedulePlugin));
             _pluginTypes.Add(typeof(StatsPlugin));
+            _pluginTypes.Add(typeof(AdminPlugin));
 
             Initialise();
 
