@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
@@ -152,6 +153,11 @@ namespace Noobot.Domain.Slack
         {
             var channel = _connection.ConnectedChannels().FirstOrDefault(x => x.Name.Equals(channelName, StringComparison.InvariantCultureIgnoreCase));
             return channel != null ? channel.Id : string.Empty;
+        }
+
+        public Dictionary<string, string> ListChannels()
+        {
+            return _connection.ConnectedHubs.Values.ToDictionary(channel => channel.Id, channel => channel.Name);
         }
 
         private string GetUsername(SlackMessage message)

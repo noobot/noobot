@@ -68,14 +68,35 @@ namespace Noobot.Domain.Plugins.StandardPlugins
             }
         }
 
-        public void DeleteSchedule(ScheduleEntry scheduleEntry)
+        public ScheduleEntry[] ListAllSchedules()
         {
             lock (_lock)
             {
-                _schedules.Remove(scheduleEntry);
+                ScheduleEntry[] schedules = _schedules
+                                                .OrderBy(x => x.RunEvery)
+                                                .ThenByDescending(x => x.LastRun)
+                                                .ThenBy(x => x.Command)
+                                                .ToArray();
+                return schedules;
+            }
+        }
+
+        public void DeleteSchedules(ScheduleEntry[] scheduleEntries)
+        {
+            lock (_lock)
+            {
+                foreach (ScheduleEntry scheduleEntry in scheduleEntries)
+                {
+                    _schedules.Remove(scheduleEntry);
+                }
             }
 
             Save();
+        }
+
+        public void DeleteSchedule(ScheduleEntry scheduleEntry)
+        {
+            DeleteSchedules(new[] { scheduleEntry });
         }
 
         private void RunSchedules(object sender, ElapsedEventArgs e)
