@@ -62,7 +62,15 @@ namespace Noobot.Custom.Pipeline.Middleware
 
                         int i = new Random().Next(0, photos.Count);
                         Photo photo = photos[i];
-                        yield return message.ReplyToChannel(photo.LargeUrl);
+                        var attachment = new Attachment
+                        {
+                            AuthorName = photo.OwnerName,
+                            Fallback = photo.Description,
+                            ImageUrl = photo.LargeUrl,
+                            ThumbUrl = photo.ThumbnailUrl
+                        };
+
+                        yield return message.ReplyToChannel($"Here is your picture about '{searchTerm}'", attachment);
                     }
                     else
                     {
