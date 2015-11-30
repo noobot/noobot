@@ -41,9 +41,43 @@ namespace Noobot.Domain.Slack
             Console.WriteLine($"Team Name: {_connection.Team.Name}");
         }
 
+        private bool _isDisconnecting;
+        public void Disconnect()
+        {
+            _isDisconnecting = true;
+
+            if (_connection != null && _connection.IsConnected)
+            {
+                _connection.Disconnect();
+            }
+        }
+
         private void OnDisconnect()
         {
-            Console.WriteLine("Disconnected from server");
+            if (_isDisconnecting)
+            {
+                Console.WriteLine("Disconnected.");
+            }
+            else
+            {
+                Console.WriteLine("Disconnected from server, attempting to reconnect...");
+                _connection.OnMessageReceived -= MessageReceived;
+                _connection.OnDisconnect -= OnDisconnect;
+                _connection = null;
+
+                Connect()
+                    .ContinueWith(task =>
+                    {
+                        if (task.IsCompleted && !task.IsCanceled && !task.IsFaulted)
+                        {
+                            Console.WriteLine("Connection restored.");
+                        }
+                        else
+                        {
+                            Console.WriteLine($"Error while reconnecting: {task.Exception}");
+                        }
+                    });
+            }
         }
 
         public async Task MessageReceived(SlackMessage message)
@@ -76,20 +110,10 @@ namespace Noobot.Domain.Slack
             }
             catch (Exception ex)
             {
-                Console.WriteLine("ERROR: {0}", ex);
+                Console.WriteLine("ERROR WHILE PROCESSING MESSAGE: {0}", ex);
             }
 
             Console.WriteLine("[[[Message ended]]]");
-        }
-
-        private string GetUsername(SlackMessage message)
-        {
-            return _connection.UserNameCache.ContainsKey(message.User.Id) ? _connection.UserNameCache[message.User.Id] : string.Empty;
-        }
-
-        private async Task<string> GetUserChannel(SlackMessage message)
-        {
-            return (await GetUserChatHub(message.User.Id, joinChannel: false) ?? new SlackChatHub()).Id;
         }
 
         public async Task SendMessage(ResponseMessage responseMessage)
@@ -117,6 +141,33 @@ namespace Noobot.Domain.Slack
             {
                 Console.WriteLine("Unable to find channel for message '{0}'. Message not sent", responseMessage.Text);
             }
+        }
+
+        public string GetUserIdForUsername(string username)
+        {
+            var user = _connection.UserNameCache.FirstOrDefault(x => x.Value.Equals(username, StringComparison.InvariantCultureIgnoreCase));
+            return string.IsNullOrEmpty(user.Key) ? string.Empty : user.Key;
+        }
+
+        public string GetChannelId(string channelName)
+        {
+            var channel = _connection.ConnectedChannels().FirstOrDefault(x => x.Name.Equals(channelName, StringComparison.InvariantCultureIgnoreCase));
+            return channel != null ? channel.Id : string.Empty;
+        }
+
+        public Dictionary<string, string> ListChannels()
+        {
+            return _connection.ConnectedHubs.Values.ToDictionary(channel => channel.Id, channel => channel.Name);
+        }
+
+        private string GetUsername(SlackMessage message)
+        {
+            return _connection.UserNameCache.ContainsKey(message.User.Id) ? _connection.UserNameCache[message.User.Id] : string.Empty;
+        }
+
+        private async Task<string> GetUserChannel(SlackMessage message)
+        {
+            return (await GetUserChatHub(message.User.Id, joinChannel: false) ?? new SlackChatHub()).Id;
         }
 
         private async Task<SlackChatHub> GetChatHub(ResponseMessage responseMessage)
@@ -158,31 +209,6 @@ namespace Noobot.Domain.Slack
             }
 
             return chatHub;
-        }
-
-        public string GetUserIdForUsername(string username)
-        {
-            var user = _connection.UserNameCache.FirstOrDefault(x => x.Value.Equals(username, StringComparison.InvariantCultureIgnoreCase));
-            return string.IsNullOrEmpty(user.Key) ? string.Empty : user.Key;
-        }
-
-        public string GetChannelId(string channelName)
-        {
-            var channel = _connection.ConnectedChannels().FirstOrDefault(x => x.Name.Equals(channelName, StringComparison.InvariantCultureIgnoreCase));
-            return channel != null ? channel.Id : string.Empty;
-        }
-
-        public Dictionary<string, string> ListChannels()
-        {
-            return _connection.ConnectedHubs.Values.ToDictionary(channel => channel.Id, channel => channel.Name);
-        }
-
-        public void Disconnect()
-        {
-            if (_connection != null && _connection.IsConnected)
-            {
-                _connection.Disconnect();
-            }
         }
     }
 }

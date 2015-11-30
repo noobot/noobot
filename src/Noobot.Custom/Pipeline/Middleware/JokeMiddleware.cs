@@ -35,14 +35,14 @@ namespace Noobot.Custom.Pipeline.Middleware
             IRestResponse jokeResponse = new Random().Next(0, 100) < 80 ? GetTambalJoke() : GetMommaJoke();
             if (jokeResponse.StatusCode == HttpStatusCode.OK)
             {
-                _statsPlugin.RecordStat("Jokes:Told", 1);
+                _statsPlugin.IncrementState("Jokes:Told");
                 var joke = JsonConvert.DeserializeObject<JokeContainer>(jokeResponse.Content);
 
                 yield return message.ReplyToChannel(joke.Joke);
             }
             else
             {
-                _statsPlugin.RecordStat("Jokes:Failed", 1);
+                _statsPlugin.IncrementState("Jokes:Failed");
                 yield return message.ReplyToChannel($"Dam, I can't think of one. [{jokeResponse.StatusCode}]");
             }
         }

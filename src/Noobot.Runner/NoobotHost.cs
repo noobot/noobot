@@ -9,7 +9,7 @@ namespace Noobot.Runner
     public class NoobotHost : INoobotHost
     {
         private readonly IContainerGenerator _containerGenerator;
-        private ISlackWrapper _slackWrapper = null;
+        private ISlackWrapper _slackWrapper;
         private IPlugin[] _plugins = new IPlugin[0];
 
         public NoobotHost(IContainerGenerator containerGenerator)
@@ -39,7 +39,7 @@ namespace Noobot.Runner
                     }
                     else
                     {
-                        Console.WriteLine("Error connecting to Slack: {0}", task.Exception);
+                        Console.WriteLine($"Error connecting to Slack: {task.Exception}");
                     }
                 });
         }

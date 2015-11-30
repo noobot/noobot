@@ -57,7 +57,7 @@ namespace Noobot.Custom.Pipeline.Middleware
 
                     if (showErrors)
                     {
-                        _statsPlugin.RecordStat("Calc:Failed", 1);
+                        _statsPlugin.IncrementState("Calc:Failed");
                         response = $"Who taught you maths? {e.Message}";
                     }
                 }
@@ -65,7 +65,7 @@ namespace Noobot.Custom.Pipeline.Middleware
 
             if (!string.IsNullOrEmpty(response))
             {
-                _statsPlugin.RecordStat("Calc:Calced", 1);
+                _statsPlugin.IncrementState("Calc:Calced");
                 yield return message.ReplyToChannel($"@{message.Username}: {response}");
             }
         }

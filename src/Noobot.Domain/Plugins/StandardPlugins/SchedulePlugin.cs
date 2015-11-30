@@ -167,7 +167,7 @@ namespace Noobot.Domain.Plugins.StandardPlugins
             lock (_lock)
             {
                 _storagePlugin.SaveFile(FileName, _schedules.ToArray());
-                _statsPlugin.RecordStat("Schedules:Active", $"{_schedules.Count}");
+                _statsPlugin.RecordStat("Schedules:Active", _schedules.Count);
             }
         }
 
