@@ -63,11 +63,11 @@ namespace Noobot.Domain.MessagingPipeline.Request
         /// <summary>
         /// Will generate a message to be sent the current channel the message arrived from
         /// </summary>
-        public ResponseMessage ReplyToChannel(string text)
+        public ResponseMessage ReplyToChannel(string text, Attachment attachment = null)
         {
-            return ResponseMessage.ChannelMessage(Channel, text);
+            return ResponseMessage.ChannelMessage(Channel, text, attachment);
         }
-        
+
         /// <summary>
         /// Will send a DirectMessage reply to the use who sent the message
         /// </summary>
@@ -81,7 +81,7 @@ namespace Noobot.Domain.MessagingPipeline.Request
         /// </summary>
         public ResponseMessage IndicateTypingOnChannel()
         {
-            return ResponseMessage.ChannelMessage(Channel, string.Empty, new TypingIndicatorMessage());
+            return ResponseMessage.ChannelMessage(Channel, string.Empty, null, new TypingIndicatorMessage());
         }
 
         /// <summary>

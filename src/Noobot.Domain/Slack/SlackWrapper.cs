@@ -131,7 +131,8 @@ namespace Noobot.Domain.Slack
                     var botMessage = new BotMessage
                     {
                         ChatHub = chatHub,
-                        Text = responseMessage.Text
+                        Text = responseMessage.Text,
+                        Attachments = GetAttachments(responseMessage.Attachment)
                     };
 
                     await _connection.Say(botMessage);
@@ -141,6 +142,24 @@ namespace Noobot.Domain.Slack
             {
                 Console.WriteLine("Unable to find channel for message '{0}'. Message not sent", responseMessage.Text);
             }
+        }
+
+        private IList<SlackAttachment> GetAttachments(Attachment attachment)
+        {
+            var attachments = new List<SlackAttachment>();
+
+            if (attachment != null)
+            {
+                attachments.Add(new SlackAttachment
+                {
+                    Fallback = attachment.Fallback,
+                    ImageUrl = attachment.ImageUrl,
+                    ThumbUrl = attachment.ThumbUrl,
+                    AuthorName = attachment.AuthorName
+                });
+            }
+
+            return attachments;
         }
 
         public string GetUserIdForUsername(string username)
