@@ -8,7 +8,7 @@ using StructureMap.Graph;
 
 namespace Noobot.Core.DependencyResolution
 {
-    public class ContainerGenerator : IContainerGenerator
+    public class ContainerFactory : IContainerFactory
     {
         private readonly IPipelineManager _pipelineManager;
         private readonly IPluginManager _pluginManager;
@@ -20,13 +20,13 @@ namespace Noobot.Core.DependencyResolution
             typeof(IConfigReader),
         };
 
-        public ContainerGenerator(IPipelineManager pipelineManager, IPluginManager pluginManager)
+        public ContainerFactory(IPipelineManager pipelineManager, IPluginManager pluginManager)
         {
             _pipelineManager = pipelineManager;
             _pluginManager = pluginManager;
         }
 
-        public INoobotContainer Generate()
+        public INoobotContainer CreateContainer()
         {
             var registry = new Registry();
 

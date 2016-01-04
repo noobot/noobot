@@ -5,7 +5,7 @@ namespace Noobot.Core.DependencyResolution
 {
     public interface INoobotContainer : StructureMap.IContainer
     {
-        INoobotCore GetSlackWrapper();
+        INoobotCore GetNoobotCore();
         IPlugin[] GetPlugins();
     }
 }

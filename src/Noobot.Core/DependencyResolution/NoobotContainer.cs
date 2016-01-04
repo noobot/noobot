@@ -16,7 +16,7 @@ namespace Noobot.Core.DependencyResolution
             _pluginTypes = pluginTypes;
         }
 
-        public INoobotCore GetSlackWrapper()
+        public INoobotCore GetNoobotCore()
         {
             return GetInstance<INoobotCore>();
         }
@@ -30,8 +30,7 @@ namespace Noobot.Core.DependencyResolution
                 IPlugin plugin = GetInstance(pluginType) as IPlugin;
                 if (plugin == null)
                 {
-                    string error = string.Format("Plugin failed to build {0}", pluginType);
-                    throw new NullReferenceException(error);
+                    throw new NullReferenceException($"Plugin failed to build {pluginType}");
                 }
 
                 result.Add(plugin);

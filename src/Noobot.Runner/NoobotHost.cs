@@ -8,19 +8,19 @@ namespace Noobot.Runner
 {
     public class NoobotHost : INoobotHost
     {
-        private readonly IContainerGenerator _containerGenerator;
+        private readonly IContainerFactory _containerFactory;
         private INoobotCore _noobotCore;
         private IPlugin[] _plugins = new IPlugin[0];
 
-        public NoobotHost(IContainerGenerator containerGenerator)
+        public NoobotHost(IContainerFactory containerFactory)
         {
-            _containerGenerator = containerGenerator;
+            _containerFactory = containerFactory;
         }
 
         public void Start()
         {
-            INoobotContainer container = _containerGenerator.Generate();
-            _noobotCore = container.GetSlackWrapper();
+            INoobotContainer container = _containerFactory.CreateContainer();
+            _noobotCore = container.GetNoobotCore();
 
             Console.WriteLine("Connecting...");
             _noobotCore
