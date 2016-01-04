@@ -1,10 +1,15 @@
-﻿namespace Noobot.Core.Plugins
+﻿using System;
+
+namespace Noobot.Core.Plugins
 {
     /// <summary>
-    /// Default implementation of IPluginManager
+    /// Default implementation of IPluginConfiguration
     /// </summary>
-    public sealed class DefaultPluginManager : PluginManagerBase
+    public sealed class DefaultPluginManager : IPluginConfiguration
     {
-        protected override void Initialise() { }
+        public Type[] ListPluginTypes()
+        {
+            return new Type[0];
+        }
     }
 }

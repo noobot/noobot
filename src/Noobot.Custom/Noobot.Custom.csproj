@@ -88,7 +88,7 @@
     <Compile Include="Pipeline\Middleware\CalculatorMiddleware.cs" />
     <Compile Include="Pipeline\Middleware\WelcomeMiddleware.cs" />
     <Compile Include="Pipeline\Middleware\YieldTestMiddleware.cs" />
-    <Compile Include="PluginManager.cs" />
+    <Compile Include="PluginConfiguration.cs" />
     <Compile Include="Plugins\PingPlugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

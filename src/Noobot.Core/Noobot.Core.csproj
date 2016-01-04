@@ -115,9 +115,8 @@
     <Compile Include="MessagingPipeline\Response\ResponseType.cs" />
     <Compile Include="MessagingPipeline\Response\TypingIndicatorMessage.cs" />
     <Compile Include="Plugins\DefaultPluginManager.cs" />
-    <Compile Include="Plugins\IPluginManager.cs" />
+    <Compile Include="Plugins\IPluginConfiguration.cs" />
     <Compile Include="Plugins\IPlugin.cs" />
-    <Compile Include="Plugins\PluginManagerBase.cs" />
     <Compile Include="Plugins\StandardPlugins\SchedulePlugin.cs" />
     <Compile Include="Plugins\StandardPlugins\AdminPlugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
