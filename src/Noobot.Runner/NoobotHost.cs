@@ -20,7 +20,7 @@ namespace Noobot.Runner
         public void Start()
         {
             INoobotContainer container = _containerGenerator.Generate();
-            _slackWrapper = container.GetSlackConnector();
+            _slackWrapper = container.GetSlackWrapper();
 
             Console.WriteLine("Connecting...");
             _slackWrapper

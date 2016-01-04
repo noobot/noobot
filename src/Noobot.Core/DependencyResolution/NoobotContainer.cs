@@ -16,7 +16,7 @@ namespace Noobot.Core.DependencyResolution
             _pluginTypes = pluginTypes;
         }
 
-        public ISlackWrapper GetSlackConnector()
+        public ISlackWrapper GetSlackWrapper()
         {
             return GetInstance<ISlackWrapper>();
         }
