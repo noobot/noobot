@@ -15,7 +15,7 @@ namespace Noobot.Core.DependencyResolution
 
         private readonly Type[] _singletons = 
         {
-            typeof(ISlackWrapper),
+            typeof(INoobotCore),
             typeof(IPipelineFactory),
             typeof(IConfigReader),
         };

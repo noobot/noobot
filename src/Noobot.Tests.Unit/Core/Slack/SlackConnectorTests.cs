@@ -15,7 +15,7 @@ namespace Noobot.Tests.Unit.Core.Slack
             var configReader = new ConfigReader();
             var pipelineFactory = new PipelineFactoryStub();
 
-            var connector = new SlackWrapper(configReader, pipelineFactory);
+            var connector = new NoobotCore(configReader, pipelineFactory);
 
             // when
             var task = connector.Connect();

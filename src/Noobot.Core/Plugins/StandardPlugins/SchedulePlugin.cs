@@ -13,16 +13,16 @@ namespace Noobot.Core.Plugins.StandardPlugins
     {
         private string FileName { get; } = "schedules";
         private readonly StoragePlugin _storagePlugin;
-        private readonly ISlackWrapper _slackWrapper;
+        private readonly INoobotCore _noobotCore;
         private readonly StatsPlugin _statsPlugin;
         private readonly object _lock = new object();
         private readonly List<ScheduleEntry> _schedules = new List<ScheduleEntry>();
         private readonly Timer _timer = new Timer(TimeSpan.FromSeconds(10).TotalMilliseconds);
 
-        public SchedulePlugin(StoragePlugin storagePlugin, ISlackWrapper slackWrapper, StatsPlugin statsPlugin)
+        public SchedulePlugin(StoragePlugin storagePlugin, INoobotCore noobotCore, StatsPlugin statsPlugin)
         {
             _storagePlugin = storagePlugin;
-            _slackWrapper = slackWrapper;
+            _noobotCore = noobotCore;
             _statsPlugin = statsPlugin;
         }
 
@@ -132,7 +132,7 @@ namespace Noobot.Core.Plugins.StandardPlugins
                     ChatHub = new SlackChatHub { Id = schedule.Channel, Type = channelType },
                 };
 
-                _slackWrapper.MessageReceived(slackMessage);
+                _noobotCore.MessageReceived(slackMessage);
                 schedule.LastRun = DateTime.Now;
             }
         }

@@ -9,7 +9,7 @@ namespace Noobot.Runner
     public class NoobotHost : INoobotHost
     {
         private readonly IContainerGenerator _containerGenerator;
-        private ISlackWrapper _slackWrapper;
+        private INoobotCore _noobotCore;
         private IPlugin[] _plugins = new IPlugin[0];
 
         public NoobotHost(IContainerGenerator containerGenerator)
@@ -20,10 +20,10 @@ namespace Noobot.Runner
         public void Start()
         {
             INoobotContainer container = _containerGenerator.Generate();
-            _slackWrapper = container.GetSlackWrapper();
+            _noobotCore = container.GetSlackWrapper();
 
             Console.WriteLine("Connecting...");
-            _slackWrapper
+            _noobotCore
                 .Connect()
                 .ContinueWith(task =>
                 {
@@ -47,7 +47,7 @@ namespace Noobot.Runner
         public void Stop()
         {
             Console.WriteLine("Disconnecting...");
-            _slackWrapper.Disconnect();
+            _noobotCore.Disconnect();
 
             foreach (IPlugin plugin in _plugins)
             {

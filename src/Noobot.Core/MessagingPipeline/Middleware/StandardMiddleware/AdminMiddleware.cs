@@ -11,13 +11,13 @@ namespace Noobot.Core.MessagingPipeline.Middleware.StandardMiddleware
     {
         private readonly AdminPlugin _adminPlugin;
         private readonly SchedulePlugin _schedulePlugin;
-        private readonly ISlackWrapper _slackWrapper;
+        private readonly INoobotCore _noobotCore;
 
-        public AdminMiddleware(IMiddleware next, AdminPlugin adminPlugin, SchedulePlugin schedulePlugin, ISlackWrapper slackWrapper) : base(next)
+        public AdminMiddleware(IMiddleware next, AdminPlugin adminPlugin, SchedulePlugin schedulePlugin, INoobotCore noobotCore) : base(next)
         {
             _adminPlugin = adminPlugin;
             _schedulePlugin = schedulePlugin;
-            _slackWrapper = slackWrapper;
+            _noobotCore = noobotCore;
 
             HandlerMappings = new[]
             {
@@ -109,7 +109,7 @@ namespace Noobot.Core.MessagingPipeline.Middleware.StandardMiddleware
                 yield break;
             }
 
-            Dictionary<string, string> channels = _slackWrapper.ListChannels();
+            Dictionary<string, string> channels = _noobotCore.ListChannels();
             yield return message.ReplyToChannel("All Connected Channels:");
             yield return message.ReplyToChannel(">>>" + string.Join("\n", channels.Select(x => $"{x.Key}: {x.Value}")));
         }

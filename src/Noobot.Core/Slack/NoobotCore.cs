@@ -14,13 +14,13 @@ using SlackConnector.Models;
 
 namespace Noobot.Core.Slack
 {
-    public class SlackWrapper : ISlackWrapper
+    public class NoobotCore : INoobotCore
     {
         private readonly IConfigReader _configReader;
         private readonly IPipelineFactory _pipelineFactory;
         private ISlackConnection _connection;
 
-        public SlackWrapper(IConfigReader configReader, IPipelineFactory pipelineFactory)
+        public NoobotCore(IConfigReader configReader, IPipelineFactory pipelineFactory)
         {
             _configReader = configReader;
             _pipelineFactory = pipelineFactory;

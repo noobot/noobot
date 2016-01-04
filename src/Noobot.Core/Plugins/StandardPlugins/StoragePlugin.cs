@@ -12,8 +12,7 @@ namespace Noobot.Core.Plugins.StandardPlugins
     public class StoragePlugin : IPlugin
     {
         private string _directory;
-
-
+        
         public void Start()
         {
             _directory = Path.Combine(Environment.CurrentDirectory, "data");

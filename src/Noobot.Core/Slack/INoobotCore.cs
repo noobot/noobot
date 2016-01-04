@@ -5,7 +5,7 @@ using SlackConnector.Models;
 
 namespace Noobot.Core.Slack
 {
-    public interface ISlackWrapper
+    public interface INoobotCore
     {
         Task Connect();
         void Disconnect();
