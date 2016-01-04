@@ -7,7 +7,7 @@ using FlatFile.Core;
 using FlatFile.Delimited.Attributes;
 using FlatFile.Delimited.Implementation;
 
-namespace Noobot.Domain.Plugins.StandardPlugins
+namespace Noobot.Core.Plugins.StandardPlugins
 {
     public class StoragePlugin : IPlugin
     {

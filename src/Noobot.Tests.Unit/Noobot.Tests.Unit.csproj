@@ -100,10 +100,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Domain\Configuration\ConfigReaderTests.cs" />
-    <Compile Include="Domain\Slack\SlackConnectorTests.cs" />
-    <Compile Include="Domain\Storage\StoragePluginTests.cs" />
-    <Compile Include="Domain\Storage\StorageObject.cs" />
+    <Compile Include="Core\Configuration\ConfigReaderTests.cs" />
+    <Compile Include="Core\Slack\SlackConnectorTests.cs" />
+    <Compile Include="Core\Storage\StoragePluginTests.cs" />
+    <Compile Include="Core\Storage\StorageObject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Stubs\MessagingPipeline\PipelineFactoryStub.cs" />
     <Compile Include="Stubs\MessagingPipeline\PipelineManagerStub.cs" />
@@ -117,9 +117,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Noobot.Domain\Noobot.Domain.csproj">
+    <ProjectReference Include="..\Noobot.Domain\Noobot.Core.csproj">
       <Project>{20c88122-7ba3-4380-89fc-350f9d5b94dc}</Project>
-      <Name>Noobot.Domain</Name>
+      <Name>Noobot.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\Noobot.Runner\Noobot.Runner.csproj">
       <Project>{fc387cb5-8b7f-4873-8a14-8337682d2c73}</Project>

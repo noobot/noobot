@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Noobot.Domain.MessagingPipeline.Request;
-using Noobot.Domain.MessagingPipeline.Response;
-using Noobot.Domain.Plugins.StandardPlugins;
-using Noobot.Domain.Slack;
+using Noobot.Core.MessagingPipeline.Request;
+using Noobot.Core.MessagingPipeline.Response;
+using Noobot.Core.Plugins.StandardPlugins;
+using Noobot.Core.Slack;
 
-namespace Noobot.Domain.MessagingPipeline.Middleware.StandardMiddleware
+namespace Noobot.Core.MessagingPipeline.Middleware.StandardMiddleware
 {
     internal class AdminMiddleware : MiddlewareBase
     {

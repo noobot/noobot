@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
-using Noobot.Domain.MessagingPipeline.Response;
+using Noobot.Core.MessagingPipeline.Response;
 
-namespace Noobot.Domain.MessagingPipeline.Request.Extensions
+namespace Noobot.Core.MessagingPipeline.Request.Extensions
 {
     public static class IncomingMessageExtensions
     {

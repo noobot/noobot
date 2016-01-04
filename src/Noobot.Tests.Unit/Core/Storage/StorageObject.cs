@@ -1,6 +1,6 @@
 ﻿using FlatFile.Delimited.Attributes;
 
-namespace Noobot.Tests.Unit.Domain.Storage
+namespace Noobot.Tests.Unit.Core.Storage
 {
     [DelimitedFile(Delimiter = ";", Quotes = "\"")]
     public class StorageObject

@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Noobot.Domain.MessagingPipeline.Middleware;
-using Noobot.Domain.MessagingPipeline.Middleware.StandardMiddleware;
+using Noobot.Core.MessagingPipeline.Middleware;
+using Noobot.Core.MessagingPipeline.Middleware.StandardMiddleware;
 using StructureMap.Configuration.DSL;
 using StructureMap.Pipeline;
 
-namespace Noobot.Domain.MessagingPipeline
+namespace Noobot.Core.MessagingPipeline
 {
     public abstract class PipelineManagerBase : IPipelineManager
     {

@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
-using Noobot.Domain.Configuration;
-using Noobot.Domain.MessagingPipeline;
-using Noobot.Domain.MessagingPipeline.Middleware;
-using Noobot.Domain.MessagingPipeline.Request;
-using Noobot.Domain.MessagingPipeline.Request.Extensions;
-using Noobot.Domain.MessagingPipeline.Response;
+using Noobot.Core.Configuration;
+using Noobot.Core.MessagingPipeline;
+using Noobot.Core.MessagingPipeline.Middleware;
+using Noobot.Core.MessagingPipeline.Request;
+using Noobot.Core.MessagingPipeline.Request.Extensions;
+using Noobot.Core.MessagingPipeline.Response;
 using SlackConnector;
 using SlackConnector.Models;
 
-namespace Noobot.Domain.Slack
+namespace Noobot.Core.Slack
 {
     public class SlackWrapper : ISlackWrapper
     {

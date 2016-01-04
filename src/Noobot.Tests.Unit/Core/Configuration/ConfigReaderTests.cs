@@ -1,8 +1,8 @@
-﻿using Noobot.Domain.Configuration;
+﻿using Noobot.Core.Configuration;
 using NUnit.Framework;
 using Should;
 
-namespace Noobot.Tests.Unit.Domain.Configuration
+namespace Noobot.Tests.Unit.Core.Configuration
 {
     [TestFixture]
     public class ConfigReaderTests

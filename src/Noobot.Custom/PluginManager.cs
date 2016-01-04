@@ -1,5 +1,5 @@
-﻿using Noobot.Custom.Plugins;
-using Noobot.Domain.Plugins;
+﻿using Noobot.Core.Plugins;
+using Noobot.Custom.Plugins;
 
 namespace Noobot.Custom
 {

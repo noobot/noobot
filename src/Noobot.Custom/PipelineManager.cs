@@ -1,5 +1,5 @@
-﻿using Noobot.Custom.Pipeline.Middleware;
-using Noobot.Domain.MessagingPipeline;
+﻿using Noobot.Core.MessagingPipeline;
+using Noobot.Custom.Pipeline.Middleware;
 
 namespace Noobot.Custom
 {

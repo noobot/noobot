@@ -1,7 +1,7 @@
-﻿using Noobot.Domain.Plugins;
-using Noobot.Domain.Slack;
+﻿using Noobot.Core.Plugins;
+using Noobot.Core.Slack;
 
-namespace Noobot.Domain.DependencyResolution
+namespace Noobot.Core.DependencyResolution
 {
     public interface INoobotContainer : StructureMap.IContainer
     {

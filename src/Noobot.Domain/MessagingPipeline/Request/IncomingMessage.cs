@@ -1,6 +1,6 @@
-﻿using Noobot.Domain.MessagingPipeline.Response;
+﻿using Noobot.Core.MessagingPipeline.Response;
 
-namespace Noobot.Domain.MessagingPipeline.Request
+namespace Noobot.Core.MessagingPipeline.Request
 {
     public class IncomingMessage
     {

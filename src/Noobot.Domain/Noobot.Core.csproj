@@ -7,8 +7,8 @@
     <ProjectGuid>{20C88122-7BA3-4380-89FC-350F9D5B94DC}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Noobot.Domain</RootNamespace>
-    <AssemblyName>Noobot.Domain</AssemblyName>
+    <RootNamespace>Noobot.Core</RootNamespace>
+    <AssemblyName>Noobot.Core</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

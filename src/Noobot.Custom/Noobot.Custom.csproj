@@ -93,9 +93,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Noobot.Domain\Noobot.Domain.csproj">
+    <ProjectReference Include="..\Noobot.Domain\Noobot.Core.csproj">
       <Project>{20c88122-7ba3-4380-89fc-350f9d5b94dc}</Project>
-      <Name>Noobot.Domain</Name>
+      <Name>Noobot.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using Noobot.Domain.Plugins;
-using Noobot.Domain.Slack;
+using Noobot.Core.Plugins;
+using Noobot.Core.Slack;
 using StructureMap;
 using StructureMap.Configuration.DSL;
 
-namespace Noobot.Domain.DependencyResolution
+namespace Noobot.Core.DependencyResolution
 {
     public class NoobotContainer : Container, INoobotContainer
     {

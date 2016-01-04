@@ -1,6 +1,6 @@
 ﻿using StructureMap.Configuration.DSL;
 
-namespace Noobot.Domain.MessagingPipeline
+namespace Noobot.Core.MessagingPipeline
 {
     public interface IPipelineManager
     {

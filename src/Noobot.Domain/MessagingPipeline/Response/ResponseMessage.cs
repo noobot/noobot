@@ -1,4 +1,4 @@
-﻿namespace Noobot.Domain.MessagingPipeline.Response
+﻿namespace Noobot.Core.MessagingPipeline.Response
 {
     public class ResponseMessage
     {

@@ -1,4 +1,4 @@
-﻿namespace Noobot.Domain.Plugins
+﻿namespace Noobot.Core.Plugins
 {
     public interface IPlugin
     {

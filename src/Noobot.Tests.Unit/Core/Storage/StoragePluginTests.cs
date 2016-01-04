@@ -1,8 +1,8 @@
-﻿using Noobot.Domain.Plugins.StandardPlugins;
+﻿using Noobot.Core.Plugins.StandardPlugins;
 using NUnit.Framework;
 using SpecsFor.ShouldExtensions;
 
-namespace Noobot.Tests.Unit.Domain.Storage
+namespace Noobot.Tests.Unit.Core.Storage
 {
     [TestFixture]
     public class StoragePluginTests

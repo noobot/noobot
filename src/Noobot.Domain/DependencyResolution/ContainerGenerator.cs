@@ -1,12 +1,12 @@
 ﻿using System;
-using Noobot.Domain.Configuration;
-using Noobot.Domain.MessagingPipeline;
-using Noobot.Domain.Plugins;
-using Noobot.Domain.Slack;
+using Noobot.Core.Configuration;
+using Noobot.Core.MessagingPipeline;
+using Noobot.Core.Plugins;
+using Noobot.Core.Slack;
 using StructureMap.Configuration.DSL;
 using StructureMap.Graph;
 
-namespace Noobot.Domain.DependencyResolution
+namespace Noobot.Core.DependencyResolution
 {
     public class ContainerGenerator : IContainerGenerator
     {

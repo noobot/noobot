@@ -1,6 +1,6 @@
-﻿using Noobot.Domain.MessagingPipeline;
-using Noobot.Domain.MessagingPipeline.Middleware;
-using Noobot.Domain.MessagingPipeline.Middleware.StandardMiddleware;
+﻿using Noobot.Core.MessagingPipeline;
+using Noobot.Core.MessagingPipeline.Middleware;
+using Noobot.Core.MessagingPipeline.Middleware.StandardMiddleware;
 using Registry = StructureMap.Configuration.DSL.Registry;
 
 namespace Noobot.Tests.Unit.Stubs.MessagingPipeline

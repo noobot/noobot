@@ -1,7 +1,7 @@
-﻿using Noobot.Domain.DependencyResolution;
-using Noobot.Domain.MessagingPipeline.Middleware;
+﻿using Noobot.Core.DependencyResolution;
+using Noobot.Core.MessagingPipeline.Middleware;
 
-namespace Noobot.Domain.MessagingPipeline
+namespace Noobot.Core.MessagingPipeline
 {
     public interface IPipelineFactory
     {

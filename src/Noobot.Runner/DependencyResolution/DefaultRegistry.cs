@@ -1,5 +1,5 @@
-﻿using Noobot.Custom;
-using Noobot.Domain.MessagingPipeline;
+﻿using Noobot.Core.MessagingPipeline;
+using Noobot.Custom;
 using Noobot.Runner.Logging;
 using StructureMap.Configuration.DSL;
 using StructureMap.Graph;
@@ -14,7 +14,7 @@ namespace Noobot.Runner.DependencyResolution
             {
                 scan.TheCallingAssembly();
                 scan.WithDefaultConventions();
-                scan.Assembly("Noobot.Domain");
+                scan.Assembly("Noobot.Core");
                 scan.Assembly("Noobot.Custom");
             });
 

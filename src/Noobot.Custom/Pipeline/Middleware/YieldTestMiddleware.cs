@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
-using Noobot.Domain.MessagingPipeline.Middleware;
-using Noobot.Domain.MessagingPipeline.Request;
-using Noobot.Domain.MessagingPipeline.Response;
+using Noobot.Core.MessagingPipeline.Middleware;
+using Noobot.Core.MessagingPipeline.Request;
+using Noobot.Core.MessagingPipeline.Response;
 
 namespace Noobot.Custom.Pipeline.Middleware
 {

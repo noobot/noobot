@@ -1,6 +1,4 @@
-﻿using Noobot.Domain.Slack;
-
-namespace Noobot.Domain.DependencyResolution
+﻿namespace Noobot.Core.DependencyResolution
 {
     public interface IContainerGenerator
     {

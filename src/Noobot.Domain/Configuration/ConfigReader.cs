@@ -2,7 +2,7 @@
 using System.IO;
 using Newtonsoft.Json.Linq;
 
-namespace Noobot.Domain.Configuration
+namespace Noobot.Core.Configuration
 {
     public class ConfigReader : IConfigReader
     {

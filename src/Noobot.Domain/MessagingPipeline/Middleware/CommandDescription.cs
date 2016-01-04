@@ -1,4 +1,4 @@
-﻿namespace Noobot.Domain.MessagingPipeline.Middleware
+﻿namespace Noobot.Core.MessagingPipeline.Middleware
 {
     public class CommandDescription
     {

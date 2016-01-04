@@ -1,7 +1,7 @@
 ﻿using System;
 using StructureMap.Configuration.DSL;
 
-namespace Noobot.Domain.Plugins
+namespace Noobot.Core.Plugins
 {
     public interface IPluginManager
     {

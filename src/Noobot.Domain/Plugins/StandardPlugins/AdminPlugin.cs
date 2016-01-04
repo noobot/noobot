@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
-using Noobot.Domain.Configuration;
+using Noobot.Core.Configuration;
 
-namespace Noobot.Domain.Plugins.StandardPlugins
+namespace Noobot.Core.Plugins.StandardPlugins
 {
     public class AdminPlugin : IPlugin
     {

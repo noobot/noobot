@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Timers;
 using FlatFile.Delimited.Attributes;
-using Noobot.Domain.MessagingPipeline.Response;
-using Noobot.Domain.Slack;
+using Noobot.Core.MessagingPipeline.Response;
+using Noobot.Core.Slack;
 using SlackConnector.Models;
 
-namespace Noobot.Domain.Plugins.StandardPlugins
+namespace Noobot.Core.Plugins.StandardPlugins
 {
     internal class SchedulePlugin : IPlugin
     {

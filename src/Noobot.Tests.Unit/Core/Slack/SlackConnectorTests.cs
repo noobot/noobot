@@ -1,9 +1,9 @@
-﻿using Noobot.Domain.Configuration;
-using Noobot.Domain.Slack;
+﻿using Noobot.Core.Configuration;
+using Noobot.Core.Slack;
 using Noobot.Tests.Unit.Stubs.MessagingPipeline;
 using NUnit.Framework;
 
-namespace Noobot.Tests.Unit.Domain.Slack
+namespace Noobot.Tests.Unit.Core.Slack
 {
     [TestFixture]
     public class SlackConnectorTests

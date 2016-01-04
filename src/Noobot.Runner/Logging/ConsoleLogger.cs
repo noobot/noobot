@@ -1,6 +1,6 @@
 ﻿using System;
 using System.IO;
-using Noobot.Domain.Configuration;
+using Noobot.Core.Configuration;
 
 namespace Noobot.Runner.Logging
 {

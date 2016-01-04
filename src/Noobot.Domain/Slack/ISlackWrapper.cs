@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Noobot.Domain.MessagingPipeline.Response;
+using Noobot.Core.MessagingPipeline.Response;
 using SlackConnector.Models;
 
-namespace Noobot.Domain.Slack
+namespace Noobot.Core.Slack
 {
     public interface ISlackWrapper
     {

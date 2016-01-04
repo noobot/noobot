@@ -1,6 +1,6 @@
-﻿using Noobot.Domain.DependencyResolution;
-using Noobot.Domain.MessagingPipeline;
-using Noobot.Domain.MessagingPipeline.Middleware;
+﻿using Noobot.Core.DependencyResolution;
+using Noobot.Core.MessagingPipeline;
+using Noobot.Core.MessagingPipeline.Middleware;
 
 namespace Noobot.Tests.Unit.Stubs.MessagingPipeline
 {

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using Noobot.Domain.MessagingPipeline.Request;
-using Noobot.Domain.MessagingPipeline.Response;
+using Noobot.Core.MessagingPipeline.Request;
+using Noobot.Core.MessagingPipeline.Response;
 
-namespace Noobot.Domain.MessagingPipeline.Middleware.StandardMiddleware
+namespace Noobot.Core.MessagingPipeline.Middleware.StandardMiddleware
 {
     /// <summary>
     /// Should always be the last middleware. Simply logs and stops the chain.

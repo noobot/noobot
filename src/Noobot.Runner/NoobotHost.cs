@@ -1,8 +1,8 @@
 ﻿using System;
-using Noobot.Domain.DependencyResolution;
-using Noobot.Domain.Plugins;
-using Noobot.Domain.Plugins.StandardPlugins;
-using Noobot.Domain.Slack;
+using Noobot.Core.DependencyResolution;
+using Noobot.Core.Plugins;
+using Noobot.Core.Plugins.StandardPlugins;
+using Noobot.Core.Slack;
 
 namespace Noobot.Runner
 {

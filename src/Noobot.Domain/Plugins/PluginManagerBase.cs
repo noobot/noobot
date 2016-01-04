@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using Noobot.Domain.Plugins.StandardPlugins;
+using Noobot.Core.Plugins.StandardPlugins;
 using StructureMap.Configuration.DSL;
 
-namespace Noobot.Domain.Plugins
+namespace Noobot.Core.Plugins
 {
     public abstract class PluginManagerBase : IPluginManager
     {
