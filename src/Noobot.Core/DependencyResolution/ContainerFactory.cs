@@ -56,13 +56,15 @@ namespace Noobot.Core.DependencyResolution
 
         private Type[] SetupPlugins(Registry registry)
         {
-            var pluginTypes = new List<Type>(_pluginConfiguration.ListPluginTypes())
+            var pluginTypes = new List<Type>
             {
                 typeof (StoragePlugin),
                 typeof (SchedulePlugin),
                 typeof (StatsPlugin),
                 typeof (AdminPlugin)
             };
+
+            pluginTypes.AddRange(_pluginConfiguration.ListPluginTypes());
 
             registry.Scan(x =>
             {
