@@ -5,7 +5,7 @@ VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Noobot.Runner", "src\Noobot.Runner\Noobot.Runner.csproj", "{FC387CB5-8B7F-4873-8A14-8337682D2C73}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Noobot.Core", "src\Noobot.Domain\Noobot.Core.csproj", "{20C88122-7BA3-4380-89FC-350F9D5B94DC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Noobot.Core", "src\Noobot.Core\Noobot.Core.csproj", "{20C88122-7BA3-4380-89FC-350F9D5B94DC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Noobot.Tests.Unit", "src\Noobot.Tests.Unit\Noobot.Tests.Unit.csproj", "{37E2E8FC-64CD-48D0-8784-BCA21D58DFA4}"
 EndProject
