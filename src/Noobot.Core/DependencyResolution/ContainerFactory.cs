@@ -1,17 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using Noobot.Core.Configuration;
 using Noobot.Core.MessagingPipeline;
+using Noobot.Core.MessagingPipeline.Middleware;
+using Noobot.Core.MessagingPipeline.Middleware.StandardMiddleware;
 using Noobot.Core.Plugins;
 using Noobot.Core.Plugins.StandardPlugins;
 using StructureMap.Configuration.DSL;
 using StructureMap.Graph;
+using StructureMap.Pipeline;
 
 namespace Noobot.Core.DependencyResolution
 {
     public class ContainerFactory : IContainerFactory
     {
-        private readonly IPipelineManager _pipelineManager;
+        private readonly IPipelineConfiguration _pipelineConfiguration;
         private readonly IPluginConfiguration _pluginConfiguration;
 
         private readonly Type[] _singletons =
@@ -21,9 +26,9 @@ namespace Noobot.Core.DependencyResolution
             typeof(IConfigReader),
         };
 
-        public ContainerFactory(IPipelineManager pipelineManager, IPluginConfiguration pluginConfiguration)
+        public ContainerFactory(IPipelineConfiguration pipelineConfiguration, IPluginConfiguration pluginConfiguration)
         {
-            _pipelineManager = pipelineManager;
+            _pipelineConfiguration = pipelineConfiguration;
             _pluginConfiguration = pluginConfiguration;
         }
 
@@ -41,11 +46,11 @@ namespace Noobot.Core.DependencyResolution
             registry.For<INoobotCore>().Use<NoobotCore>();
 
             SetupSingletons(registry);
-            registry = _pipelineManager.Initialise(registry);
+            SetupMiddlewarePipeline(registry);
             Type[] pluginTypes = SetupPlugins(registry);
-            
+
             var container = new NoobotContainer(registry, pluginTypes);
-            
+
             IPipelineFactory pipelineFactory = container.GetInstance<IPipelineFactory>();
             pipelineFactory.SetContainer(container);
 
@@ -58,6 +63,52 @@ namespace Noobot.Core.DependencyResolution
             {
                 registry.For(type).Singleton();
             }
+        }
+
+        private void SetupMiddlewarePipeline(Registry registry)
+        {
+            Stack<Type> pipeline = GetPipelineStack();
+
+            registry.Scan(x =>
+            {
+                // scan assemblies that we are loading pipelines from
+                foreach (Type middlewareType in pipeline)
+                {
+                    x.AssemblyContainingType(middlewareType);
+                }
+            });
+
+            registry.For<IMiddleware>().Use<UnhandledMessageMiddleware>();
+
+            while (pipeline.Any())
+            {
+                Type nextType = pipeline.Pop();
+                var nextDeclare = registry.For<IMiddleware>();
+
+                MethodInfo decorateMethod = nextDeclare.GetType().GetMethod("DecorateAllWith", new[] { typeof(Func<Instance, bool>) });
+                MethodInfo generic = decorateMethod.MakeGenericMethod(nextType);
+                generic.Invoke(nextDeclare, new object[] { null });
+            }
+
+            registry.For<IMiddleware>().DecorateAllWith<AboutMiddleware>();
+            registry.For<IMiddleware>().DecorateAllWith<ScheduleMiddleware>();
+            registry.For<IMiddleware>().DecorateAllWith<StatsMiddleware>();
+            registry.For<IMiddleware>().DecorateAllWith<AdminMiddleware>();
+            registry.For<IMiddleware>().DecorateAllWith<HelpMiddleware>();
+            registry.For<IMiddleware>().DecorateAllWith<BeginMessageMiddleware>();
+        }
+
+        private Stack<Type> GetPipelineStack()
+        {
+            List<Type> pipelineList = _pipelineConfiguration.ListMiddlewareTypes();
+
+            var pipeline = new Stack<Type>();
+            foreach (Type type in pipelineList)
+            {
+                pipeline.Push(type);
+            }
+
+            return pipeline;
         }
 
         private Type[] SetupPlugins(Registry registry)

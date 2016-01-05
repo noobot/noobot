@@ -106,7 +106,7 @@
     <Compile Include="Core\Storage\StorageObject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Stubs\MessagingPipeline\PipelineFactoryStub.cs" />
-    <Compile Include="Stubs\MessagingPipeline\PipelineManagerStub.cs" />
+    <Compile Include="Stubs\MessagingPipeline\PipelineConfigurationStub.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Noobot.Runner\Configuration\config.json">

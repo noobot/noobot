@@ -3,9 +3,9 @@ using Noobot.Custom.Pipeline.Middleware;
 
 namespace Noobot.Custom
 {
-    public class PipelineManager : PipelineManagerBase
+    public class PipelineConfiguration : PipelineConfigurationBase
     {
-        protected override void Initialise()
+        public PipelineConfiguration()
         {
             //Use<AutoResponderMiddleware>();
             Use<WelcomeMiddleware>();

@@ -109,7 +109,7 @@
     <Compile Include="MessagingPipeline\Middleware\MiddlewareBase.cs" />
     <Compile Include="MessagingPipeline\Middleware\StandardMiddleware\UnhandledMessageMiddleware.cs" />
     <Compile Include="MessagingPipeline\Middleware\StandardMiddleware\BeginMessageMiddleware.cs" />
-    <Compile Include="MessagingPipeline\PipelineManagerBase.cs" />
+    <Compile Include="MessagingPipeline\PipelineConfigurationBase.cs" />
     <Compile Include="MessagingPipeline\Response\Attachment.cs" />
     <Compile Include="MessagingPipeline\Response\ResponseMessage.cs" />
     <Compile Include="MessagingPipeline\Response\ResponseType.cs" />
@@ -120,7 +120,7 @@
     <Compile Include="Plugins\StandardPlugins\SchedulePlugin.cs" />
     <Compile Include="Plugins\StandardPlugins\AdminPlugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="MessagingPipeline\IPipelineManager.cs" />
+    <Compile Include="MessagingPipeline\IPipelineConfiguration.cs" />
     <Compile Include="INoobotCore.cs" />
     <Compile Include="NoobotCore.cs" />
     <Compile Include="Plugins\StandardPlugins\StatsPlugin.cs" />

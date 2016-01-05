@@ -21,8 +21,8 @@ namespace Noobot.Runner.DependencyResolution
             For<INoobotHost>()
                 .Use<NoobotHost>();
             
-            For<IPipelineManager>()
-                .Use<PipelineManager>();
+            For<IPipelineConfiguration>()
+                .Use<PipelineConfiguration>();
 
             For<ILogger>()
                 .Use<ConsoleLogger>();
