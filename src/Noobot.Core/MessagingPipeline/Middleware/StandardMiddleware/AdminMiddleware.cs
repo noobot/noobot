@@ -3,7 +3,6 @@ using System.Linq;
 using Noobot.Core.MessagingPipeline.Request;
 using Noobot.Core.MessagingPipeline.Response;
 using Noobot.Core.Plugins.StandardPlugins;
-using Noobot.Core.Slack;
 
 namespace Noobot.Core.MessagingPipeline.Middleware.StandardMiddleware
 {

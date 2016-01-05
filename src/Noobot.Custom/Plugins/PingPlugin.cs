@@ -4,10 +4,10 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using FlatFile.Delimited.Attributes;
+using Noobot.Core;
 using Noobot.Core.MessagingPipeline.Response;
 using Noobot.Core.Plugins;
 using Noobot.Core.Plugins.StandardPlugins;
-using Noobot.Core.Slack;
 
 namespace Noobot.Custom.Plugins
 {

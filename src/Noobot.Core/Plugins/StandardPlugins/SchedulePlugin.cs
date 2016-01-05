@@ -4,7 +4,6 @@ using System.Linq;
 using System.Timers;
 using FlatFile.Delimited.Attributes;
 using Noobot.Core.MessagingPipeline.Response;
-using Noobot.Core.Slack;
 using SlackConnector.Models;
 
 namespace Noobot.Core.Plugins.StandardPlugins

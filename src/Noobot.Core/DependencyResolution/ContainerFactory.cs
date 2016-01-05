@@ -4,7 +4,6 @@ using Noobot.Core.Configuration;
 using Noobot.Core.MessagingPipeline;
 using Noobot.Core.Plugins;
 using Noobot.Core.Plugins.StandardPlugins;
-using Noobot.Core.Slack;
 using StructureMap.Configuration.DSL;
 using StructureMap.Graph;
 

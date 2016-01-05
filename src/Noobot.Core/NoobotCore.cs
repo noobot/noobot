@@ -12,7 +12,7 @@ using Noobot.Core.MessagingPipeline.Response;
 using SlackConnector;
 using SlackConnector.Models;
 
-namespace Noobot.Core.Slack
+namespace Noobot.Core
 {
     public class NoobotCore : INoobotCore
     {

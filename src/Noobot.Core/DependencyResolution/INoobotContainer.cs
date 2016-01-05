@@ -1,5 +1,4 @@
 ﻿using Noobot.Core.Plugins;
-using Noobot.Core.Slack;
 
 namespace Noobot.Core.DependencyResolution
 {

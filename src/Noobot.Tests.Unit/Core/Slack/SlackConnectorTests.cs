@@ -1,5 +1,5 @@
-﻿using Noobot.Core.Configuration;
-using Noobot.Core.Slack;
+﻿using Noobot.Core;
+using Noobot.Core.Configuration;
 using Noobot.Tests.Unit.Stubs.MessagingPipeline;
 using NUnit.Framework;
 

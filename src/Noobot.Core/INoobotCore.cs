@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Noobot.Core.MessagingPipeline.Response;
 using SlackConnector.Models;
 
-namespace Noobot.Core.Slack
+namespace Noobot.Core
 {
     public interface INoobotCore
     {

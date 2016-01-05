@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Noobot.Core.Plugins;
-using Noobot.Core.Slack;
 using StructureMap;
 using StructureMap.Configuration.DSL;
 

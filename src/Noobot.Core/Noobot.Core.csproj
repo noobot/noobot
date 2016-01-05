@@ -121,8 +121,8 @@
     <Compile Include="Plugins\StandardPlugins\AdminPlugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="MessagingPipeline\IPipelineManager.cs" />
-    <Compile Include="Slack\INoobotCore.cs" />
-    <Compile Include="Slack\NoobotCore.cs" />
+    <Compile Include="INoobotCore.cs" />
+    <Compile Include="NoobotCore.cs" />
     <Compile Include="Plugins\StandardPlugins\StatsPlugin.cs" />
     <Compile Include="Plugins\StandardPlugins\StoragePlugin.cs" />
   </ItemGroup>
