@@ -35,7 +35,7 @@ namespace Noobot.Runner
                             plugin.Start();
                         }
 
-                        container.GetInstance<StatsPlugin>().RecordStat("Connected since", DateTime.Now.ToString("G"));
+                        container.GetPlugin<StatsPlugin>().RecordStat("Connected since", DateTime.Now.ToString("G"));
                     }
                     else
                     {

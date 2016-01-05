@@ -1,43 +1,64 @@
 ﻿using System;
 using System.Collections.Generic;
-using Noobot.Core.Configuration;
-using Noobot.Core.MessagingPipeline;
+using Noobot.Core.MessagingPipeline.Middleware;
 using Noobot.Core.Plugins;
 using StructureMap;
 using StructureMap.Configuration.DSL;
 
 namespace Noobot.Core.DependencyResolution
 {
-    internal class NoobotContainer : Container, INoobotContainer
+    internal class NoobotContainer : INoobotContainer
     {
+        private Container _container;
         private readonly Type[] _pluginTypes;
 
-        public NoobotContainer(Registry registry, Type[] pluginTypes) : base(registry)
+        public NoobotContainer(Type[] pluginTypes)
         {
             _pluginTypes = pluginTypes;
         }
 
-        public INoobotCore GetNoobotCore()
+        public void Initialise(Registry registry)
         {
-            return GetInstance<INoobotCore>();
+            _container = new Container(registry);
         }
 
+        public INoobotCore GetNoobotCore()
+        {
+            return _container.GetInstance<INoobotCore>();
+        }
+
+        private IPlugin[] _plugins;
         public IPlugin[] GetPlugins()
         {
-            var result = new List<IPlugin>(_pluginTypes.Length);
-
-            foreach (Type pluginType in _pluginTypes)
+            if (_plugins == null)
             {
-                IPlugin plugin = GetInstance(pluginType) as IPlugin;
-                if (plugin == null)
+                var result = new List<IPlugin>(_pluginTypes.Length);
+
+                foreach (Type pluginType in _pluginTypes)
                 {
-                    throw new NullReferenceException($"Plugin failed to build {pluginType}");
+                    IPlugin plugin = _container.GetInstance(pluginType) as IPlugin;
+                    if (plugin == null)
+                    {
+                        throw new NullReferenceException($"Plugin failed to build {pluginType}");
+                    }
+
+                    result.Add(plugin);
                 }
 
-                result.Add(plugin);
+                _plugins = result.ToArray();
             }
 
-            return result.ToArray();
+            return _plugins;
+        }
+
+        public T GetPlugin<T>() where T : class, IPlugin
+        {
+            return _container.TryGetInstance(typeof(T)) as T;
+        }
+
+        public IMiddleware GetMiddlewarePipeline()
+        {
+            return _container.GetInstance<IMiddleware>();
         }
     }
 }

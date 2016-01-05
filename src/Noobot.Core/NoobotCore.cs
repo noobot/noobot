@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using Noobot.Core.Configuration;
-using Noobot.Core.MessagingPipeline;
+using Noobot.Core.DependencyResolution;
 using Noobot.Core.MessagingPipeline.Middleware;
 using Noobot.Core.MessagingPipeline.Request;
 using Noobot.Core.MessagingPipeline.Request.Extensions;
@@ -17,13 +17,13 @@ namespace Noobot.Core
     internal class NoobotCore : INoobotCore
     {
         private readonly IConfigReader _configReader;
-        private readonly IPipelineFactory _pipelineFactory;
+        private readonly INoobotContainer _container;
         private ISlackConnection _connection;
 
-        public NoobotCore(IConfigReader configReader, IPipelineFactory pipelineFactory)
+        public NoobotCore(IConfigReader configReader, INoobotContainer container)
         {
             _configReader = configReader;
-            _pipelineFactory = pipelineFactory;
+            _container = container;
         }
 
         public async Task Connect()
@@ -84,7 +84,7 @@ namespace Noobot.Core
         {
             Console.WriteLine("[[[Message started]]]");
 
-            IMiddleware pipeline = _pipelineFactory.GetPipeline();
+            IMiddleware pipeline = _container.GetMiddlewarePipeline();
             var incomingMessage = new IncomingMessage
             {
                 RawText = message.Text,

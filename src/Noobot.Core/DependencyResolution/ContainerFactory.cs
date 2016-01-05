@@ -8,6 +8,7 @@ using Noobot.Core.MessagingPipeline.Middleware;
 using Noobot.Core.MessagingPipeline.Middleware.StandardMiddleware;
 using Noobot.Core.Plugins;
 using Noobot.Core.Plugins.StandardPlugins;
+using StructureMap;
 using StructureMap.Configuration.DSL;
 using StructureMap.Graph;
 using StructureMap.Pipeline;
@@ -22,7 +23,6 @@ namespace Noobot.Core.DependencyResolution
         private readonly Type[] _singletons =
         {
             typeof(INoobotCore),
-            typeof(IPipelineFactory),
             typeof(IConfigReader),
         };
 
@@ -35,24 +35,21 @@ namespace Noobot.Core.DependencyResolution
         public INoobotContainer CreateContainer()
         {
             var registry = new Registry();
-
             registry.Scan(x =>
             {
                 x.TheCallingAssembly();
                 x.WithDefaultConventions();
             });
-
-            registry.For<IPipelineFactory>().Use<PipelineFactory>();
-            registry.For<INoobotCore>().Use<NoobotCore>();
-
+            
             SetupSingletons(registry);
             SetupMiddlewarePipeline(registry);
             Type[] pluginTypes = SetupPlugins(registry);
 
-            var container = new NoobotContainer(registry, pluginTypes);
-
-            IPipelineFactory pipelineFactory = container.GetInstance<IPipelineFactory>();
-            pipelineFactory.SetContainer(container);
+            registry.For<INoobotCore>().Use<NoobotCore>();
+            
+            var container = new NoobotContainer(pluginTypes);
+            registry.For<INoobotContainer>().Use(x => container);
+            container.Initialise(registry);
 
             return container;
         }
