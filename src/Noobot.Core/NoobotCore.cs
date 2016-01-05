@@ -14,7 +14,7 @@ using SlackConnector.Models;
 
 namespace Noobot.Core
 {
-    public class NoobotCore : INoobotCore
+    internal class NoobotCore : INoobotCore
     {
         private readonly IConfigReader _configReader;
         private readonly IPipelineFactory _pipelineFactory;

@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using Noobot.Core.Configuration;
+using Noobot.Core.MessagingPipeline;
 using Noobot.Core.Plugins;
 using StructureMap;
 using StructureMap.Configuration.DSL;
 
 namespace Noobot.Core.DependencyResolution
 {
-    public class NoobotContainer : Container, INoobotContainer
+    internal class NoobotContainer : Container, INoobotContainer
     {
         private readonly Type[] _pluginTypes;
 

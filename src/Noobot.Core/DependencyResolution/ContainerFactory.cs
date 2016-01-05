@@ -37,20 +37,27 @@ namespace Noobot.Core.DependencyResolution
                 x.WithDefaultConventions();
             });
 
-            foreach (Type type in _singletons)
-            {
-                registry.For(type).Singleton();
-            }
+            registry.For<IPipelineFactory>().Use<PipelineFactory>();
+            registry.For<INoobotCore>().Use<NoobotCore>();
 
+            SetupSingletons(registry);
             registry = _pipelineManager.Initialise(registry);
             Type[] pluginTypes = SetupPlugins(registry);
-
+            
             var container = new NoobotContainer(registry, pluginTypes);
-
+            
             IPipelineFactory pipelineFactory = container.GetInstance<IPipelineFactory>();
             pipelineFactory.SetContainer(container);
 
             return container;
+        }
+
+        private void SetupSingletons(Registry registry)
+        {
+            foreach (Type type in _singletons)
+            {
+                registry.For(type).Singleton();
+            }
         }
 
         private Type[] SetupPlugins(Registry registry)

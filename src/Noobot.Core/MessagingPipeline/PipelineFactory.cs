@@ -3,7 +3,7 @@ using Noobot.Core.MessagingPipeline.Middleware;
 
 namespace Noobot.Core.MessagingPipeline
 {
-    public class PipelineFactory : IPipelineFactory
+    internal class PipelineFactory : IPipelineFactory
     {
         private INoobotContainer _noobotContainer = null;
 

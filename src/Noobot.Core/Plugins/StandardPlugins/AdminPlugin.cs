@@ -5,7 +5,7 @@ using Noobot.Core.Configuration;
 
 namespace Noobot.Core.Plugins.StandardPlugins
 {
-    public class AdminPlugin : IPlugin
+    internal class AdminPlugin : IPlugin
     {
         private readonly IConfigReader _configReader;
         private readonly HashSet<string> _admins = new HashSet<string>();
