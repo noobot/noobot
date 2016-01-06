@@ -9,6 +9,8 @@ using Noobot.Core.MessagingPipeline.Middleware;
 using Noobot.Core.MessagingPipeline.Request;
 using Noobot.Core.MessagingPipeline.Request.Extensions;
 using Noobot.Core.MessagingPipeline.Response;
+using Noobot.Core.Plugins;
+using Noobot.Core.Plugins.StandardPlugins;
 using SlackConnector;
 using SlackConnector.Models;
 
@@ -36,9 +38,12 @@ namespace Noobot.Core
             _connection.OnMessageReceived += MessageReceived;
             _connection.OnDisconnect += OnDisconnect;
 
+            //TODO: Move out all console writes into an object
             Console.WriteLine("Connected!");
             Console.WriteLine($"Bots Name: {_connection.Self.Name}");
             Console.WriteLine($"Team Name: {_connection.Team.Name}");
+
+            StartPlugins();
         }
 
         private bool _isDisconnecting;
@@ -57,6 +62,7 @@ namespace Noobot.Core
             if (_isDisconnecting)
             {
                 Console.WriteLine("Disconnected.");
+                StopPlugins();
             }
             else
             {
@@ -71,6 +77,7 @@ namespace Noobot.Core
                         if (task.IsCompleted && !task.IsCanceled && !task.IsFaulted)
                         {
                             Console.WriteLine("Connection restored.");
+                            _container.GetPlugin<StatsPlugin>().IncrementState("ConnectionsRestored");
                         }
                         else
                         {
@@ -228,6 +235,24 @@ namespace Noobot.Core
             }
 
             return chatHub;
+        }
+
+        private void StartPlugins()
+        {
+            IPlugin[] plugins = _container.GetPlugins();
+            foreach (IPlugin plugin in plugins)
+            {
+                plugin.Start();
+            }
+        }
+
+        private void StopPlugins()
+        {
+            IPlugin[] plugins = _container.GetPlugins();
+            foreach (IPlugin plugin in plugins)
+            {
+                plugin.Stop();
+            }
         }
     }
 }

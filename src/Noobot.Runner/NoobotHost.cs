@@ -1,7 +1,6 @@
 ﻿using System;
 using Noobot.Core;
 using Noobot.Core.DependencyResolution;
-using Noobot.Core.Plugins;
 using Noobot.Core.Plugins.StandardPlugins;
 
 namespace Noobot.Runner
@@ -10,7 +9,6 @@ namespace Noobot.Runner
     {
         private readonly IContainerFactory _containerFactory;
         private INoobotCore _noobotCore;
-        private IPlugin[] _plugins = new IPlugin[0];
 
         public NoobotHost(IContainerFactory containerFactory)
         {
@@ -29,12 +27,6 @@ namespace Noobot.Runner
                 {
                     if (task.IsCompleted && !task.IsFaulted)
                     {
-                        _plugins = container.GetPlugins();
-                        foreach (IPlugin plugin in _plugins)
-                        {
-                            plugin.Start();
-                        }
-
                         container.GetPlugin<StatsPlugin>().RecordStat("Connected since", DateTime.Now.ToString("G"));
                     }
                     else
@@ -48,11 +40,6 @@ namespace Noobot.Runner
         {
             Console.WriteLine("Disconnecting...");
             _noobotCore.Disconnect();
-
-            foreach (IPlugin plugin in _plugins)
-            {
-                plugin.Stop();
-            }
         }
     }
 }
