@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Noobot.Core.Logging;
 using Noobot.Core.MessagingPipeline.Request;
 using Noobot.Core.MessagingPipeline.Response;
 
@@ -10,9 +11,16 @@ namespace Noobot.Core.MessagingPipeline.Middleware.StandardMiddleware
     /// </summary>
     internal class UnhandledMessageMiddleware : IMiddleware
     {
+        private readonly ILog _log;
+
+        public UnhandledMessageMiddleware(ILog log)
+        {
+            _log = log;
+        }
+
         public IEnumerable<ResponseMessage> Invoke(IncomingMessage message)
         {
-            Console.WriteLine("Unhandled");
+            _log.Log("Unhandled");
             return new ResponseMessage[0];
         }
 

@@ -88,12 +88,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Configuration\ConfigReader.cs" />
     <Compile Include="Configuration\IConfigReader.cs" />
     <Compile Include="DependencyResolution\ContainerFactory.cs" />
     <Compile Include="DependencyResolution\INoobotContainer.cs" />
     <Compile Include="DependencyResolution\IContainerFactory.cs" />
     <Compile Include="DependencyResolution\NoobotContainer.cs" />
+    <Compile Include="Logging\EmptyLog.cs" />
+    <Compile Include="Logging\ILog.cs" />
+    <Compile Include="Logging\ConsoleLog.cs" />
     <Compile Include="MessagingPipeline\Middleware\CommandDescription.cs" />
     <Compile Include="MessagingPipeline\Middleware\IMiddleware.cs" />
     <Compile Include="MessagingPipeline\Middleware\HandlerMapping.cs" />

@@ -1,13 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Noobot.Core.Logging;
 
 namespace Noobot.Core.Plugins.StandardPlugins
 {
     public class StatsPlugin : IPlugin
     {
+        private readonly ILog _log;
         private readonly Dictionary<string, object> _stats = new Dictionary<string, object>();
         private readonly object _lock = new object();
+
+        public StatsPlugin(ILog log)
+        {
+            _log = log;
+        }
 
         /// <summary>
         /// Sets a key to the given value
@@ -63,8 +70,8 @@ namespace Noobot.Core.Plugins.StandardPlugins
 
         public void Stop()
         {
-            Console.WriteLine("End stats:");
-            Console.WriteLine(string.Join(Environment.NewLine + "   ", GetStats()));
+            _log.Log("End stats:");
+            _log.Log(string.Join(Environment.NewLine + "   ", GetStats()));
         }
     }
 }

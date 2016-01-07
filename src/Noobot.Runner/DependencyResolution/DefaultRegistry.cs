@@ -1,4 +1,5 @@
-﻿using Noobot.Core.MessagingPipeline;
+﻿using Noobot.Core.Logging;
+using Noobot.Core.MessagingPipeline;
 using Noobot.Custom;
 using Noobot.Runner.Logging;
 using StructureMap.Configuration.DSL;
@@ -26,6 +27,9 @@ namespace Noobot.Runner.DependencyResolution
 
             For<ILogger>()
                 .Use<ConsoleLogger>();
+
+            For<ILog>()
+                .Use<ConsoleLog>();
         }
     }
 }

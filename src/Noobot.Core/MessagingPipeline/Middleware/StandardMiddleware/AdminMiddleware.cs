@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Noobot.Core.Logging;
 using Noobot.Core.MessagingPipeline.Request;
 using Noobot.Core.MessagingPipeline.Response;
 using Noobot.Core.Plugins.StandardPlugins;
@@ -11,12 +12,14 @@ namespace Noobot.Core.MessagingPipeline.Middleware.StandardMiddleware
         private readonly AdminPlugin _adminPlugin;
         private readonly SchedulePlugin _schedulePlugin;
         private readonly INoobotCore _noobotCore;
+        private readonly ILog _log;
 
-        public AdminMiddleware(IMiddleware next, AdminPlugin adminPlugin, SchedulePlugin schedulePlugin, INoobotCore noobotCore) : base(next)
+        public AdminMiddleware(IMiddleware next, AdminPlugin adminPlugin, SchedulePlugin schedulePlugin, INoobotCore noobotCore, ILog log) : base(next)
         {
             _adminPlugin = adminPlugin;
             _schedulePlugin = schedulePlugin;
             _noobotCore = noobotCore;
+            _log = log;
 
             HandlerMappings = new[]
             {

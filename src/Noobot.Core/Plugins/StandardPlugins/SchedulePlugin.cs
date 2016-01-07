@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Timers;
 using FlatFile.Delimited.Attributes;
+using Noobot.Core.Logging;
 using Noobot.Core.MessagingPipeline.Response;
 using SlackConnector.Models;
 
@@ -14,15 +15,17 @@ namespace Noobot.Core.Plugins.StandardPlugins
         private readonly StoragePlugin _storagePlugin;
         private readonly INoobotCore _noobotCore;
         private readonly StatsPlugin _statsPlugin;
+        private readonly ILog _log;
         private readonly object _lock = new object();
         private readonly List<ScheduleEntry> _schedules = new List<ScheduleEntry>();
         private readonly Timer _timer = new Timer(TimeSpan.FromSeconds(10).TotalMilliseconds);
 
-        public SchedulePlugin(StoragePlugin storagePlugin, INoobotCore noobotCore, StatsPlugin statsPlugin)
+        public SchedulePlugin(StoragePlugin storagePlugin, INoobotCore noobotCore, StatsPlugin statsPlugin, ILog log)
         {
             _storagePlugin = storagePlugin;
             _noobotCore = noobotCore;
             _statsPlugin = statsPlugin;
+            _log = log;
         }
 
         public void Start()
@@ -99,7 +102,7 @@ namespace Noobot.Core.Plugins.StandardPlugins
         }
 
         private void RunSchedules(object sender, ElapsedEventArgs e)
-        {
+       {
             lock (_lock)
             {
                 _statsPlugin.RecordStat("Schedules:LastRun", DateTime.Now.ToString("G"));
@@ -118,7 +121,7 @@ namespace Noobot.Core.Plugins.StandardPlugins
         {
             if (ShouldRunSchedule(schedule))
             {
-                Console.WriteLine($"Running schedule: {schedule}");
+                _log.Log($"Running schedule: {schedule}");
 
                 SlackChatHubType channelType = schedule.ChannelType == ResponseType.Channel
                     ? SlackChatHubType.Channel

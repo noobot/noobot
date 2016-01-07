@@ -42,7 +42,7 @@ namespace Noobot.Custom.Pipeline.Middleware
             else
             {
                 yield return message.IndicateTypingOnChannel();
-                string apiKey = _configReader.GetConfig()["flickr"].Value<string>("apiKey");
+                string apiKey = _configReader.GetConfigEntry<string>("flickr:apiKey");
 
                 if (string.IsNullOrEmpty(apiKey))
                 {

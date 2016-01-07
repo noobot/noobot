@@ -1,4 +1,5 @@
-﻿using Noobot.Core.Plugins.StandardPlugins;
+﻿using Noobot.Core.Logging;
+using Noobot.Core.Plugins.StandardPlugins;
 using NUnit.Framework;
 using SpecsFor.ShouldExtensions;
 
@@ -11,7 +12,7 @@ namespace Noobot.Tests.Unit.Core.Storage
         public void should_write_and_read_from_file()
         {
             // given
-            var storageHelper = new StoragePlugin();
+            var storageHelper = new StoragePlugin(new EmptyLog());
             storageHelper.Start();
 
             var objects = new[]

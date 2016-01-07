@@ -6,13 +6,20 @@ using System.Reflection;
 using FlatFile.Core;
 using FlatFile.Delimited.Attributes;
 using FlatFile.Delimited.Implementation;
+using Noobot.Core.Logging;
 
 namespace Noobot.Core.Plugins.StandardPlugins
 {
     public class StoragePlugin : IPlugin
     {
+        private readonly ILog _log;
         private string _directory;
-        
+
+        public StoragePlugin(ILog log)
+        {
+            _log = log;
+        }
+
         public void Start()
         {
             _directory = Path.Combine(Environment.CurrentDirectory, "data");
@@ -47,8 +54,8 @@ namespace Noobot.Core.Plugins.StandardPlugins
             }
             catch (FormatException ex)
             {
-                Console.WriteLine($"Error while loading file {filePath}, deleting file to ensure it doesn't happen again.");
-                Console.WriteLine(ex);
+                _log.Log($"Error while loading file {filePath}, deleting file to ensure it doesn't happen again.");
+                _log.Log(ex.ToString());
 
                 File.Delete(filePath);
                 return new T[0];

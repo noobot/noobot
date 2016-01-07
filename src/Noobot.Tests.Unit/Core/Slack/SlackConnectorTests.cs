@@ -1,5 +1,6 @@
 ﻿using Noobot.Core;
-using Noobot.Core.Configuration;
+using Noobot.Core.Logging;
+using Noobot.Runner.Configuration;
 using Noobot.Tests.Unit.Stubs.MessagingPipeline;
 using NUnit.Framework;
 
@@ -14,7 +15,7 @@ namespace Noobot.Tests.Unit.Core.Slack
             // given
             var configReader = new ConfigReader();
             var containerStub = new NoobotContainerStub();
-            var connector = new NoobotCore(configReader, containerStub);
+            var connector = new NoobotCore(configReader, new EmptyLog(), containerStub);
 
             // when
             var task = connector.Connect();

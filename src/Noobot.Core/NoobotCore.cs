@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using Noobot.Core.Configuration;
 using Noobot.Core.DependencyResolution;
+using Noobot.Core.Logging;
 using Noobot.Core.MessagingPipeline.Middleware;
 using Noobot.Core.MessagingPipeline.Request;
 using Noobot.Core.MessagingPipeline.Request.Extensions;
@@ -19,29 +20,29 @@ namespace Noobot.Core
     internal class NoobotCore : INoobotCore
     {
         private readonly IConfigReader _configReader;
+        private readonly ILog _log;
         private readonly INoobotContainer _container;
         private ISlackConnection _connection;
 
-        public NoobotCore(IConfigReader configReader, INoobotContainer container)
+        public NoobotCore(IConfigReader configReader, ILog  log ,INoobotContainer container)
         {
             _configReader = configReader;
+            _log = log;
             _container = container;
         }
 
         public async Task Connect()
         {
-            JObject config = _configReader.GetConfig();
-            string slackKey = config["slack"].Value<string>("apiToken");
+            string slackKey = _configReader.SlackApiKey();
 
             var connector = new SlackConnector.SlackConnector();
             _connection = await connector.Connect(slackKey);
             _connection.OnMessageReceived += MessageReceived;
             _connection.OnDisconnect += OnDisconnect;
-
-            //TODO: Move out all console writes into an object
-            Console.WriteLine("Connected!");
-            Console.WriteLine($"Bots Name: {_connection.Self.Name}");
-            Console.WriteLine($"Team Name: {_connection.Team.Name}");
+            
+            _log.Log("Connected!");
+            _log.Log($"Bots Name: {_connection.Self.Name}");
+            _log.Log($"Team Name: {_connection.Team.Name}");
 
             StartPlugins();
         }
@@ -61,12 +62,12 @@ namespace Noobot.Core
         {
             if (_isDisconnecting)
             {
-                Console.WriteLine("Disconnected.");
+                _log.Log("Disconnected.");
                 StopPlugins();
             }
             else
             {
-                Console.WriteLine("Disconnected from server, attempting to reconnect...");
+                _log.Log("Disconnected from server, attempting to reconnect...");
                 _connection.OnMessageReceived -= MessageReceived;
                 _connection.OnDisconnect -= OnDisconnect;
                 _connection = null;
@@ -76,12 +77,12 @@ namespace Noobot.Core
                     {
                         if (task.IsCompleted && !task.IsCanceled && !task.IsFaulted)
                         {
-                            Console.WriteLine("Connection restored.");
+                            _log.Log("Connection restored.");
                             _container.GetPlugin<StatsPlugin>().IncrementState("ConnectionsRestored");
                         }
                         else
                         {
-                            Console.WriteLine($"Error while reconnecting: {task.Exception}");
+                            _log.Log($"Error while reconnecting: {task.Exception}");
                         }
                     });
             }
@@ -89,7 +90,7 @@ namespace Noobot.Core
 
         public async Task MessageReceived(SlackMessage message)
         {
-            Console.WriteLine("[[[Message started]]]");
+            _log.Log("[[[Message started]]]");
 
             IMiddleware pipeline = _container.GetMiddlewarePipeline();
             var incomingMessage = new IncomingMessage
@@ -117,10 +118,10 @@ namespace Noobot.Core
             }
             catch (Exception ex)
             {
-                Console.WriteLine("ERROR WHILE PROCESSING MESSAGE: {0}", ex);
+                _log.Log($"ERROR WHILE PROCESSING MESSAGE: {ex}");
             }
 
-            Console.WriteLine("[[[Message ended]]]");
+            _log.Log("[[[Message ended]]]");
         }
 
         public async Task SendMessage(ResponseMessage responseMessage)
@@ -147,7 +148,7 @@ namespace Noobot.Core
             }
             else
             {
-                Console.WriteLine("Unable to find channel for message '{0}'. Message not sent", responseMessage.Text);
+                _log.Log($"Unable to find channel for message '{responseMessage.Text}'. Message not sent");
             }
         }
 

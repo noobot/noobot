@@ -1,9 +1,11 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using System;
+using Newtonsoft.Json.Linq;
 
 namespace Noobot.Core.Configuration
 {
     public interface IConfigReader
     {
-        JObject GetConfig();
+        string SlackApiKey();
+        T GetConfigEntry<T>(string entryName);
     }
 }

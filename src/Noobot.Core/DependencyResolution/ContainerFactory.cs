@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Noobot.Core.Configuration;
+using Noobot.Core.Logging;
 using Noobot.Core.MessagingPipeline;
 using Noobot.Core.MessagingPipeline.Middleware;
 using Noobot.Core.MessagingPipeline.Middleware.StandardMiddleware;
 using Noobot.Core.Plugins;
 using Noobot.Core.Plugins.StandardPlugins;
-using StructureMap;
 using StructureMap.Configuration.DSL;
 using StructureMap.Graph;
 using StructureMap.Pipeline;
@@ -19,6 +19,8 @@ namespace Noobot.Core.DependencyResolution
     {
         private readonly IPipelineConfiguration _pipelineConfiguration;
         private readonly IPluginConfiguration _pluginConfiguration;
+        private readonly IConfigReader _configReader;
+        private readonly ILog _logger;
 
         private readonly Type[] _singletons =
         {
@@ -26,10 +28,16 @@ namespace Noobot.Core.DependencyResolution
             typeof(IConfigReader),
         };
 
-        public ContainerFactory(IPipelineConfiguration pipelineConfiguration, IPluginConfiguration pluginConfiguration)
+        public ContainerFactory(IPipelineConfiguration pipelineConfiguration, IPluginConfiguration pluginConfiguration, IConfigReader configReader)
+            : this(pipelineConfiguration, pluginConfiguration, configReader, null)
+        { }
+
+        public ContainerFactory(IPipelineConfiguration pipelineConfiguration, IPluginConfiguration pluginConfiguration, IConfigReader configReader, ILog logger)
         {
             _pipelineConfiguration = pipelineConfiguration;
             _pluginConfiguration = pluginConfiguration;
+            _configReader = configReader;
+            _logger = logger ?? new EmptyLog();
         }
 
         public INoobotContainer CreateContainer()
@@ -40,17 +48,25 @@ namespace Noobot.Core.DependencyResolution
                 x.TheCallingAssembly();
                 x.WithDefaultConventions();
             });
-            
+
             SetupSingletons(registry);
             SetupMiddlewarePipeline(registry);
             Type[] pluginTypes = SetupPlugins(registry);
 
             registry.For<INoobotCore>().Use<NoobotCore>();
-            
+            registry.For<ILog>().Use(() => _logger);
+            registry.For<IConfigReader>().Use(() => _configReader);
+
+            var container = CreateContainer(pluginTypes, registry);
+
+            return container;
+        }
+
+        private static NoobotContainer CreateContainer(Type[] pluginTypes, Registry registry)
+        {
             var container = new NoobotContainer(pluginTypes);
             registry.For<INoobotContainer>().Use(x => container);
             container.Initialise(registry);
-
             return container;
         }
 

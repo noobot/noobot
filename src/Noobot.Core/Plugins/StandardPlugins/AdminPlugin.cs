@@ -2,33 +2,35 @@
 using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
 using Noobot.Core.Configuration;
+using Noobot.Core.Logging;
 
 namespace Noobot.Core.Plugins.StandardPlugins
 {
     internal class AdminPlugin : IPlugin
     {
         private readonly IConfigReader _configReader;
+        private readonly ILog _log;
         private readonly HashSet<string> _admins = new HashSet<string>();
         private readonly object _lock = new object();
         private int? _adminPin;
 
-        public AdminPlugin(IConfigReader configReader)
+        public AdminPlugin(IConfigReader configReader, ILog log)
         {
             _configReader = configReader;
+            _log = log;
         }
 
         public void Start()
         {
-            JObject config = _configReader.GetConfig();
-            _adminPin = config.Value<int?>("adminPin");
+            _adminPin = _configReader.GetConfigEntry<int?>("adminPin");
 
             if (_adminPin.HasValue)
             {
-                Console.WriteLine($"Admin pin is '{_adminPin.Value}'");
+                _log.Log($"Admin pin is '{_adminPin.Value}'");
             }
             else
             {
-                Console.WriteLine("No admin pin detected. Admin mode deactivated.");
+                _log.Log("No admin pin detected. Admin mode deactivated.");
             }
         }
 

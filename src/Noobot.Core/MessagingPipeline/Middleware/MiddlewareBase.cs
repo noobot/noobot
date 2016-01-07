@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Noobot.Core.Logging;
 using Noobot.Core.MessagingPipeline.Middleware.StandardMiddleware;
 using Noobot.Core.MessagingPipeline.Request;
 using Noobot.Core.MessagingPipeline.Response;
@@ -37,7 +38,8 @@ namespace Noobot.Core.MessagingPipeline.Middleware
 
                     if (text.StartsWith(map, StringComparison.InvariantCultureIgnoreCase))
                     {
-                        Console.WriteLine($"Matched '{map}' on '{this.GetType().Name}'");
+                        //TODO: How to do this
+                        //_log.Log($"Matched '{map}' on '{this.GetType().Name}'");
 
                         foreach (var responseMessage in handlerMapping.EvaluatorFunc(message, map))
                         {
