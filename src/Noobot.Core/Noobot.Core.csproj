@@ -99,11 +99,9 @@
     <Compile Include="MessagingPipeline\Middleware\CommandDescription.cs" />
     <Compile Include="MessagingPipeline\Middleware\IMiddleware.cs" />
     <Compile Include="MessagingPipeline\Middleware\HandlerMapping.cs" />
-    <Compile Include="MessagingPipeline\Middleware\StandardMiddleware\AdminMiddleware.cs" />
     <Compile Include="MessagingPipeline\Middleware\StandardMiddleware\StatsMiddleware.cs" />
     <Compile Include="MessagingPipeline\Middleware\StandardMiddleware\AboutMiddleware.cs" />
     <Compile Include="MessagingPipeline\Middleware\StandardMiddleware\HelpMiddleware.cs" />
-    <Compile Include="MessagingPipeline\Middleware\StandardMiddleware\ScheduleMiddleware.cs" />
     <Compile Include="MessagingPipeline\Request\Extensions\IncomingMessageExtensions.cs" />
     <Compile Include="MessagingPipeline\Request\IncomingMessage.cs" />
     <Compile Include="MessagingPipeline\Middleware\MiddlewareBase.cs" />
@@ -117,14 +115,11 @@
     <Compile Include="Plugins\DefaultPluginManager.cs" />
     <Compile Include="Plugins\IPluginConfiguration.cs" />
     <Compile Include="Plugins\IPlugin.cs" />
-    <Compile Include="Plugins\StandardPlugins\SchedulePlugin.cs" />
-    <Compile Include="Plugins\StandardPlugins\AdminPlugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="MessagingPipeline\IPipelineConfiguration.cs" />
     <Compile Include="INoobotCore.cs" />
     <Compile Include="NoobotCore.cs" />
     <Compile Include="Plugins\StandardPlugins\StatsPlugin.cs" />
-    <Compile Include="Plugins\StandardPlugins\StoragePlugin.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

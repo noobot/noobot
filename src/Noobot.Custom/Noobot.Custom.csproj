@@ -81,15 +81,20 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="PipelineConfiguration.cs" />
+    <Compile Include="Pipeline\Middleware\AdminMiddleware.cs" />
     <Compile Include="Pipeline\Middleware\AutoResponderMiddleware.cs" />
     <Compile Include="Pipeline\Middleware\FlickrMiddleware.cs" />
     <Compile Include="Pipeline\Middleware\JokeMiddleware.cs" />
     <Compile Include="Pipeline\Middleware\PingMiddleware.cs" />
     <Compile Include="Pipeline\Middleware\CalculatorMiddleware.cs" />
+    <Compile Include="Pipeline\Middleware\ScheduleMiddleware.cs" />
     <Compile Include="Pipeline\Middleware\WelcomeMiddleware.cs" />
     <Compile Include="Pipeline\Middleware\YieldTestMiddleware.cs" />
     <Compile Include="PluginConfiguration.cs" />
+    <Compile Include="Plugins\AdminPlugin.cs" />
     <Compile Include="Plugins\PingPlugin.cs" />
+    <Compile Include="Plugins\SchedulePlugin.cs" />
+    <Compile Include="Plugins\StoragePlugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

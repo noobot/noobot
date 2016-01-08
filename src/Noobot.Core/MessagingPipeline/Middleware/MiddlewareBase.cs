@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Noobot.Core.Logging;
-using Noobot.Core.MessagingPipeline.Middleware.StandardMiddleware;
 using Noobot.Core.MessagingPipeline.Request;
 using Noobot.Core.MessagingPipeline.Response;
 
@@ -28,6 +26,11 @@ namespace Noobot.Core.MessagingPipeline.Middleware
         {
             foreach (var handlerMapping in HandlerMappings)
             {
+                if (!handlerMapping.VisibleInHelp)
+                {
+                    continue;
+                }
+
                 foreach (string map in handlerMapping.ValidHandles)
                 {
                     string text = message.FullText;
@@ -62,16 +65,13 @@ namespace Noobot.Core.MessagingPipeline.Middleware
 
         public IEnumerable<CommandDescription> GetSupportedCommands()
         {
-            if (!(this is AdminMiddleware))
+            foreach (var handlerMapping in HandlerMappings)
             {
-                foreach (var handlerMapping in HandlerMappings)
+                yield return new CommandDescription
                 {
-                    yield return new CommandDescription
-                    {
-                        Command = string.Join(" | ", handlerMapping.ValidHandles.Select(x => $"`{x}`").OrderBy(x => x)),
-                        Description = handlerMapping.Description
-                    };
-                }
+                    Command = string.Join(" | ", handlerMapping.ValidHandles.Select(x => $"`{x}`").OrderBy(x => x)),
+                    Description = handlerMapping.Description
+                };
             }
 
             foreach (var commandDescription in _next.GetSupportedCommands())

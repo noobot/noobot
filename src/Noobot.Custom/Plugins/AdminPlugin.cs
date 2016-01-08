@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using Newtonsoft.Json.Linq;
+﻿using System.Collections.Generic;
 using Noobot.Core.Configuration;
 using Noobot.Core.Logging;
+using Noobot.Core.Plugins;
 
-namespace Noobot.Core.Plugins.StandardPlugins
+namespace Noobot.Custom.Plugins
 {
     internal class AdminPlugin : IPlugin
     {

@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Noobot.Core.MessagingPipeline.Middleware;
 using Noobot.Core.MessagingPipeline.Request;
 using Noobot.Core.MessagingPipeline.Response;
-using Noobot.Core.Plugins.StandardPlugins;
+using Noobot.Custom.Plugins;
 
-namespace Noobot.Core.MessagingPipeline.Middleware.StandardMiddleware
+namespace Noobot.Custom.Pipeline.Middleware
 {
     internal class ScheduleMiddleware : MiddlewareBase
     {

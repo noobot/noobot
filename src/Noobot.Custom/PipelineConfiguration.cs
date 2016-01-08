@@ -9,6 +9,8 @@ namespace Noobot.Custom
         {
             //Use<AutoResponderMiddleware>();
             Use<WelcomeMiddleware>();
+            Use<AdminMiddleware>();
+            Use<ScheduleMiddleware>();
             Use<JokeMiddleware>();
             Use<YieldTestMiddleware>();
             Use<PingMiddleware>();

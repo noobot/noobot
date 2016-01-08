@@ -8,7 +8,13 @@ namespace Noobot.Custom
     {
         public Type[] ListPluginTypes()
         {
-            return new[] { typeof(PingPlugin) };
+            return new[]
+            {
+                typeof(StoragePlugin),
+                typeof(SchedulePlugin),
+                typeof(AdminPlugin),
+                typeof(PingPlugin)
+            };
         }
     }
 }
