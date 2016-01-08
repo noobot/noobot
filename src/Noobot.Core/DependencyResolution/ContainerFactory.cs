@@ -93,21 +93,21 @@ namespace Noobot.Core.DependencyResolution
 
             registry.For<IMiddleware>().Use<UnhandledMessageMiddleware>();
 
+            // defined here so they can be overridden
+            registry.For<IMiddleware>().DecorateAllWith<AboutMiddleware>();
+            registry.For<IMiddleware>().DecorateAllWith<StatsMiddleware>();
+
             while (pipeline.Any())
             {
                 Type nextType = pipeline.Pop();
                 var nextDeclare = registry.For<IMiddleware>();
-
-                // defined here so they can be overridden
-                registry.For<IMiddleware>().DecorateAllWith<HelpMiddleware>();
-                registry.For<IMiddleware>().DecorateAllWith<AboutMiddleware>();
-                registry.For<IMiddleware>().DecorateAllWith<StatsMiddleware>();
 
                 MethodInfo decorateMethod = nextDeclare.GetType().GetMethod("DecorateAllWith", new[] { typeof(Func<Instance, bool>) });
                 MethodInfo generic = decorateMethod.MakeGenericMethod(nextType);
                 generic.Invoke(nextDeclare, new object[] { null });
             }
 
+            registry.For<IMiddleware>().DecorateAllWith<HelpMiddleware>();
             registry.For<IMiddleware>().DecorateAllWith<BeginMessageMiddleware>();
         }
 

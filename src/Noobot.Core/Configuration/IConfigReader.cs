@@ -1,11 +1,9 @@
-﻿using System;
-using Newtonsoft.Json.Linq;
-
-namespace Noobot.Core.Configuration
+﻿namespace Noobot.Core.Configuration
 {
     public interface IConfigReader
     {
         string SlackApiKey();
+        bool HelpEnabled();
         T GetConfigEntry<T>(string entryName);
     }
 }

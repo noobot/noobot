@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Noobot.Core.Configuration;
 using Noobot.Core.MessagingPipeline.Request;
 using Noobot.Core.MessagingPipeline.Response;
 
@@ -8,17 +9,20 @@ namespace Noobot.Core.MessagingPipeline.Middleware.StandardMiddleware
 {
     internal class HelpMiddleware : MiddlewareBase
     {
-        public HelpMiddleware(IMiddleware next) : base(next)
+        public HelpMiddleware(IMiddleware next, IConfigReader configReader) : base(next)
         {
-            HandlerMappings = new[]
+            if (configReader.HelpEnabled())
             {
-                new HandlerMapping
+                HandlerMappings = new[]
                 {
-                    ValidHandles = new[] {"help", "yo tell me more"},
-                    Description = "Returns supported commands and descriptions of how to use them",
-                    EvaluatorFunc = HelpHandler
-                }
-            };
+                    new HandlerMapping
+                    {
+                        ValidHandles = new[] {"help", "yo tell me more"},
+                        Description = "Returns supported commands and descriptions of how to use them",
+                        EvaluatorFunc = HelpHandler
+                    }
+                };
+            }
         }
 
         private IEnumerable<ResponseMessage> HelpHandler(IncomingMessage message, string matchedHandle)

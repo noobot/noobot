@@ -26,11 +26,6 @@ namespace Noobot.Core.MessagingPipeline.Middleware
         {
             foreach (var handlerMapping in HandlerMappings)
             {
-                if (!handlerMapping.VisibleInHelp)
-                {
-                    continue;
-                }
-
                 foreach (string map in handlerMapping.ValidHandles)
                 {
                     string text = message.FullText;
@@ -67,6 +62,11 @@ namespace Noobot.Core.MessagingPipeline.Middleware
         {
             foreach (var handlerMapping in HandlerMappings)
             {
+                if (!handlerMapping.VisibleInHelp)
+                {
+                    continue;
+                }
+
                 yield return new CommandDescription
                 {
                     Command = string.Join(" | ", handlerMapping.ValidHandles.Select(x => $"`{x}`").OrderBy(x => x)),

@@ -28,22 +28,30 @@ namespace Noobot.Custom.Pipeline.Middleware
                 new HandlerMapping
                 {
                     ValidHandles = new []{ "admin pin" },
-                    EvaluatorFunc = PinHandler
+                    EvaluatorFunc = PinHandler,
+                    Description = "This function is used to authenticate a user as admin",
+                    VisibleInHelp = false
                 },
                 new HandlerMapping
                 {
                     ValidHandles = new []{ "admin schedules list" },
-                    EvaluatorFunc = SchedulesListHandler
+                    EvaluatorFunc = SchedulesListHandler,
+                    Description = "[Requires authentication] Will return a list of all schedules.",
+                    VisibleInHelp = false
                 },
                 new HandlerMapping
                 {
                     ValidHandles = new []{ "admin schedules delete" },
-                    EvaluatorFunc = DeleteSchedulesHandler
+                    EvaluatorFunc = DeleteSchedulesHandler,
+                    Description = "[Requires authentication] This will delete all schedules.",
+                    VisibleInHelp = false
                 },
                 new HandlerMapping
                 {
                     ValidHandles = new []{ "admin channels" },
-                    EvaluatorFunc = ChannelsHandler
+                    EvaluatorFunc = ChannelsHandler,
+                    Description = "[Requires authentication] Will return all channels connected.",
+                    VisibleInHelp = false
                 }
             };
         }
@@ -64,6 +72,7 @@ namespace Noobot.Custom.Pipeline.Middleware
                 if (_adminPlugin.AuthoriseUser(message.UserId, pin))
                 {
                     yield return message.ReplyToChannel($"{message.Username} - you now have admin rights.");
+                    _log.Log($"{message.Username} now has admin rights.");
                 }
                 else
                 {

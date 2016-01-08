@@ -13,6 +13,11 @@ namespace Noobot.Runner.Configuration
             return jObject.Value<string>("slack:apiToken");
         }
 
+        public bool HelpEnabled()
+        {
+            return true;
+        }
+
         public T GetConfigEntry<T>(string entryName)
         {
             JObject jObject = GetJObject();

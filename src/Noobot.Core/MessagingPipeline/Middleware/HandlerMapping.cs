@@ -11,6 +11,7 @@ namespace Noobot.Core.MessagingPipeline.Middleware
         {
             ValidHandles = new string[0];
             MessageShouldTargetBot = true;
+            VisibleInHelp = true;
         }
 
         /// <summary>
