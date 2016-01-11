@@ -1,7 +1,8 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
-using Noobot.Runner.DependencyResolution;
+using Noobot.Core.Configuration;
+using Noobot.Runner.Configuration;
 using Noobot.Runner.Logging;
 using Topshelf;
 
@@ -9,7 +10,8 @@ namespace Noobot.Runner
 {
     public class Program
     {
-        private static ILogger _logger;
+        private static readonly IConfigReader ConfigReader = new ConfigReader();
+        private static readonly ILogger Logger = new ConsoleLogger(ConfigReader);
 
         public static void Main(string[] args)
         {
@@ -21,12 +23,11 @@ namespace Noobot.Runner
             {
                 x.Service<INoobotHost>(s =>
                 {
-                    s.ConstructUsing(name => Container.Instance.GetInstance<INoobotHost>());
+                    s.ConstructUsing(name => new NoobotHost(ConfigReader));
 
                     s.WhenStarted(n =>
                     {
-                        _logger = Container.Instance.GetInstance<ILogger>();
-                        _logger.Grapple();
+                        Logger.Grapple();
                         n.Start();
                     });
 
@@ -39,7 +40,7 @@ namespace Noobot.Runner
                 x.SetDescription("An extensible Slackbot built in C#");
             });
 
-            _logger?.Dispose();
+            Logger?.Dispose();
         }
     }
 }

@@ -1,23 +1,27 @@
 ﻿using System;
 using Noobot.Core;
+using Noobot.Core.Configuration;
 using Noobot.Core.DependencyResolution;
-using Noobot.Core.Plugins.StandardPlugins;
+using Noobot.Core.Logging;
 
 namespace Noobot.Runner
 {
     public class NoobotHost : INoobotHost
     {
-        private readonly IContainerFactory _containerFactory;
+        private readonly IConfigReader _configReader;
         private INoobotCore _noobotCore;
+        private readonly Custom.Configuration _configuration;
 
-        public NoobotHost(IContainerFactory containerFactory)
+        public NoobotHost(IConfigReader configReader)
         {
-            _containerFactory = containerFactory;
+            _configReader = configReader;
+            _configuration = new Custom.Configuration();
         }
 
         public void Start()
         {
-            INoobotContainer container = _containerFactory.CreateContainer();
+            IContainerFactory containerFactory = new ContainerFactory(_configuration, _configReader, new ConsoleLog());
+            INoobotContainer container = containerFactory.CreateContainer();
             _noobotCore = container.GetNoobotCore();
 
             Console.WriteLine("Connecting...");
@@ -25,11 +29,7 @@ namespace Noobot.Runner
                 .Connect()
                 .ContinueWith(task =>
                 {
-                    if (task.IsCompleted && !task.IsFaulted)
-                    {
-                        container.GetPlugin<StatsPlugin>().RecordStat("Connected since", DateTime.Now.ToString("G"));
-                    }
-                    else
+                    if (!task.IsCompleted || task.IsFaulted)
                     {
                         Console.WriteLine($"Error connecting to Slack: {task.Exception}");
                     }

@@ -42,6 +42,7 @@ namespace Noobot.Core
             _log.Log("Connected!");
             _log.Log($"Bots Name: {_connection.Self.Name}");
             _log.Log($"Team Name: {_connection.Team.Name}");
+            _container.GetPlugin<StatsPlugin>().RecordStat("Connected since", DateTime.Now.ToString("G"));
 
             StartPlugins();
         }
@@ -237,6 +238,9 @@ namespace Noobot.Core
             return chatHub;
         }
 
+        /// <summary>
+        /// TODO: Move these methods into container?
+        /// </summary>
         private void StartPlugins()
         {
             IPlugin[] plugins = _container.GetPlugins();
@@ -246,6 +250,9 @@ namespace Noobot.Core
             }
         }
 
+        /// <summary>
+        /// TODO: Move these methods into container?
+        /// </summary>
         private void StopPlugins()
         {
             IPlugin[] plugins = _container.GetPlugins();

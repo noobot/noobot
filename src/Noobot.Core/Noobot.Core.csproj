@@ -64,7 +64,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configuration\ConfigurationBase.cs" />
     <Compile Include="Configuration\IConfigReader.cs" />
+    <Compile Include="Configuration\IConfiguration.cs" />
     <Compile Include="DependencyResolution\ContainerFactory.cs" />
     <Compile Include="DependencyResolution\INoobotContainer.cs" />
     <Compile Include="DependencyResolution\IContainerFactory.cs" />
@@ -83,16 +85,12 @@
     <Compile Include="MessagingPipeline\Middleware\MiddlewareBase.cs" />
     <Compile Include="MessagingPipeline\Middleware\StandardMiddleware\UnhandledMessageMiddleware.cs" />
     <Compile Include="MessagingPipeline\Middleware\StandardMiddleware\BeginMessageMiddleware.cs" />
-    <Compile Include="MessagingPipeline\PipelineConfigurationBase.cs" />
     <Compile Include="MessagingPipeline\Response\Attachment.cs" />
     <Compile Include="MessagingPipeline\Response\ResponseMessage.cs" />
     <Compile Include="MessagingPipeline\Response\ResponseType.cs" />
     <Compile Include="MessagingPipeline\Response\TypingIndicatorMessage.cs" />
-    <Compile Include="Plugins\DefaultPluginManager.cs" />
-    <Compile Include="Plugins\IPluginConfiguration.cs" />
     <Compile Include="Plugins\IPlugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="MessagingPipeline\IPipelineConfiguration.cs" />
     <Compile Include="INoobotCore.cs" />
     <Compile Include="NoobotCore.cs" />
     <Compile Include="Plugins\StandardPlugins\StatsPlugin.cs" />

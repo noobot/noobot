@@ -17,8 +17,7 @@ namespace Noobot.Core.DependencyResolution
 {
     public class ContainerFactory : IContainerFactory
     {
-        private readonly IPipelineConfiguration _pipelineConfiguration;
-        private readonly IPluginConfiguration _pluginConfiguration;
+        private readonly IConfiguration _configuration;
         private readonly IConfigReader _configReader;
         private readonly ILog _logger;
 
@@ -28,14 +27,13 @@ namespace Noobot.Core.DependencyResolution
             typeof(IConfigReader),
         };
 
-        public ContainerFactory(IPipelineConfiguration pipelineConfiguration, IPluginConfiguration pluginConfiguration, IConfigReader configReader)
-            : this(pipelineConfiguration, pluginConfiguration, configReader, null)
+        public ContainerFactory(IConfiguration configuration, IConfigReader configReader)
+            : this(configuration, configReader, null)
         { }
 
-        public ContainerFactory(IPipelineConfiguration pipelineConfiguration, IPluginConfiguration pluginConfiguration, IConfigReader configReader, ILog logger)
+        public ContainerFactory(IConfiguration configuration, IConfigReader configReader, ILog logger)
         {
-            _pipelineConfiguration = pipelineConfiguration;
-            _pluginConfiguration = pluginConfiguration;
+            _configuration = configuration;
             _configReader = configReader;
             _logger = logger ?? new EmptyLog();
         }
@@ -113,7 +111,7 @@ namespace Noobot.Core.DependencyResolution
 
         private Stack<Type> GetPipelineStack()
         {
-            List<Type> pipelineList = _pipelineConfiguration.ListMiddlewareTypes();
+            Type[] pipelineList = _configuration.ListMiddlewareTypes();
 
             var pipeline = new Stack<Type>();
             foreach (Type type in pipelineList)
@@ -131,7 +129,7 @@ namespace Noobot.Core.DependencyResolution
                 typeof (StatsPlugin)
             };
 
-            pluginTypes.AddRange(_pluginConfiguration.ListPluginTypes());
+            pluginTypes.AddRange(_configuration.ListPluginTypes());
 
             registry.Scan(x =>
             {

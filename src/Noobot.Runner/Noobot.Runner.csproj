@@ -63,8 +63,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configuration\ConfigReader.cs" />
-    <Compile Include="DependencyResolution\Container.cs" />
-    <Compile Include="DependencyResolution\DefaultRegistry.cs" />
     <Compile Include="INoobotHost.cs" />
     <Compile Include="Logging\ConsoleLogger.cs" />
     <Compile Include="Logging\ILogger.cs" />
