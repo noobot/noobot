@@ -42,7 +42,7 @@ namespace Noobot.Core
             _log.Log("Connected!");
             _log.Log($"Bots Name: {_connection.Self.Name}");
             _log.Log($"Team Name: {_connection.Team.Name}");
-            _container.GetPlugin<StatsPlugin>().RecordStat("Connected since", DateTime.Now.ToString("G"));
+            _container.GetPlugin<StatsPlugin>()?.RecordStat("Connected since", DateTime.Now.ToString("G"));
 
             StartPlugins();
         }

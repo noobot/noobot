@@ -1,4 +1,5 @@
 ﻿using Noobot.Core;
+using Noobot.Core.DependencyResolution;
 using Noobot.Core.Logging;
 using Noobot.Runner.Configuration;
 using Noobot.Tests.Unit.Stubs.MessagingPipeline;

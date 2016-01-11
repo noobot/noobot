@@ -14,12 +14,12 @@ namespace Noobot.Tests.Unit.Stubs.MessagingPipeline
 
         public IPlugin[] GetPlugins()
         {
-            throw new System.NotImplementedException();
+            return new IPlugin[0];
         }
 
         public T GetPlugin<T>() where T : class, IPlugin
         {
-            throw new System.NotImplementedException();
+            return null;
         }
 
         public IMiddleware GetMiddlewarePipeline()
