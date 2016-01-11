@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Newtonsoft.Json.Linq;
 using Noobot.Core.Configuration;
 using Noobot.Core.DependencyResolution;
 using Noobot.Core.Logging;
