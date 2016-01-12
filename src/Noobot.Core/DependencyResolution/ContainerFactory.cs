@@ -4,12 +4,10 @@ using System.Linq;
 using System.Reflection;
 using Noobot.Core.Configuration;
 using Noobot.Core.Logging;
-using Noobot.Core.MessagingPipeline;
 using Noobot.Core.MessagingPipeline.Middleware;
 using Noobot.Core.MessagingPipeline.Middleware.StandardMiddleware;
-using Noobot.Core.Plugins;
 using Noobot.Core.Plugins.StandardPlugins;
-using StructureMap.Configuration.DSL;
+using StructureMap;
 using StructureMap.Graph;
 using StructureMap.Pipeline;
 
