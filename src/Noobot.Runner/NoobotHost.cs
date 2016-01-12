@@ -1,43 +1,35 @@
 ﻿using System;
-using Noobot.Domain.DependencyResolution;
-using Noobot.Domain.Plugins;
-using Noobot.Domain.Plugins.StandardPlugins;
-using Noobot.Domain.Slack;
+using Noobot.Core;
+using Noobot.Core.Configuration;
+using Noobot.Core.DependencyResolution;
+using Noobot.Core.Logging;
 
 namespace Noobot.Runner
 {
     public class NoobotHost : INoobotHost
     {
-        private readonly IContainerGenerator _containerGenerator;
-        private ISlackWrapper _slackWrapper;
-        private IPlugin[] _plugins = new IPlugin[0];
+        private readonly IConfigReader _configReader;
+        private INoobotCore _noobotCore;
+        private readonly Custom.Configuration _configuration;
 
-        public NoobotHost(IContainerGenerator containerGenerator)
+        public NoobotHost(IConfigReader configReader)
         {
-            _containerGenerator = containerGenerator;
+            _configReader = configReader;
+            _configuration = new Custom.Configuration();
         }
 
         public void Start()
         {
-            INoobotContainer container = _containerGenerator.Generate();
-            _slackWrapper = container.GetSlackConnector();
+            IContainerFactory containerFactory = new ContainerFactory(_configuration, _configReader, new ConsoleLog());
+            INoobotContainer container = containerFactory.CreateContainer();
+            _noobotCore = container.GetNoobotCore();
 
             Console.WriteLine("Connecting...");
-            _slackWrapper
+            _noobotCore
                 .Connect()
                 .ContinueWith(task =>
                 {
-                    if (task.IsCompleted && !task.IsFaulted)
-                    {
-                        _plugins = container.GetPlugins();
-                        foreach (IPlugin plugin in _plugins)
-                        {
-                            plugin.Start();
-                        }
-
-                        container.GetInstance<StatsPlugin>().RecordStat("Connected since", DateTime.Now.ToString("G"));
-                    }
-                    else
+                    if (!task.IsCompleted || task.IsFaulted)
                     {
                         Console.WriteLine($"Error connecting to Slack: {task.Exception}");
                     }
@@ -47,12 +39,7 @@ namespace Noobot.Runner
         public void Stop()
         {
             Console.WriteLine("Disconnecting...");
-            _slackWrapper.Disconnect();
-
-            foreach (IPlugin plugin in _plugins)
-            {
-                plugin.Stop();
-            }
+            _noobotCore.Disconnect();
         }
     }
 }

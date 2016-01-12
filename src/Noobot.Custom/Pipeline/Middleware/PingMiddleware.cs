@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
+using Noobot.Core.MessagingPipeline.Middleware;
+using Noobot.Core.MessagingPipeline.Request;
+using Noobot.Core.MessagingPipeline.Response;
 using Noobot.Custom.Plugins;
-using Noobot.Domain.MessagingPipeline.Middleware;
-using Noobot.Domain.MessagingPipeline.Request;
-using Noobot.Domain.MessagingPipeline.Response;
 
 namespace Noobot.Custom.Pipeline.Middleware
 {

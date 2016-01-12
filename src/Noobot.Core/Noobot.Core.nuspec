@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>$author$</authors>
+    <owners>$author$</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Noobot Core allows you to host your own SlackBot wrapped up in Noobot joy. Please see project website for examples.</description>
+    <releaseNotes></releaseNotes>
+    <copyright>Copyright 2016</copyright>
+    <tags>noobot Slack API SlackApi SlackConnector bot slackbot</tags>
+	<projectUrl>http://github.com/noobot/noobot/</projectUrl>
+  </metadata>
+</package>

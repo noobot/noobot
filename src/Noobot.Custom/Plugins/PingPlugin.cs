@@ -4,10 +4,10 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using FlatFile.Delimited.Attributes;
-using Noobot.Domain.MessagingPipeline.Response;
-using Noobot.Domain.Plugins;
-using Noobot.Domain.Plugins.StandardPlugins;
-using Noobot.Domain.Slack;
+using Noobot.Core;
+using Noobot.Core.MessagingPipeline.Response;
+using Noobot.Core.Plugins;
+using Noobot.Core.Plugins.StandardPlugins;
 
 namespace Noobot.Custom.Plugins
 {
@@ -15,14 +15,14 @@ namespace Noobot.Custom.Plugins
     {
         private readonly object _lock = new object();
         private bool _isRunning;
-        private readonly ISlackWrapper _slackWrapper;
+        private readonly INoobotCore _noobotCore;
         private readonly StoragePlugin _storagePlugin;
         private readonly HashSet<string> _userIds = new HashSet<string>();
         private const string _pingFilename = "pingy";
 
-        public PingPlugin(ISlackWrapper slackWrapper, StoragePlugin storagePlugin)
+        public PingPlugin(INoobotCore noobotCore, StoragePlugin storagePlugin)
         {
-            _slackWrapper = slackWrapper;
+            _noobotCore = noobotCore;
             _storagePlugin = storagePlugin;
         }
 
@@ -56,7 +56,7 @@ namespace Noobot.Custom.Plugins
 
                     foreach (var message in messagesToSend)
                     {
-                        _slackWrapper.SendMessage(message);
+                        _noobotCore.SendMessage(message);
                     }
 
                     Thread.Sleep(TimeSpan.FromSeconds(1));

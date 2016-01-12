@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using FlickrNet;
-using Noobot.Domain.Configuration;
-using Noobot.Domain.MessagingPipeline.Middleware;
-using Noobot.Domain.MessagingPipeline.Request;
-using Noobot.Domain.MessagingPipeline.Response;
-using Noobot.Domain.Plugins.StandardPlugins;
+using Noobot.Core.Configuration;
+using Noobot.Core.MessagingPipeline.Middleware;
+using Noobot.Core.MessagingPipeline.Request;
+using Noobot.Core.MessagingPipeline.Response;
+using Noobot.Core.Plugins.StandardPlugins;
 
 namespace Noobot.Custom.Pipeline.Middleware
 {
@@ -42,7 +42,7 @@ namespace Noobot.Custom.Pipeline.Middleware
             else
             {
                 yield return message.IndicateTypingOnChannel();
-                string apiKey = _configReader.GetConfig()["flickr"].Value<string>("apiKey");
+                string apiKey = _configReader.GetConfigEntry<string>("flickr:apiKey");
 
                 if (string.IsNullOrEmpty(apiKey))
                 {

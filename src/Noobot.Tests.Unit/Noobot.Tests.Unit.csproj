@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Noobot.Tests.Unit</RootNamespace>
     <AssemblyName>Noobot.Tests.Unit</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -78,16 +79,16 @@
       <HintPath>..\..\packages\SpecsFor.4.3.2\lib\net40\SpecsFor.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="StructureMap, Version=3.1.6.186, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\structuremap.3.1.6.186\lib\net40\StructureMap.dll</HintPath>
+    <Reference Include="StructureMap, Version=4.0.1.318, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\structuremap.4.0.1.318\lib\net40\StructureMap.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="StructureMap.AutoMocking.Moq, Version=3.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\structuremap.automocking.moq.3.1.0.133\lib\net40\StructureMap.AutoMocking.Moq.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="StructureMap.Net4, Version=3.1.6.186, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\structuremap.3.1.6.186\lib\net40\StructureMap.Net4.dll</HintPath>
+    <Reference Include="StructureMap.Net4, Version=4.0.1.318, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\structuremap.4.0.1.318\lib\net40\StructureMap.Net4.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -100,13 +101,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Domain\Configuration\ConfigReaderTests.cs" />
-    <Compile Include="Domain\Slack\SlackConnectorTests.cs" />
-    <Compile Include="Domain\Storage\StoragePluginTests.cs" />
-    <Compile Include="Domain\Storage\StorageObject.cs" />
+    <Compile Include="Core\Configuration\ConfigReaderTests.cs" />
+    <Compile Include="Core\Slack\SlackConnectorTests.cs" />
+    <Compile Include="Core\Storage\StoragePluginTests.cs" />
+    <Compile Include="Core\Storage\StorageObject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Stubs\MessagingPipeline\PipelineFactoryStub.cs" />
-    <Compile Include="Stubs\MessagingPipeline\PipelineManagerStub.cs" />
+    <Compile Include="Stubs\MessagingPipeline\NoobotContainerStub.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Noobot.Runner\Configuration\config.json">
@@ -117,9 +117,13 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Noobot.Domain\Noobot.Domain.csproj">
+    <ProjectReference Include="..\Noobot.Core\Noobot.Core.csproj">
       <Project>{20c88122-7ba3-4380-89fc-350f9d5b94dc}</Project>
-      <Name>Noobot.Domain</Name>
+      <Name>Noobot.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Noobot.Custom\Noobot.Custom.csproj">
+      <Project>{5794b29f-234c-4b12-aae4-b31363f78c8d}</Project>
+      <Name>Noobot.Custom</Name>
     </ProjectReference>
     <ProjectReference Include="..\Noobot.Runner\Noobot.Runner.csproj">
       <Project>{fc387cb5-8b7f-4873-8a14-8337682d2c73}</Project>

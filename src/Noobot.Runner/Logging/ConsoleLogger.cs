@@ -1,6 +1,6 @@
 ﻿using System;
 using System.IO;
-using Noobot.Domain.Configuration;
+using Noobot.Core.Configuration;
 
 namespace Noobot.Runner.Logging
 {
@@ -25,7 +25,8 @@ namespace Noobot.Runner.Logging
         {
             try
             {
-                string logFile = Path.Combine(Environment.CurrentDirectory, _configReader.GetConfig().Value<string>("logFile"));
+                string logFileName = _configReader.GetConfigEntry<string>("logFile");
+                string logFile = Path.Combine(Environment.CurrentDirectory, logFileName);
 
                 if (File.Exists(logFile))
                 {
