@@ -72,6 +72,7 @@
     <Compile Include="DependencyResolution\INoobotContainer.cs" />
     <Compile Include="DependencyResolution\IContainerFactory.cs" />
     <Compile Include="DependencyResolution\NoobotContainer.cs" />
+    <Compile Include="Logging\AverageStat.cs" />
     <Compile Include="Logging\EmptyLog.cs" />
     <Compile Include="Logging\ILog.cs" />
     <Compile Include="Logging\ConsoleLog.cs" />

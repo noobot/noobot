@@ -38,12 +38,7 @@ namespace Noobot.Core.DependencyResolution
 
         public INoobotContainer CreateContainer()
         {
-            var registry = new Registry();
-            registry.Scan(x =>
-            {
-                x.TheCallingAssembly();
-                x.WithDefaultConventions();
-            });
+            Registry registry = CreateRegistry();
 
             SetupSingletons(registry);
             SetupMiddlewarePipeline(registry);
@@ -53,12 +48,25 @@ namespace Noobot.Core.DependencyResolution
             registry.For<ILog>().Use(() => _logger);
             registry.For<IConfigReader>().Use(() => _configReader);
 
-            var container = CreateContainer(pluginTypes, registry);
-
+            INoobotContainer container = CreateContainer(pluginTypes, registry);
             return container;
         }
 
-        private static NoobotContainer CreateContainer(Type[] pluginTypes, Registry registry)
+        private static Registry CreateRegistry()
+        {
+            var registry = new Registry();
+
+            // setups DI for everything in Noobot.Core
+            registry.Scan(x =>
+            {
+                x.TheCallingAssembly();
+                x.WithDefaultConventions();
+            });
+
+            return registry;
+        }
+
+        private static INoobotContainer CreateContainer(Type[] pluginTypes, Registry registry)
         {
             var container = new NoobotContainer(pluginTypes);
             registry.For<INoobotContainer>().Use(x => container);
@@ -98,18 +106,22 @@ namespace Noobot.Core.DependencyResolution
                 Type nextType = pipeline.Pop();
                 var nextDeclare = registry.For<IMiddleware>();
 
+                // using reflection as Structuremap doesn't allow passing types in at the moment :-(
                 MethodInfo decorateMethod = nextDeclare.GetType().GetMethod("DecorateAllWith", new[] { typeof(Func<Instance, bool>) });
                 MethodInfo generic = decorateMethod.MakeGenericMethod(nextType);
                 generic.Invoke(nextDeclare, new object[] { null });
             }
 
-            registry.For<IMiddleware>().DecorateAllWith<HelpMiddleware>();
+            if (_configReader.HelpEnabled())
+            {
+                registry.For<IMiddleware>().DecorateAllWith<HelpMiddleware>();
+            }
             registry.For<IMiddleware>().DecorateAllWith<BeginMessageMiddleware>();
         }
 
         private Stack<Type> GetPipelineStack()
         {
-            Type[] pipelineList = _configuration.ListMiddlewareTypes();
+            Type[] pipelineList = _configuration.ListMiddlewareTypes() ?? new Type[0];
 
             var pipeline = new Stack<Type>();
             foreach (Type type in pipelineList)
@@ -127,7 +139,8 @@ namespace Noobot.Core.DependencyResolution
                 typeof (StatsPlugin)
             };
 
-            pluginTypes.AddRange(_configuration.ListPluginTypes());
+            Type[] customPlugins = _configuration.ListPluginTypes() ?? new Type[0];
+            pluginTypes.AddRange(customPlugins);
 
             registry.Scan(x =>
             {
@@ -135,6 +148,7 @@ namespace Noobot.Core.DependencyResolution
                 foreach (Type pluginType in pluginTypes)
                 {
                     x.AssemblyContainingType(pluginType);
+                    x.WithDefaultConventions();
                 }
             });
 

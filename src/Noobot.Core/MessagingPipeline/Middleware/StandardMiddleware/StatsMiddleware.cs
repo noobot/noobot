@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Noobot.Core.MessagingPipeline.Request;
 using Noobot.Core.MessagingPipeline.Response;
 using Noobot.Core.Plugins.StandardPlugins;
@@ -26,7 +27,7 @@ namespace Noobot.Core.MessagingPipeline.Middleware.StandardMiddleware
 
         private IEnumerable<ResponseMessage> StatsHandler(IncomingMessage message, string matchedHandle)
         {
-            string textMessage = string.Join(Environment.NewLine, _statsPlugin.GetStats());
+            string textMessage = string.Join(Environment.NewLine, _statsPlugin.GetStats().OrderBy(x => x));
 
             if (!string.IsNullOrEmpty(textMessage))
             {

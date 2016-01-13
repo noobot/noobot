@@ -6,7 +6,10 @@ using Noobot.Core.Logging;
 
 namespace Noobot.Runner
 {
-    public class NoobotHost : INoobotHost
+    /// <summary>
+    /// NoobotHost is required due to TopShelf.
+    /// </summary>
+    public class NoobotHost
     {
         private readonly IConfigReader _configReader;
         private INoobotCore _noobotCore;

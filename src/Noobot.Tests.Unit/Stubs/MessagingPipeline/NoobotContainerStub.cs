@@ -19,7 +19,7 @@ namespace Noobot.Tests.Unit.Stubs.MessagingPipeline
 
         public T GetPlugin<T>() where T : class, IPlugin
         {
-            return null;
+            throw new System.NotImplementedException();
         }
 
         public IMiddleware GetMiddlewarePipeline()

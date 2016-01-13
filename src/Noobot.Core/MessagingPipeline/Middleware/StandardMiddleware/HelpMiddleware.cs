@@ -11,18 +11,15 @@ namespace Noobot.Core.MessagingPipeline.Middleware.StandardMiddleware
     {
         public HelpMiddleware(IMiddleware next, IConfigReader configReader) : base(next)
         {
-            if (configReader.HelpEnabled())
+            HandlerMappings = new[]
             {
-                HandlerMappings = new[]
+                new HandlerMapping
                 {
-                    new HandlerMapping
-                    {
-                        ValidHandles = new[] {"help", "yo tell me more"},
-                        Description = "Returns supported commands and descriptions of how to use them",
-                        EvaluatorFunc = HelpHandler
-                    }
-                };
-            }
+                    ValidHandles = new[] {"help", "yo tell me more"},
+                    Description = "Returns supported commands and descriptions of how to use them",
+                    EvaluatorFunc = HelpHandler
+                }
+            };
         }
 
         private IEnumerable<ResponseMessage> HelpHandler(IncomingMessage message, string matchedHandle)
