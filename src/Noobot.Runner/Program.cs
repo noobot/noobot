@@ -21,7 +21,7 @@ namespace Noobot.Runner
 
             HostFactory.Run(x =>
             {
-                x.Service<INoobotHost>(s =>
+                x.Service<NoobotHost>(s =>
                 {
                     s.ConstructUsing(name => new NoobotHost(ConfigReader));
 

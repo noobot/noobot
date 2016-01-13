@@ -19,15 +19,7 @@ namespace Noobot.Core.Plugins.StandardPlugins
         /// <summary>
         /// Sets a key to the given value
         /// </summary>
-        public void RecordStat(string key, int value)
-        {
-            RecordStat(key, value.ToString());
-        }
-
-        /// <summary>
-        /// Sets a key to the given int value
-        /// </summary>
-        public void RecordStat(string key, string value)
+        public void RecordStat(string key, object value)
         {
             lock (_lock)
             {
@@ -46,7 +38,11 @@ namespace Noobot.Core.Plugins.StandardPlugins
                 if (_stats.ContainsKey(key))
                 {
                     value2Store = _stats[key] as int?;
-                    value2Store += 1;
+
+                    if (value2Store.HasValue)
+                    {
+                        value2Store += 1;
+                    }
                 }
 
                 _stats[key] = value2Store.HasValue ? value2Store : 1;
@@ -63,6 +59,21 @@ namespace Noobot.Core.Plugins.StandardPlugins
             }
 
             return list.ToArray();
+        }
+
+        public T GetStat<T>(string key)
+        {
+            T result = default(T);
+
+            lock (_lock)
+            {
+                if (_stats.ContainsKey(key))
+                {
+                    result = (T)_stats[key];
+                }
+            }
+
+            return result;
         }
 
         public void Start()

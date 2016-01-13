@@ -64,7 +64,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configuration\ConfigReader.cs" />
-    <Compile Include="INoobotHost.cs" />
     <Compile Include="Logging\ConsoleLogger.cs" />
     <Compile Include="Logging\ILogger.cs" />
     <Compile Include="Logging\TextWriterDistributor.cs" />
@@ -81,9 +80,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Noobot.Custom\Noobot.Custom.csproj">
+    <ProjectReference Include="..\Noobot.Toolbox\Noobot.Toolbox.csproj">
       <Project>{5794b29f-234c-4b12-aae4-b31363f78c8d}</Project>
-      <Name>Noobot.Custom</Name>
+      <Name>Noobot.Toolbox</Name>
     </ProjectReference>
     <ProjectReference Include="..\Noobot.Core\Noobot.Core.csproj">
       <Project>{20c88122-7ba3-4380-89fc-350f9d5b94dc}</Project>

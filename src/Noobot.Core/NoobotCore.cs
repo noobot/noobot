@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Noobot.Core.Configuration;
@@ -21,13 +22,15 @@ namespace Noobot.Core
         private readonly IConfigReader _configReader;
         private readonly ILog _log;
         private readonly INoobotContainer _container;
+        private readonly AverageStat _averageResponse;
         private ISlackConnection _connection;
 
-        public NoobotCore(IConfigReader configReader, ILog  log ,INoobotContainer container)
+        public NoobotCore(IConfigReader configReader, ILog log, INoobotContainer container)
         {
             _configReader = configReader;
             _log = log;
             _container = container;
+            _averageResponse = new AverageStat("milliseconds");
         }
 
         public async Task Connect()
@@ -38,11 +41,13 @@ namespace Noobot.Core
             _connection = await connector.Connect(slackKey);
             _connection.OnMessageReceived += MessageReceived;
             _connection.OnDisconnect += OnDisconnect;
-            
+
             _log.Log("Connected!");
             _log.Log($"Bots Name: {_connection.Self.Name}");
             _log.Log($"Team Name: {_connection.Team.Name}");
-            _container.GetPlugin<StatsPlugin>()?.RecordStat("Connected since", DateTime.Now.ToString("G"));
+
+            _container.GetPlugin<StatsPlugin>()?.RecordStat("Connected:Since", DateTime.Now.ToString("G"));
+            _container.GetPlugin<StatsPlugin>()?.RecordStat("Response:Average", _averageResponse);
 
             StartPlugins();
         }
@@ -90,7 +95,8 @@ namespace Noobot.Core
 
         public async Task MessageReceived(SlackMessage message)
         {
-            _log.Log("[[[Message started]]]");
+            Stopwatch stopwatch = Stopwatch.StartNew();
+            _log.Log($"[Message found from '{message.User.Name}']");
 
             IMiddleware pipeline = _container.GetMiddlewarePipeline();
             var incomingMessage = new IncomingMessage
@@ -121,7 +127,10 @@ namespace Noobot.Core
                 _log.Log($"ERROR WHILE PROCESSING MESSAGE: {ex}");
             }
 
-            _log.Log("[[[Message ended]]]");
+            stopwatch.Stop();
+
+            _log.Log($"[Message ended - Took {stopwatch.ElapsedMilliseconds} milliseconds]");
+            _averageResponse.Log(stopwatch.ElapsedMilliseconds);
         }
 
         public async Task SendMessage(ResponseMessage responseMessage)
@@ -132,6 +141,7 @@ namespace Noobot.Core
             {
                 if (responseMessage is TypingIndicatorMessage)
                 {
+                    _log.Log($"Indicating typing on channel '{chatHub.Name}'");
                     await _connection.IndicateTyping(chatHub);
                 }
                 else
@@ -143,6 +153,8 @@ namespace Noobot.Core
                         Attachments = GetAttachments(responseMessage.Attachment)
                     };
 
+                    string textTrimmed = botMessage.Text.Length > 50 ? botMessage.Text.Substring(0, 50) + "..." : botMessage.Text;
+                    _log.Log($"Sending message '{textTrimmed}'");
                     await _connection.Say(botMessage);
                 }
             }

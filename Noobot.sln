@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Noobot.Tests.Unit", "src\No
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{CED3B884-FB67-458E-A558-FA9BA57E99DD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Noobot.Custom", "src\Noobot.Custom\Noobot.Custom.csproj", "{5794B29F-234C-4B12-AAE4-B31363F78C8D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Noobot.Toolbox", "src\Noobot.Toolbox\Noobot.Toolbox.csproj", "{5794B29F-234C-4B12-AAE4-B31363F78C8D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

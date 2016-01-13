@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Noobot.Core.MessagingPipeline.Middleware;
 using Noobot.Core.Plugins;
 using StructureMap;
-using StructureMap.Configuration.DSL;
 
 namespace Noobot.Core.DependencyResolution
 {

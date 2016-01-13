@@ -10,7 +10,7 @@ using Noobot.Core.Plugins;
 using Noobot.Core.Plugins.StandardPlugins;
 using SlackConnector.Models;
 
-namespace Noobot.Custom.Plugins
+namespace Noobot.Toolbox.Plugins
 {
     internal class SchedulePlugin : IPlugin
     {

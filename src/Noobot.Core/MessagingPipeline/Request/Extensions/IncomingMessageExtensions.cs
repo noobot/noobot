@@ -4,7 +4,7 @@ using Noobot.Core.MessagingPipeline.Response;
 
 namespace Noobot.Core.MessagingPipeline.Request.Extensions
 {
-    public static class IncomingMessageExtensions
+    internal static class IncomingMessageExtensions
     {
         public static string GetTargetedText(this IncomingMessage incomingMessage)
         {
