@@ -81,7 +81,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Noobot.Custom\Noobot.Toolbox.csproj">
+    <ProjectReference Include="..\Noobot.Toolbox\Noobot.Toolbox.csproj">
       <Project>{5794b29f-234c-4b12-aae4-b31363f78c8d}</Project>
       <Name>Noobot.Toolbox</Name>
     </ProjectReference>
