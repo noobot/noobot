@@ -3,7 +3,7 @@ using Noobot.Core.Configuration;
 using Noobot.Core.Logging;
 using Noobot.Core.Plugins;
 
-namespace Noobot.Custom.Plugins
+namespace Noobot.Toolbox.Plugins
 {
     internal class AdminPlugin : IPlugin
     {

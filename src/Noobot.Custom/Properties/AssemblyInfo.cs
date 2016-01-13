@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Noobot.Custom")]
+[assembly: AssemblyTitle("Noobot.Toolbox")]
 [assembly: AssemblyDescription("Usefull Extensions for Noobot, a SlackBot. https://github.com/noobot/")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Noobot")]
-[assembly: AssemblyProduct("Noobot.Custom")]
+[assembly: AssemblyProduct("Noobot.Toolbox")]
 [assembly: AssemblyCopyright("Copyright © Noobot 2016 - Simon Colmer")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

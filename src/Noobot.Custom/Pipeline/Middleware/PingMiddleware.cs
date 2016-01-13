@@ -2,9 +2,9 @@
 using Noobot.Core.MessagingPipeline.Middleware;
 using Noobot.Core.MessagingPipeline.Request;
 using Noobot.Core.MessagingPipeline.Response;
-using Noobot.Custom.Plugins;
+using Noobot.Toolbox.Plugins;
 
-namespace Noobot.Custom.Pipeline.Middleware
+namespace Noobot.Toolbox.Pipeline.Middleware
 {
     public class PingMiddleware : MiddlewareBase
     {

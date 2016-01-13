@@ -1,5 +1,5 @@
 ﻿using Noobot.Core.Logging;
-using Noobot.Custom.Plugins;
+using Noobot.Toolbox.Plugins;
 using NUnit.Framework;
 using SpecsFor.ShouldExtensions;
 

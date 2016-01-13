@@ -7,9 +7,8 @@ using FlatFile.Delimited.Attributes;
 using Noobot.Core;
 using Noobot.Core.MessagingPipeline.Response;
 using Noobot.Core.Plugins;
-using Noobot.Core.Plugins.StandardPlugins;
 
-namespace Noobot.Custom.Plugins
+namespace Noobot.Toolbox.Plugins
 {
     public class PingPlugin : IPlugin
     {

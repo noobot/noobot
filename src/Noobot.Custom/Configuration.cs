@@ -1,8 +1,8 @@
 ﻿using Noobot.Core.Configuration;
-using Noobot.Custom.Pipeline.Middleware;
-using Noobot.Custom.Plugins;
+using Noobot.Toolbox.Pipeline.Middleware;
+using Noobot.Toolbox.Plugins;
 
-namespace Noobot.Custom
+namespace Noobot.Toolbox
 {
     public class Configuration : ConfigurationBase
     {
