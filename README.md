@@ -1,16 +1,22 @@
 # Noobot
 Noobot is a SlackBot for C# built on the intention of extensibility; building a bot should be fun.
 
-[![Build status](https://ci.appveyor.com/api/projects/status/lvhpuswmafwv84kw?svg=true)](https://ci.appveyor.com/project/Workshop2/noobot)
+[![Build status](https://ci.appveyor.com/api/projects/status/lvhpuswmafwv84kw?svg=true)](https://ci.appveyor.com/project/Workshop2/noobot)[![Nuget.org](https://img.shields.io/nuget/v/Noobot.Core.svg?style=flat)](https://www.nuget.org/packages/Noobot.Core) [![NuGet](https://img.shields.io/nuget/dt/Noobot.Core.svg)](https://www.nuget.org/packages/Noobot.Core)
 
 <p align="center">
 <img src="https://github.com/noobot/noobot/blob/master/img/noobot-small.png" alt="Noobot" />
 </p>
 
+```
+Install-Package Noobot.Core
+```
+
 ## About
 I wanted to build a bot host/framework that was easy to work with, but also has the potential of being super powerful. 
 
 Noobot supports DI out of the box for all custom elements to ensure all elements could be easily tested and predictable. 
+
+Noobot is available as a Nuget package or standalone Console/Windows Service app.
 
 ## Features
 
@@ -21,6 +27,9 @@ Noobot supports DI out of the box for all custom elements to ensure all elements
  - Middleware can send multiple messages for each message received
  - Supports long running processes (async)
  - Typing Indicator - indicate to the end user that the bot has received the message and is processing the request
+
+## Examples
+You can find some examples of how to use the Nuget package in different scenarios at [Noobot.Examples](https://github.com/noobot/Noobot.Examples)
 
 ## Download & setup
 We have compilled releases ready for you to use, all you need to do is fill out the `Configuration/config.json` file found in the zip file. Run over to [releases](https://github.com/noobot/noobot/releases) section to download the latest build.
