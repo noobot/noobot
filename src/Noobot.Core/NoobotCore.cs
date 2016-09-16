@@ -172,6 +172,8 @@ namespace Noobot.Core
             {
                 attachments.Add(new SlackAttachment
                 {
+                    Text = attachment.Text,
+                    Title = attachment.Title,
                     Fallback = attachment.Fallback,
                     ImageUrl = attachment.ImageUrl,
                     ThumbUrl = attachment.ThumbUrl,

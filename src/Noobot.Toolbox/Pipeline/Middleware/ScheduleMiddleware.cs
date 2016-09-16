@@ -8,7 +8,7 @@ using Noobot.Toolbox.Plugins;
 
 namespace Noobot.Toolbox.Pipeline.Middleware
 {
-    public class ScheduleMiddleware : MiddlewareBase
+    internal class ScheduleMiddleware : MiddlewareBase
     {
         private readonly SchedulePlugin _schedulePlugin;
 
