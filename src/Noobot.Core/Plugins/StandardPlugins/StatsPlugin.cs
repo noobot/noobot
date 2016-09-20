@@ -45,7 +45,7 @@ namespace Noobot.Core.Plugins.StandardPlugins
                     }
                 }
 
-                _stats[key] = value2Store.HasValue ? value2Store : 1;
+                _stats[key] = value2Store ?? 1;
             }
         }
 
