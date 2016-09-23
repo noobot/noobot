@@ -92,6 +92,7 @@
     <Compile Include="MessagingPipeline\Response\ResponseType.cs" />
     <Compile Include="MessagingPipeline\Response\TypingIndicatorMessage.cs" />
     <Compile Include="Plugins\IPlugin.cs" />
+    <Compile Include="Plugins\StandardPlugins\ConnectionPlugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="INoobotCore.cs" />
     <Compile Include="NoobotCore.cs" />

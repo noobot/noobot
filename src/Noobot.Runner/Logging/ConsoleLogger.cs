@@ -36,7 +36,6 @@ namespace Noobot.Runner.Logging
                 var logStream = new FileStream(logFile, FileMode.OpenOrCreate, FileAccess.Write);
                 var fileWriter = new StreamWriter(logStream) { AutoFlush = true };
                 return fileWriter;
-
             }
             catch (Exception)
             {

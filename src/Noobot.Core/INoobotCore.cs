@@ -13,6 +13,7 @@ namespace Noobot.Core
         Task SendMessage(ResponseMessage responseMessage);
         string GetUserIdForUsername(string username);
         string GetChannelId(string channelName);
+        string GetBotUserName();
         Dictionary<string, string> ListChannels();
     }
 }

@@ -35,6 +35,11 @@ namespace Noobot.Core
 
         public async Task Connect()
         {
+            await Connect(isReconnecting:false);
+        }
+
+        public async Task Connect(bool isReconnecting)
+        {
             string slackKey = _configReader.SlackApiKey();
 
             var connector = new SlackConnector.SlackConnector();
@@ -49,7 +54,10 @@ namespace Noobot.Core
             _container.GetPlugin<StatsPlugin>()?.RecordStat("Connected:Since", DateTime.Now.ToString("G"));
             _container.GetPlugin<StatsPlugin>()?.RecordStat("Response:Average", _averageResponse);
 
-            StartPlugins();
+            if (!isReconnecting)
+            {
+                StartPlugins();
+            }
         }
 
         private bool _isDisconnecting;
@@ -73,26 +81,36 @@ namespace Noobot.Core
             else
             {
                 _log.Log("Disconnected from server, attempting to reconnect...");
+                Reconnect();
+            }
+        }
+        
+        internal void Reconnect()
+        {
+            _log.Log("Reconnecting...");
+            if (_connection != null)
+            {
                 _connection.OnMessageReceived -= MessageReceived;
                 _connection.OnDisconnect -= OnDisconnect;
                 _connection = null;
-
-                Connect()
-                    .ContinueWith(task =>
-                    {
-                        if (task.IsCompleted && !task.IsCanceled && !task.IsFaulted)
-                        {
-                            _log.Log("Connection restored.");
-                            _container.GetPlugin<StatsPlugin>().IncrementState("ConnectionsRestored");
-                        }
-                        else
-                        {
-                            _log.Log($"Error while reconnecting: {task.Exception}");
-                        }
-                    });
             }
-        }
 
+            _isDisconnecting = false;
+            Connect(isReconnecting: true)
+                .ContinueWith(task =>
+                {
+                    if (task.IsCompleted && !task.IsCanceled && !task.IsFaulted)
+                    {
+                        _log.Log("Connection restored.");
+                        _container.GetPlugin<StatsPlugin>().IncrementState("ConnectionsRestored");
+                    }
+                    else
+                    {
+                        _log.Log($"Error while reconnecting: {task.Exception}");
+                    }
+                });
+        }
+        
         public async Task MessageReceived(SlackMessage message)
         {
             Stopwatch stopwatch = Stopwatch.StartNew();
@@ -199,6 +217,11 @@ namespace Noobot.Core
         public Dictionary<string, string> ListChannels()
         {
             return _connection.ConnectedHubs.Values.ToDictionary(channel => channel.Id, channel => channel.Name);
+        }
+
+        public string GetBotUserName()
+        {
+            return _connection?.Self.Name;
         }
 
         private string GetUsername(SlackMessage message)

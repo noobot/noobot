@@ -21,6 +21,8 @@ namespace Noobot.Core.Plugins.StandardPlugins
         /// </summary>
         public void RecordStat(string key, object value)
         {
+            key = key.ToLower();
+
             lock (_lock)
             {
                 _stats[key] = value;
@@ -32,6 +34,8 @@ namespace Noobot.Core.Plugins.StandardPlugins
         /// </summary>
         public void IncrementState(string key)
         {
+            key = key.ToLower();
+
             lock (_lock)
             {
                 int? value2Store = null;
@@ -64,6 +68,7 @@ namespace Noobot.Core.Plugins.StandardPlugins
         public T GetStat<T>(string key)
         {
             T result = default(T);
+            key = key.ToLower();
 
             lock (_lock)
             {

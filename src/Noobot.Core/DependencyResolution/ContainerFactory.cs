@@ -22,6 +22,7 @@ namespace Noobot.Core.DependencyResolution
         private readonly Type[] _singletons =
         {
             typeof(INoobotCore),
+            typeof(NoobotCore),
             typeof(IConfigReader),
         };
 
@@ -44,7 +45,7 @@ namespace Noobot.Core.DependencyResolution
             SetupMiddlewarePipeline(registry);
             Type[] pluginTypes = SetupPlugins(registry);
 
-            registry.For<INoobotCore>().Use<NoobotCore>();
+            registry.For<INoobotCore>().Use(x => x.GetInstance<NoobotCore>());
             registry.For<ILog>().Use(() => _logger);
             registry.For<IConfigReader>().Use(() => _configReader);
 
@@ -136,7 +137,8 @@ namespace Noobot.Core.DependencyResolution
         {
             var pluginTypes = new List<Type>
             {
-                typeof (StatsPlugin)
+                typeof (StatsPlugin),
+                typeof (ConnectionPlugin)
             };
 
             Type[] customPlugins = _configuration.ListPluginTypes() ?? new Type[0];
