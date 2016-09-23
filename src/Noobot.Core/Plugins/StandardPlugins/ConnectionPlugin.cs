@@ -45,6 +45,7 @@ namespace Noobot.Core.Plugins.StandardPlugins
                     Text = "Test Message"
                 };
                 
+                //TODO: Find a better way of testing if the connection is alive...
                 _noobotCore.SendMessage(message).Wait(TimeSpan.FromSeconds(30));
             }
             catch (AggregateException ex) when (ex.InnerExceptions.Any() && ex.InnerExceptions[0].Message == EXPECTED_ERROR_MESSAGE)
