@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Threading;
 using Common.Logging;
-using Noobot.Core.Logging;
 using Noobot.Core.MessagingPipeline.Response;
 
 namespace Noobot.Core.Plugins.StandardPlugins

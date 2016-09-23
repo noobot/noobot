@@ -50,7 +50,7 @@ namespace Noobot.Toolbox.Plugins
                 using (var stream = new FileStream(filePath, FileMode.Open))
                 {
                     var results = generic.Invoke(engine, new object[] { stream }) as IEnumerable<T>;
-                    return results.ToArray();
+                    return results?.ToArray();
                 }
             }
             catch (FormatException ex)

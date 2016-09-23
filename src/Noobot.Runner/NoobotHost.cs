@@ -1,5 +1,4 @@
 ﻿using System;
-using Common.Logging.Simple;
 using Noobot.Core;
 using Noobot.Core.Configuration;
 using Noobot.Core.DependencyResolution;
