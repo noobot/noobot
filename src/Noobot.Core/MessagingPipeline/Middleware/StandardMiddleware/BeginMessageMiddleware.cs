@@ -1,6 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using Noobot.Core.Logging;
+﻿using System.Collections.Generic;
+using Common.Logging;
 using Noobot.Core.MessagingPipeline.Request;
 using Noobot.Core.MessagingPipeline.Response;
 using Noobot.Core.Plugins.StandardPlugins;
@@ -21,7 +20,7 @@ namespace Noobot.Core.MessagingPipeline.Middleware.StandardMiddleware
         public override IEnumerable<ResponseMessage> Invoke(IncomingMessage message)
         {
             _statsPlugin.IncrementState("Messages:Received");
-            _log.Log($"Message from {message.Username}: {message.FullText}");
+            _log.Info($"Message from {message.Username}: {message.FullText}");
 
             foreach (ResponseMessage responseMessage in Next(message))
             {

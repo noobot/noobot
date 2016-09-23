@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Noobot.Core.Logging;
+using Common.Logging;
 
 namespace Noobot.Core.Plugins.StandardPlugins
 {
@@ -86,8 +86,8 @@ namespace Noobot.Core.Plugins.StandardPlugins
 
         public void Stop()
         {
-            _log.Log("End stats:");
-            _log.Log(string.Join(Environment.NewLine + "   ", GetStats()));
+            _log.Info("End stats:");
+            _log.Info(string.Join(Environment.NewLine + "   ", GetStats()));
         }
     }
 }

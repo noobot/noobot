@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading;
+using Common.Logging;
 using Noobot.Core.Logging;
 using Noobot.Core.MessagingPipeline.Response;
 
@@ -21,13 +22,13 @@ namespace Noobot.Core.Plugins.StandardPlugins
 
         public void Start()
         {
-            _log.Log("Starting connection health plugin...");
+            _log.Info("Starting connection health plugin...");
             _timer = new Timer(CheckConnectionHealth, null, TimeSpan.FromSeconds(10), TimeSpan.FromMinutes(1));
         }
 
         public void Stop()
         {
-            _log.Log("Stopping connection health plugin...");
+            _log.Info("Stopping connection health plugin...");
             _timer?.Dispose();
         }
 
@@ -50,17 +51,17 @@ namespace Noobot.Core.Plugins.StandardPlugins
             }
             catch (AggregateException ex) when (ex.InnerExceptions.Any() && ex.InnerExceptions[0].Message == EXPECTED_ERROR_MESSAGE)
             {
-                _log.Log("Health check passed as expected.");
+                _log.Info("Health check passed as expected.");
             }
             catch (Exception ex)
             {
-                _log.Log(ex.ToString());
+                _log.Error(ex.ToString());
                 shouldReconnect = true;
             }
 
             if (shouldReconnect)
             {
-                _log.Log("Looks like we 'might' be disconnected (error detected)");
+                _log.Warn("Looks like we 'might' be disconnected (error detected)");
                 EnsureClientIsDisconnected();
                 Reconnect();
             }
@@ -70,12 +71,12 @@ namespace Noobot.Core.Plugins.StandardPlugins
         {
             try
             {
-                _log.Log("Ensuring bot is disconnected...");
+                _log.Info("Ensuring bot is disconnected...");
                 _noobotCore.Disconnect();
             }
             catch (Exception ex)
             {
-                _log.Log($"Error while disconnectings: {ex}");
+                _log.Error($"Error while disconnectings: {ex}");
             }
         }
 
@@ -87,7 +88,7 @@ namespace Noobot.Core.Plugins.StandardPlugins
             }
             catch (Exception ex)
             {
-                _log.Log($"Error while reconnecting: {ex}");
+                _log.Error($"Error while reconnecting: {ex}");
             }
         }
     }

@@ -31,6 +31,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Common.Logging, Version=3.3.1.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Common.Logging.3.3.1\lib\net40\Common.Logging.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Common.Logging.Core, Version=3.3.1.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Common.Logging.Core.3.3.1\lib\net40\Common.Logging.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
@@ -73,9 +81,7 @@
     <Compile Include="DependencyResolution\IContainerFactory.cs" />
     <Compile Include="DependencyResolution\NoobotContainer.cs" />
     <Compile Include="Logging\AverageStat.cs" />
-    <Compile Include="Logging\EmptyLog.cs" />
-    <Compile Include="Logging\ILog.cs" />
-    <Compile Include="Logging\ConsoleLog.cs" />
+    <Compile Include="Logging\EmptyLogger.cs" />
     <Compile Include="MessagingPipeline\Middleware\CommandDescription.cs" />
     <Compile Include="MessagingPipeline\Middleware\IMiddleware.cs" />
     <Compile Include="MessagingPipeline\Middleware\HandlerMapping.cs" />

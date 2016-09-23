@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Common.Logging;
 using Noobot.Core.Configuration;
 using Noobot.Core.DependencyResolution;
 using Noobot.Core.Logging;
@@ -47,9 +48,9 @@ namespace Noobot.Core
             _connection.OnMessageReceived += MessageReceived;
             _connection.OnDisconnect += OnDisconnect;
 
-            _log.Log("Connected!");
-            _log.Log($"Bots Name: {_connection.Self.Name}");
-            _log.Log($"Team Name: {_connection.Team.Name}");
+            _log.Info("Connected!");
+            _log.Info($"Bots Name: {_connection.Self.Name}");
+            _log.Info($"Team Name: {_connection.Team.Name}");
 
             _container.GetPlugin<StatsPlugin>()?.RecordStat("Connected:Since", DateTime.Now.ToString("G"));
             _container.GetPlugin<StatsPlugin>()?.RecordStat("Response:Average", _averageResponse);
@@ -75,19 +76,19 @@ namespace Noobot.Core
         {
             if (_isDisconnecting)
             {
-                _log.Log("Disconnected.");
+                _log.Info("Disconnected.");
                 StopPlugins();
             }
             else
             {
-                _log.Log("Disconnected from server, attempting to reconnect...");
+                _log.Info("Disconnected from server, attempting to reconnect...");
                 Reconnect();
             }
         }
         
         internal void Reconnect()
         {
-            _log.Log("Reconnecting...");
+            _log.Info("Reconnecting...");
             if (_connection != null)
             {
                 _connection.OnMessageReceived -= MessageReceived;
@@ -101,12 +102,12 @@ namespace Noobot.Core
                 {
                     if (task.IsCompleted && !task.IsCanceled && !task.IsFaulted)
                     {
-                        _log.Log("Connection restored.");
+                        _log.Info("Connection restored.");
                         _container.GetPlugin<StatsPlugin>().IncrementState("ConnectionsRestored");
                     }
                     else
                     {
-                        _log.Log($"Error while reconnecting: {task.Exception}");
+                        _log.Info($"Error while reconnecting: {task.Exception}");
                     }
                 });
         }
@@ -114,7 +115,7 @@ namespace Noobot.Core
         public async Task MessageReceived(SlackMessage message)
         {
             Stopwatch stopwatch = Stopwatch.StartNew();
-            _log.Log($"[Message found from '{message.User.Name}']");
+            _log.Info($"[Message found from '{message.User.Name}']");
 
             IMiddleware pipeline = _container.GetMiddlewarePipeline();
             var incomingMessage = new IncomingMessage
@@ -142,12 +143,12 @@ namespace Noobot.Core
             }
             catch (Exception ex)
             {
-                _log.Log($"ERROR WHILE PROCESSING MESSAGE: {ex}");
+                _log.Error($"ERROR WHILE PROCESSING MESSAGE: {ex}");
             }
 
             stopwatch.Stop();
 
-            _log.Log($"[Message ended - Took {stopwatch.ElapsedMilliseconds} milliseconds]");
+            _log.Info($"[Message ended - Took {stopwatch.ElapsedMilliseconds} milliseconds]");
             _averageResponse.Log(stopwatch.ElapsedMilliseconds);
         }
 
@@ -159,7 +160,7 @@ namespace Noobot.Core
             {
                 if (responseMessage is TypingIndicatorMessage)
                 {
-                    _log.Log($"Indicating typing on channel '{chatHub.Name}'");
+                    _log.Info($"Indicating typing on channel '{chatHub.Name}'");
                     await _connection.IndicateTyping(chatHub);
                 }
                 else
@@ -172,13 +173,13 @@ namespace Noobot.Core
                     };
 
                     string textTrimmed = botMessage.Text.Length > 50 ? botMessage.Text.Substring(0, 50) + "..." : botMessage.Text;
-                    _log.Log($"Sending message '{textTrimmed}'");
+                    _log.Info($"Sending message '{textTrimmed}'");
                     await _connection.Say(botMessage);
                 }
             }
             else
             {
-                _log.Log($"Unable to find channel for message '{responseMessage.Text}'. Message not sent");
+                _log.Error($"Unable to find channel for message '{responseMessage.Text}'. Message not sent");
             }
         }
 

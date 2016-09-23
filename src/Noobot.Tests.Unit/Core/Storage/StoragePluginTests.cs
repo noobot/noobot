@@ -12,7 +12,7 @@ namespace Noobot.Tests.Unit.Core.Storage
         public void should_write_and_read_from_file()
         {
             // given
-            var storageHelper = new StoragePlugin(new EmptyLog());
+            var storageHelper = new StoragePlugin(null);
             storageHelper.Start();
 
             var objects = new[]

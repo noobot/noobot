@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using Common.Logging;
 using FlatFile.Core;
 using FlatFile.Delimited.Attributes;
 using FlatFile.Delimited.Implementation;
-using Noobot.Core.Logging;
 using Noobot.Core.Plugins;
 
 namespace Noobot.Toolbox.Plugins
@@ -55,8 +55,8 @@ namespace Noobot.Toolbox.Plugins
             }
             catch (FormatException ex)
             {
-                _log.Log($"Error while loading file {filePath}, deleting file to ensure it doesn't happen again.");
-                _log.Log(ex.ToString());
+                _log.Info($"Error while loading file {filePath}, deleting file to ensure it doesn't happen again.");
+                _log.Info(ex.ToString());
 
                 File.Delete(filePath);
                 return new T[0];

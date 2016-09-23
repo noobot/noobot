@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Common.Logging;
 using Noobot.Core.Configuration;
 using Noobot.Core.Logging;
 using Noobot.Core.MessagingPipeline.Middleware;
@@ -34,7 +35,7 @@ namespace Noobot.Core.DependencyResolution
         {
             _configuration = configuration;
             _configReader = configReader;
-            _logger = logger ?? new EmptyLog();
+            _logger = logger;
         }
 
         public INoobotContainer CreateContainer()

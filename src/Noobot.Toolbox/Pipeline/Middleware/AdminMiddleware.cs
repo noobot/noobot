@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Common.Logging;
 using Noobot.Core;
-using Noobot.Core.Logging;
 using Noobot.Core.MessagingPipeline.Middleware;
 using Noobot.Core.MessagingPipeline.Request;
 using Noobot.Core.MessagingPipeline.Response;
@@ -72,7 +72,7 @@ namespace Noobot.Toolbox.Pipeline.Middleware
                 if (_adminPlugin.AuthoriseUser(message.UserId, pin))
                 {
                     yield return message.ReplyToChannel($"{message.Username} - you now have admin rights.");
-                    _log.Log($"{message.Username} now has admin rights.");
+                    _log.Info($"{message.Username} now has admin rights.");
                 }
                 else
                 {

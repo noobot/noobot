@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Timers;
+using Common.Logging;
 using FlatFile.Delimited.Attributes;
 using Noobot.Core;
-using Noobot.Core.Logging;
 using Noobot.Core.MessagingPipeline.Response;
 using Noobot.Core.Plugins;
 using Noobot.Core.Plugins.StandardPlugins;
@@ -124,7 +124,7 @@ namespace Noobot.Toolbox.Plugins
         {
             if (ShouldRunSchedule(schedule))
             {
-                _log.Log($"Running schedule: {schedule}");
+                _log.Info($"Running schedule: {schedule}");
 
                 SlackChatHubType channelType = schedule.ChannelType == ResponseType.Channel
                     ? SlackChatHubType.Channel

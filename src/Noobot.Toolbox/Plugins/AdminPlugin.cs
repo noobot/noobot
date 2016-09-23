@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
+using Common.Logging;
 using Noobot.Core.Configuration;
-using Noobot.Core.Logging;
 using Noobot.Core.Plugins;
 
 namespace Noobot.Toolbox.Plugins
@@ -25,11 +25,10 @@ namespace Noobot.Toolbox.Plugins
 
             if (_adminPin.HasValue)
             {
-                _log.Log($"Admin pin is '{_adminPin.Value}'");
+                _log.Info($"Admin pin is '{_adminPin.Value}'");
             }
-            else
             {
-                _log.Log("No admin pin detected. Admin mode deactivated.");
+                _log.Info("No admin pin detected. Admin mode deactivated.");
             }
         }
 

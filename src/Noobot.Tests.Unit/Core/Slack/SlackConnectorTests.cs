@@ -15,7 +15,7 @@ namespace Noobot.Tests.Unit.Core.Slack
             // given
             var configReader = new ConfigReader();
             var containerStub = new NoobotContainerStub();
-            var connector = new NoobotCore(configReader, new EmptyLog(), containerStub);
+            var connector = new NoobotCore(configReader, new EmptyLogger(), containerStub);
 
             // when
             var task = connector.Connect();

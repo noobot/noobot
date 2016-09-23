@@ -1,6 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using Noobot.Core.Logging;
+﻿using System.Collections.Generic;
+using Common.Logging;
 using Noobot.Core.MessagingPipeline.Request;
 using Noobot.Core.MessagingPipeline.Response;
 
@@ -20,7 +19,7 @@ namespace Noobot.Core.MessagingPipeline.Middleware.StandardMiddleware
 
         public IEnumerable<ResponseMessage> Invoke(IncomingMessage message)
         {
-            _log.Log("Unhandled");
+            _log.Info("Unhandled");
             return new ResponseMessage[0];
         }
 
