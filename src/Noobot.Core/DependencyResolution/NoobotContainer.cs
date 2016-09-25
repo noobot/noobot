@@ -59,5 +59,10 @@ namespace Noobot.Core.DependencyResolution
         {
             return _container.GetInstance<IMiddleware>();
         }
+
+        public IContainer GetStructuremapContainer()
+        {
+            return _container;
+        }
     }
 }
