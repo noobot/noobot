@@ -82,6 +82,8 @@
     <Compile Include="DependencyResolution\NoobotContainer.cs" />
     <Compile Include="Logging\AverageStat.cs" />
     <Compile Include="Logging\EmptyLogger.cs" />
+    <Compile Include="Logging\MultiLogger.cs" />
+    <Compile Include="Logging\MultiLoggerFactoryAdapter.cs" />
     <Compile Include="MessagingPipeline\Middleware\CommandDescription.cs" />
     <Compile Include="MessagingPipeline\Middleware\IMiddleware.cs" />
     <Compile Include="MessagingPipeline\Middleware\HandlerMapping.cs" />

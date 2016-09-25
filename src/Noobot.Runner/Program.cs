@@ -3,7 +3,6 @@ using System.IO;
 using System.Reflection;
 using Noobot.Core.Configuration;
 using Noobot.Runner.Configuration;
-using Noobot.Runner.Logging;
 using Topshelf;
 
 namespace Noobot.Runner
@@ -11,7 +10,6 @@ namespace Noobot.Runner
     public class Program
     {
         private static readonly IConfigReader ConfigReader = new ConfigReader();
-        private static readonly ILogger Logger = new ConsoleLogger(ConfigReader);
 
         public static void Main(string[] args)
         {
@@ -27,7 +25,6 @@ namespace Noobot.Runner
 
                     s.WhenStarted(n =>
                     {
-                        Logger.Grapple();
                         n.Start();
                     });
 
@@ -39,8 +36,6 @@ namespace Noobot.Runner
                 x.SetServiceName("Noobot");
                 x.SetDescription("An extensible Slackbot built in C#");
             });
-
-            Logger?.Dispose();
         }
     }
 }
