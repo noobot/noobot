@@ -90,7 +90,7 @@ namespace Noobot.Core
             }
 
             _isDisconnecting = false;
-            Connect(isReconnecting: true)
+            Connect()
                 .ContinueWith(task =>
                 {
                     if (task.IsCompleted && !task.IsCanceled && !task.IsFaulted)
