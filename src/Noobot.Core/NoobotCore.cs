@@ -36,11 +36,6 @@ namespace Noobot.Core
 
         public async Task Connect()
         {
-            await Connect(isReconnecting:false);
-        }
-
-        public async Task Connect(bool isReconnecting)
-        {
             string slackKey = _configReader.SlackApiKey();
 
             var connector = new SlackConnector.SlackConnector();
@@ -55,10 +50,7 @@ namespace Noobot.Core
             _container.GetPlugin<StatsPlugin>()?.RecordStat("Connected:Since", DateTime.Now.ToString("G"));
             _container.GetPlugin<StatsPlugin>()?.RecordStat("Response:Average", _averageResponse);
 
-            if (!isReconnecting)
-            {
-                StartPlugins();
-            }
+            StartPlugins();
         }
 
         private bool _isDisconnecting;
@@ -74,10 +66,11 @@ namespace Noobot.Core
 
         private void OnDisconnect()
         {
+            StopPlugins();
+
             if (_isDisconnecting)
             {
                 _log.Info("Disconnected.");
-                StopPlugins();
             }
             else
             {
@@ -85,7 +78,7 @@ namespace Noobot.Core
                 Reconnect();
             }
         }
-        
+
         internal void Reconnect()
         {
             _log.Info("Reconnecting...");
@@ -111,7 +104,7 @@ namespace Noobot.Core
                     }
                 });
         }
-        
+
         public async Task MessageReceived(SlackMessage message)
         {
             Stopwatch stopwatch = Stopwatch.StartNew();
