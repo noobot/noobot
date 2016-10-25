@@ -96,6 +96,7 @@
     <Compile Include="MessagingPipeline\Middleware\StandardMiddleware\UnhandledMessageMiddleware.cs" />
     <Compile Include="MessagingPipeline\Middleware\StandardMiddleware\BeginMessageMiddleware.cs" />
     <Compile Include="MessagingPipeline\Response\Attachment.cs" />
+    <Compile Include="MessagingPipeline\Response\AttachmentField.cs" />
     <Compile Include="MessagingPipeline\Response\ResponseMessage.cs" />
     <Compile Include="MessagingPipeline\Response\ResponseType.cs" />
     <Compile Include="MessagingPipeline\Response\TypingIndicatorMessage.cs" />
