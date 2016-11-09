@@ -220,7 +220,7 @@ namespace Noobot.Core
 
         public string GetUserIdForUsername(string username)
         {
-            var user = _connection.UserNameCache.FirstOrDefault(x => x.Value.Equals(username, StringComparison.InvariantCultureIgnoreCase));
+            var user = _connection.UserNameCache.FirstOrDefault(x => x.Value.Name.Equals(username, StringComparison.InvariantCultureIgnoreCase));
             return string.IsNullOrEmpty(user.Key) ? string.Empty : user.Key;
         }
 
@@ -242,7 +242,7 @@ namespace Noobot.Core
 
         private string GetUsername(SlackMessage message)
         {
-            return _connection.UserNameCache.ContainsKey(message.User.Id) ? _connection.UserNameCache[message.User.Id] : string.Empty;
+            return _connection.UserNameCache.ContainsKey(message.User.Id) ? _connection.UserNameCache[message.User.Id].Name : string.Empty;
         }
 
         private async Task<string> GetUserChannel(SlackMessage message)
