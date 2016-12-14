@@ -145,6 +145,11 @@ namespace Noobot.Core
             _averageResponse.Log(stopwatch.ElapsedMilliseconds);
         }
 
+        public async Task Ping()
+        {
+            await _connection.Ping();
+        }
+
         public async Task SendMessage(ResponseMessage responseMessage)
         {
             SlackChatHub chatHub = await GetChatHub(responseMessage);
@@ -198,7 +203,7 @@ namespace Noobot.Core
 
         public string GetUserIdForUsername(string username)
         {
-            var user = _connection.UserNameCache.FirstOrDefault(x => x.Value.Equals(username, StringComparison.InvariantCultureIgnoreCase));
+            var user = _connection.UserCache.FirstOrDefault(x => x.Value.Name.Equals(username, StringComparison.InvariantCultureIgnoreCase));
             return string.IsNullOrEmpty(user.Key) ? string.Empty : user.Key;
         }
 
@@ -220,7 +225,7 @@ namespace Noobot.Core
 
         private string GetUsername(SlackMessage message)
         {
-            return _connection.UserNameCache.ContainsKey(message.User.Id) ? _connection.UserNameCache[message.User.Id] : string.Empty;
+            return _connection.UserCache.ContainsKey(message.User.Id) ? _connection.UserCache[message.User.Id].Name : string.Empty;
         }
 
         private async Task<string> GetUserChannel(SlackMessage message)
@@ -255,9 +260,9 @@ namespace Noobot.Core
         {
             SlackChatHub chatHub = null;
 
-            if (_connection.UserNameCache.ContainsKey(userId))
+            if (_connection.UserCache.ContainsKey(userId))
             {
-                string username = "@" + _connection.UserNameCache[userId];
+                string username = "@" + _connection.UserCache[userId].Name;
                 chatHub = _connection.ConnectedDMs().FirstOrDefault(x => x.Name.Equals(username, StringComparison.InvariantCultureIgnoreCase));
             }
 

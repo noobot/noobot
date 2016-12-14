@@ -37,24 +37,11 @@ namespace Noobot.Core.Plugins.StandardPlugins
 
             try
             {
-                string botUserId = _noobotCore.GetUserIdForUsername(_noobotCore.GetBotUserName());
-                var message = new ResponseMessage
-                {
-                    ResponseType = ResponseType.DirectMessage,
-                    UserId = botUserId,
-                    Text = "Test Message"
-                };
-                
-                //TODO: Find a better way of testing if the connection is alive...
-                _noobotCore.SendMessage(message).Wait(TimeSpan.FromSeconds(30));
-            }
-            catch (AggregateException ex) when (ex.InnerExceptions.Any() && ex.InnerExceptions[0].Message == EXPECTED_ERROR_MESSAGE)
-            {
-                _log.Info("Health check passed as expected.");
+                _noobotCore.Ping().Wait(TimeSpan.FromSeconds(30));
             }
             catch (Exception ex)
             {
-                _log.Error(ex.ToString());
+                _log.Error($"WebSocket Ping Failed: {ex}");
                 shouldReconnect = true;
             }
 
