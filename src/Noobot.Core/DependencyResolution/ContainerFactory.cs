@@ -90,6 +90,8 @@ namespace Noobot.Core.DependencyResolution
 
             registry.Scan(x =>
             {
+                x.WithDefaultConventions();
+
                 // scan assemblies that we are loading pipelines from
                 foreach (Type middlewareType in pipeline)
                 {

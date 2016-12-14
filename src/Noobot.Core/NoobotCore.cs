@@ -194,11 +194,33 @@ namespace Noobot.Core
                     Fallback = attachment.Fallback,
                     ImageUrl = attachment.ImageUrl,
                     ThumbUrl = attachment.ThumbUrl,
-                    AuthorName = attachment.AuthorName
+                    AuthorName = attachment.AuthorName,
+                    ColorHex = attachment.Color,
+                    Fields = GetAttachmentFields(attachment)
                 });
             }
 
             return attachments;
+        }
+
+        private IList<SlackAttachmentField> GetAttachmentFields(Attachment attachment)
+        {
+            var attachmentFields = new List<SlackAttachmentField>();
+
+            if (attachment != null && attachment.AttachmentFields != null)
+            {
+                foreach (var attachmentField in attachment.AttachmentFields)
+                {
+                    attachmentFields.Add(new SlackAttachmentField
+                    {
+                        Title = attachmentField.Title,
+                        Value = attachmentField.Value,
+                        IsShort = attachmentField.IsShort
+                    });
+                }
+            }
+
+            return attachmentFields;
         }
 
         public string GetUserIdForUsername(string username)
