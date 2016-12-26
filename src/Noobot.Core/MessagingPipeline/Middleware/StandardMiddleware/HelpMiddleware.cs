@@ -38,7 +38,7 @@ namespace Noobot.Core.MessagingPipeline.Middleware.StandardMiddleware
                 builder.AppendFormat("{0}\t- {1}\n", commandDescription.Command, description);
             }
 
-            yield return message.ReplyDirectlyToUser(builder.ToString());
+            yield return message.ReplyToChannel(builder.ToString());
         }
     }
 }
