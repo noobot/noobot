@@ -19,14 +19,14 @@ namespace Noobot.Toolbox.Pipeline.Middleware
             {
                 new HandlerMapping
                 {
-                    ValidHandles = new []{"hi", "hey", "hello", "wuzzup"},
+                    ValidHandles = ValidHandle.CreateValidHandleList(ValidHandle.ValidHandleMatchType.StartsWith, new string[] {"hi", "hey", "hello", "wuzzup"}),
                     Description = "Try saying hi and see what happens",
                     EvaluatorFunc = WelcomeHandler
                 }
             };
         }
 
-        private IEnumerable<ResponseMessage> WelcomeHandler(IncomingMessage message, string matchedHandle)
+        private IEnumerable<ResponseMessage> WelcomeHandler(IncomingMessage message, ValidHandle matchedHandle)
         {
             _statsPlugin.IncrementState("Hello");
 

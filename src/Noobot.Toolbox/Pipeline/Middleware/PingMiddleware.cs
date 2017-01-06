@@ -18,32 +18,58 @@ namespace Noobot.Toolbox.Pipeline.Middleware
             {
                 new HandlerMapping
                 {
-                    ValidHandles = new []{ "ping stop", "stop pinging me" },
+                    ValidHandles = new []
+                    {
+                        new ValidHandle
+                        {
+                            MatchType = ValidHandle.ValidHandleMatchType.StartsWith,
+                            MatchText = "ping stop"
+                        },
+                        new ValidHandle
+                        {
+                            MatchType = ValidHandle.ValidHandleMatchType.StartsWith,
+                            MatchText = "stop pinging me"
+                        }
+                    },
                     Description = "Stops sending you pings",
                     EvaluatorFunc = StopPingingHandler
                 },
                 new HandlerMapping
                 {
-                    ValidHandles = new []{ "ping list" },
+                    ValidHandles = new []
+                    {
+                        new ValidHandle
+                        {
+                            MatchType = ValidHandle.ValidHandleMatchType.StartsWith,
+                            MatchText = "ping list"
+                        }
+                    },
                     Description = "Lists all of the people currently being pinged",
                     EvaluatorFunc = ListPingHandler
                 },
                 new HandlerMapping
                 {
-                    ValidHandles = new []{ "ping me" },
+                    ValidHandles = new []
+                    {
+                        new ValidHandle
+                        {
+                            MatchType = ValidHandle.ValidHandleMatchType.StartsWith,
+                            MatchText = "ping me"
+                        }
+                    },
                     Description = "Sends you a ping about every second",
                     EvaluatorFunc = PingHandler
                 },
             };
         }
 
-        private IEnumerable<ResponseMessage> PingHandler(IncomingMessage message, string matchedHandle)
+        private IEnumerable<ResponseMessage> PingHandler(IncomingMessage message, ValidHandle matchedHandle)
         {
             yield return message.ReplyToChannel($"Ok, I will start pinging @{message.Username}");
             _pingPlugin.StartPingingUser(message.UserId);
         }
 
-        private IEnumerable<ResponseMessage> StopPingingHandler(IncomingMessage message, string matchedHandle)
+        private IEnumerable<ResponseMessage> StopPingingHandler(IncomingMessage message, ValidHandle matchedHandle)
         {
             if (_pingPlugin.StopPingingUser(message.UserId))
             {
@@ -55,7 +81,7 @@ namespace Noobot.Toolbox.Pipeline.Middleware
             }
         }
 
-        private IEnumerable<ResponseMessage> ListPingHandler(IncomingMessage message, string matchedHandle)
+        private IEnumerable<ResponseMessage> ListPingHandler(IncomingMessage message, ValidHandle matchedHandle)
         {
             string[] users = _pingPlugin.ListPingedUsers();
 

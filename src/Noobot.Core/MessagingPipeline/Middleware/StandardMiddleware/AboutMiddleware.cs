@@ -13,14 +13,21 @@ namespace Noobot.Core.MessagingPipeline.Middleware.StandardMiddleware
             {
                 new HandlerMapping
                 {
-                    ValidHandles = new []{ "about" },
+                    ValidHandles = new []
+                    {
+                        new ValidHandle
+                        {
+                            MatchType = ValidHandle.ValidHandleMatchType.StartsWith,
+                            MatchText = "about"
+                        }
+                    },
                     Description = "Tells you some stuff about this bot :-)",
                     EvaluatorFunc = AboutHandler
                 }
             };
         }
 
-        private IEnumerable<ResponseMessage> AboutHandler(IncomingMessage message, string matchedHandle)
+        private IEnumerable<ResponseMessage> AboutHandler(IncomingMessage message, ValidHandle matchedHandle)
         {
             yield return message.ReplyDirectlyToUser("Noobot - Created by Simon Colmer " + DateTime.Now.Year);
             yield return message.ReplyDirectlyToUser("I am an extensible SlackBot built in C# using loads of awesome open source projects.");

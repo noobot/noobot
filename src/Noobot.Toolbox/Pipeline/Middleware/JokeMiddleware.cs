@@ -21,14 +21,14 @@ namespace Noobot.Toolbox.Pipeline.Middleware
             {
                 new HandlerMapping
                 {
-                    ValidHandles = new [] { "joke", "tell me a joke"},
+                    ValidHandles = ValidHandle.CreateValidHandleList(ValidHandle.ValidHandleMatchType.StartsWith, new string[] { "joke", "tell me a joke"}),
                     Description = "Tells a random joke",
                     EvaluatorFunc = JokeHandler
                 }
             };
         }
 
-        private IEnumerable<ResponseMessage> JokeHandler(IncomingMessage message, string matchedHandle)
+        private IEnumerable<ResponseMessage> JokeHandler(IncomingMessage message, ValidHandle matchedHandle)
         {
             yield return message.IndicateTypingOnChannel();
 

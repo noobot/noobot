@@ -13,7 +13,7 @@ namespace Noobot.Toolbox.Pipeline.Middleware
             {
                 new HandlerMapping
                 {
-                    ValidHandles = new [] { ""},
+                    ValidHandles = ValidHandle.CreateValidHandleList(ValidHandle.ValidHandleMatchType.ProcessAll, new string[] { "" }),
                     Description = "Annoys the heck out of everyone",
                     EvaluatorFunc = AutoResponseHandler,
                     MessageShouldTargetBot = false,
@@ -22,7 +22,7 @@ namespace Noobot.Toolbox.Pipeline.Middleware
             };
         }
 
-        private IEnumerable<ResponseMessage> AutoResponseHandler(IncomingMessage message, string matchedHandle)
+        private IEnumerable<ResponseMessage> AutoResponseHandler(IncomingMessage message, ValidHandle matchedHandle)
         {
             yield return message.ReplyDirectlyToUser(message.FullText);
         }

@@ -27,28 +27,28 @@ namespace Noobot.Toolbox.Pipeline.Middleware
             {
                 new HandlerMapping
                 {
-                    ValidHandles = new []{ "admin pin" },
+                    ValidHandles = ValidHandle.CreateValidHandleList(ValidHandle.ValidHandleMatchType.StartsWith, new string[] { "admin pin" }),
                     EvaluatorFunc = PinHandler,
                     Description = "This function is used to authenticate a user as admin",
                     VisibleInHelp = false
                 },
                 new HandlerMapping
                 {
-                    ValidHandles = new []{ "admin schedules list" },
+                    ValidHandles = ValidHandle.CreateValidHandleList(ValidHandle.ValidHandleMatchType.StartsWith, new string[]{ "admin schedules list" }),
                     EvaluatorFunc = SchedulesListHandler,
                     Description = "[Requires authentication] Will return a list of all schedules.",
                     VisibleInHelp = false
                 },
                 new HandlerMapping
                 {
-                    ValidHandles = new []{ "admin schedules delete" },
+                    ValidHandles = ValidHandle.CreateValidHandleList(ValidHandle.ValidHandleMatchType.StartsWith, new string[]{ "admin schedules delete" }),
                     EvaluatorFunc = DeleteSchedulesHandler,
                     Description = "[Requires authentication] This will delete all schedules.",
                     VisibleInHelp = false
                 },
                 new HandlerMapping
                 {
-                    ValidHandles = new []{ "admin channels" },
+                    ValidHandles = ValidHandle.CreateValidHandleList(ValidHandle.ValidHandleMatchType.StartsWith, new string[]{ "admin channels" }),
                     EvaluatorFunc = ChannelsHandler,
                     Description = "[Requires authentication] Will return all channels connected.",
                     VisibleInHelp = false
@@ -56,7 +56,7 @@ namespace Noobot.Toolbox.Pipeline.Middleware
             };
         }
 
-        private IEnumerable<ResponseMessage> PinHandler(IncomingMessage message, string matchedHandle)
+        private IEnumerable<ResponseMessage> PinHandler(IncomingMessage message, ValidHandle matchedHandle)
         {
             if (!_adminPlugin.AdminModeEnabled())
             {
@@ -64,7 +64,7 @@ namespace Noobot.Toolbox.Pipeline.Middleware
                 yield break;
             }
 
-            string pinString = message.TargetedText.Substring(matchedHandle.Length).Trim();
+            string pinString = message.TargetedText.Substring(matchedHandle.MatchText.Length).Trim();
 
             int pin;
             if (int.TryParse(pinString, out pin))
@@ -85,7 +85,7 @@ namespace Noobot.Toolbox.Pipeline.Middleware
             }
         }
 
-        private IEnumerable<ResponseMessage> SchedulesListHandler(IncomingMessage message, string matchedHandle)
+        private IEnumerable<ResponseMessage> SchedulesListHandler(IncomingMessage message, ValidHandle matchedHandle)
         {
             if (!_adminPlugin.AuthenticateUser(message.UserId))
             {
@@ -100,7 +100,7 @@ namespace Noobot.Toolbox.Pipeline.Middleware
             yield return message.ReplyToChannel(">>>" + string.Join("\n", scheduleStrings));
         }
 
-        private IEnumerable<ResponseMessage> DeleteSchedulesHandler(IncomingMessage message, string matchedHandle)
+        private IEnumerable<ResponseMessage> DeleteSchedulesHandler(IncomingMessage message, ValidHandle matchedHandle)
         {
             if (!_adminPlugin.AuthenticateUser(message.UserId))
             {
@@ -114,7 +114,7 @@ namespace Noobot.Toolbox.Pipeline.Middleware
             yield return message.ReplyToChannel("All schedules deleted");
         }
 
-        private IEnumerable<ResponseMessage> ChannelsHandler(IncomingMessage message, string matchedHandle)
+        private IEnumerable<ResponseMessage> ChannelsHandler(IncomingMessage message, ValidHandle matchedHandle)
         {
             if (!_adminPlugin.AuthenticateUser(message.UserId))
             {

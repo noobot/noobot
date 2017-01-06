@@ -20,14 +20,14 @@ namespace Noobot.Toolbox.Pipeline.Middleware
             {
                 new HandlerMapping
                 {
-                    ValidHandles = new []{"calc"},
+                    ValidHandles = ValidHandle.CreateValidHandleList(ValidHandle.ValidHandleMatchType.StartsWith, new string[]{"calc"}),
                     Description = "Calculate mathematical expressions - usage: calc ((1+2)*3)/4",
                     EvaluatorFunc = CalculateHandler,
                     MessageShouldTargetBot = false
                 },
                 new HandlerMapping
                 {
-                    ValidHandles = new []{""},
+                    ValidHandles = ValidHandle.CreateValidHandleList(ValidHandle.ValidHandleMatchType.ProcessAll, new string[]{""}),
                     Description = "Try to calculate mathematical expressions without the 'calc' prefix - usage: ((1+2)*3)/4",
                     EvaluatorFunc = CalculateHandler,
                     MessageShouldTargetBot = false,
@@ -36,13 +36,13 @@ namespace Noobot.Toolbox.Pipeline.Middleware
             };
         }
 
-        private IEnumerable<ResponseMessage> CalculateHandler(IncomingMessage message, string matchedHandle)
+        private IEnumerable<ResponseMessage> CalculateHandler(IncomingMessage message, ValidHandle matchedHandle)
         {
             string response = string.Empty;
 
             if (matchedHandle != null)
             {
-                string expression = message.FullText.Substring(matchedHandle.Length).Trim();
+                string expression = message.FullText.Substring(matchedHandle.MatchText.Length).Trim();
                 Parser parser = new Parser();
 
                 try
@@ -53,7 +53,7 @@ namespace Noobot.Toolbox.Pipeline.Middleware
                 }
                 catch (Exception e)
                 {
-                    bool showErrors = !string.IsNullOrEmpty(matchedHandle);
+                    bool showErrors = !string.IsNullOrEmpty(matchedHandle.MatchText);
 
                     if (showErrors)
                     {

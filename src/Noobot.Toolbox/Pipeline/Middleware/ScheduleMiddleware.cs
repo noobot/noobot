@@ -20,53 +20,53 @@ namespace Noobot.Toolbox.Pipeline.Middleware
             {
                 new HandlerMapping
                 {
-                    ValidHandles = new [] { "schedule hourly"},
+                    ValidHandles = ValidHandle.CreateValidHandleList(ValidHandle.ValidHandleMatchType.StartsWith, new string[] { "schedule hourly"}),
                     Description = "Schedule a command to execute every hour on the current channel. Usage: _schedule hourly @{bot} tell me a joke_",
                     EvaluatorFunc = HourlyHandler,
                 },
                 new HandlerMapping
                 {
-                    ValidHandles = new [] { "schedule daily"},
+                    ValidHandles = ValidHandle.CreateValidHandleList(ValidHandle.ValidHandleMatchType.StartsWith, new string[] { "schedule daily"}),
                     Description = "Schedule a command to execute every day on the current channel. Usage: _schedule daily @{bot} tell me a joke_",
                     EvaluatorFunc = DayHandler,
                 },
                 new HandlerMapping
                 {
-                    ValidHandles = new [] { "schedule nightly"},
+                    ValidHandles = ValidHandle.CreateValidHandleList(ValidHandle.ValidHandleMatchType.StartsWith, new string[] { "schedule nightly"}),
                     Description = "Schedule a command to execute every day on the current channel. Usage: _schedule nightly @{bot} tell me a joke_",
                     EvaluatorFunc = NightlyHandler,
                 },
                 new HandlerMapping
                 {
-                    ValidHandles = new [] { "schedule list"},
+                    ValidHandles = ValidHandle.CreateValidHandleList(ValidHandle.ValidHandleMatchType.StartsWith, new string[] { "schedule list"}),
                     Description = "List all schedules on the current channel",
                     EvaluatorFunc = ListHandlerForChannel,
                 },
                 new HandlerMapping
                 {
-                    ValidHandles = new [] { "schedule delete"},
+                    ValidHandles = ValidHandle.CreateValidHandleList(ValidHandle.ValidHandleMatchType.StartsWith, new string[] { "schedule delete"}),
                     Description = "Delete a schedule in this channel. You must enter a valid {id}",
                     EvaluatorFunc = DeleteHandlerForChannel,
                 },
             };
         }
 
-        private IEnumerable<ResponseMessage> HourlyHandler(IncomingMessage message, string matchedHandle)
+        private IEnumerable<ResponseMessage> HourlyHandler(IncomingMessage message, ValidHandle matchedHandle)
         {
             yield return CreateSchedule(message, matchedHandle, TimeSpan.FromHours(1), false);
         }
 
-        private IEnumerable<ResponseMessage> DayHandler(IncomingMessage message, string matchedHandle)
+        private IEnumerable<ResponseMessage> DayHandler(IncomingMessage message, ValidHandle matchedHandle)
         {
             yield return CreateSchedule(message, matchedHandle, TimeSpan.FromDays(1), false);
         }
 
-        private IEnumerable<ResponseMessage> NightlyHandler(IncomingMessage message, string matchedHandle)
+        private IEnumerable<ResponseMessage> NightlyHandler(IncomingMessage message, ValidHandle matchedHandle)
         {
             yield return CreateSchedule(message, matchedHandle, TimeSpan.FromDays(1), true);
         }
 
-        private IEnumerable<ResponseMessage> ListHandlerForChannel(IncomingMessage message, string matchedHandle)
+        private IEnumerable<ResponseMessage> ListHandlerForChannel(IncomingMessage message, ValidHandle matchedHandle)
         {
             SchedulePlugin.ScheduleEntry[] schedules = _schedulePlugin.ListSchedulesForChannel(message.Channel);
 
@@ -83,9 +83,9 @@ namespace Noobot.Toolbox.Pipeline.Middleware
             }
         }
 
-        private IEnumerable<ResponseMessage> DeleteHandlerForChannel(IncomingMessage message, string matchedHandle)
+        private IEnumerable<ResponseMessage> DeleteHandlerForChannel(IncomingMessage message, ValidHandle matchedHandle)
         {
-            string idString = message.TargetedText.Substring(matchedHandle.Length).Trim();
+            string idString = message.TargetedText.Substring(matchedHandle.MatchText.Length).Trim();
 
             int? id = ConvertToInt(idString);
 
@@ -121,13 +121,13 @@ namespace Noobot.Toolbox.Pipeline.Middleware
             }
         }
 
-        private ResponseMessage CreateSchedule(IncomingMessage message, string matchedHandle, TimeSpan timeSpan, bool runOnlyAtNight)
+        private ResponseMessage CreateSchedule(IncomingMessage message, ValidHandle matchedHandle, TimeSpan timeSpan, bool runOnlyAtNight)
         {
             var schedule = new SchedulePlugin.ScheduleEntry
             {
                 Channel = message.Channel,
                 ChannelType = message.ChannelType,
-                Command = message.TargetedText.Substring(matchedHandle.Length).Trim(),
+                Command = message.TargetedText.Substring(matchedHandle.MatchText.Length).Trim(),
                 RunEvery = timeSpan,
                 UserId = message.UserId,
                 UserName = message.Username,

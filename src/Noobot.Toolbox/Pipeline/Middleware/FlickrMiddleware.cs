@@ -24,20 +24,20 @@ namespace Noobot.Toolbox.Pipeline.Middleware
             {
                 new HandlerMapping
                 {
-                    ValidHandles = new [] { "flickr", "pic"},
+                    ValidHandles = ValidHandle.CreateValidHandleList(ValidHandle.ValidHandleMatchType.StartsWith, new string[] { "flickr", "pic"}),
                     Description = "Finds a pics from flickr - usage: /flickr birds",
                     EvaluatorFunc = FlickrHandler,
                 }
             };
         }
 
-        private IEnumerable<ResponseMessage> FlickrHandler(IncomingMessage message, string matchedHandle)
+        private IEnumerable<ResponseMessage> FlickrHandler(IncomingMessage message, ValidHandle matchedHandle)
         {
-            string searchTerm = message.TargetedText.Substring(matchedHandle.Length).Trim();
+            string searchTerm = message.TargetedText.Substring(matchedHandle.MatchText.Length).Trim();
 
             if (string.IsNullOrEmpty(searchTerm))
             {
-                yield return message.ReplyToChannel($"Please give me something to search, e.g. {matchedHandle} trains");
+                yield return message.ReplyToChannel($"Please give me something to search, e.g. {matchedHandle.MatchText} trains");
             }
             else
             {
