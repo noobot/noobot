@@ -71,10 +71,6 @@
       <HintPath>..\..\packages\StructureMap.4.4.2\lib\net45\StructureMap.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="StructureMap.AutoMocking.Moq, Version=3.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\structuremap.automocking.moq.3.1.0.133\lib\net40\StructureMap.AutoMocking.Moq.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
