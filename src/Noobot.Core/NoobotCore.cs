@@ -117,6 +117,7 @@ namespace Noobot.Core
                 FullText = message.Text,
                 UserId = message.User.Id,
                 Username = GetUsername(message),
+                UserEmail = message.User.Email,
                 Channel = message.ChatHub.Id,
                 ChannelType = message.ChatHub.Type == SlackChatHubType.DM ? ResponseType.DirectMessage : ResponseType.Channel,
                 UserChannel = await GetUserChannel(message),

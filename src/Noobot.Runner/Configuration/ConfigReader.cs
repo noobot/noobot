@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Reflection;
 using Newtonsoft.Json.Linq;
 using Noobot.Core.Configuration;
 
@@ -29,12 +30,21 @@ namespace Noobot.Runner.Configuration
         {
             if (_currentJObject == null)
             {
-                string fileName = Path.Combine(Environment.CurrentDirectory, @"configuration\config.json");
+                string assemblyLocation = AssemblyLocation();
+                string fileName = Path.Combine(assemblyLocation, @"configuration\config.json");
                 string json = File.ReadAllText(fileName);
                 _currentJObject = JObject.Parse(json);
             }
 
             return _currentJObject;
+        }
+
+        private string AssemblyLocation()
+        {
+            var assembly = Assembly.GetExecutingAssembly();
+            var codebase = new Uri(assembly.CodeBase);
+            var path = Path.GetDirectoryName(codebase.LocalPath);
+            return path;
         }
     }
 }

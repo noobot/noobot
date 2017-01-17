@@ -21,6 +21,11 @@ namespace Noobot.Core.MessagingPipeline.Request
         public string UserChannel { get; set; }
 
         /// <summary>
+        /// The email of the user that sent the message
+        /// </summary>
+        public string UserEmail { get; set; }
+
+        /// <summary>
         /// Contains the untainted raw Text that comes in from Slack. This hasn't been URL decoded.
         /// </summary>
         public string RawText { get; set; }
