@@ -39,12 +39,12 @@
       <HintPath>..\..\packages\Common.Logging.Core.3.3.1\lib\net40\Common.Logging.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="ExpectedObjects, Version=1.1.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ExpectedObjects.1.1.1\lib\net40\ExpectedObjects.dll</HintPath>
+    <Reference Include="ExpectedObjects, Version=1.2.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ExpectedObjects.1.2.3\lib\net40\ExpectedObjects.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Moq, Version=4.2.1507.118, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Moq.4.2.1507.0118\lib\net40\Moq.dll</HintPath>
+    <Reference Include="Moq, Version=4.2.1510.2205, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Moq.4.2.1510.2205\lib\net40\Moq.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
@@ -59,8 +59,8 @@
       <HintPath>..\..\packages\Should.1.1.20\lib\Should.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="SpecsFor, Version=4.3.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\SpecsFor.4.3.2\lib\net40\SpecsFor.dll</HintPath>
+    <Reference Include="SpecsFor, Version=5.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\SpecsFor.5.0.0\lib\net40\SpecsFor.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="StructureMap, Version=4.4.1.451, Culture=neutral, processorArchitecture=MSIL">
