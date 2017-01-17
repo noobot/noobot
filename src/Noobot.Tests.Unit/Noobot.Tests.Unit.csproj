@@ -43,30 +43,6 @@
       <HintPath>..\..\packages\ExpectedObjects.1.1.1\lib\net40\ExpectedObjects.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="FlatFile.Core, Version=0.2.16.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\FlatFile.Core.0.2.16\lib\net45\FlatFile.Core.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="FlatFile.Core.Attributes, Version=0.2.16.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\FlatFile.Core.Attributes.0.2.16\lib\net45\FlatFile.Core.Attributes.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="FlatFile.Delimited, Version=0.2.16.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\FlatFile.Delimited.0.2.16\lib\net45\FlatFile.Delimited.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="FlatFile.Delimited.Attributes, Version=0.2.16.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\FlatFile.Delimited.Attributes.0.2.16\lib\net45\FlatFile.Delimited.Attributes.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="FlatFile.FixedLength, Version=0.2.16.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\FlatFile.FixedLength.0.2.16\lib\net45\FlatFile.FixedLength.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="FlatFile.FixedLength.Attributes, Version=0.2.16.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\FlatFile.FixedLength.Attributes.0.2.16\lib\net45\FlatFile.FixedLength.Attributes.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Moq, Version=4.2.1507.118, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Moq.4.2.1507.0118\lib\net40\Moq.dll</HintPath>
       <Private>True</Private>
@@ -107,8 +83,6 @@
   <ItemGroup>
     <Compile Include="Core\Configuration\ConfigReaderTests.cs" />
     <Compile Include="Core\Slack\SlackConnectorTests.cs" />
-    <Compile Include="Core\Storage\StoragePluginTests.cs" />
-    <Compile Include="Core\Storage\StorageObject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Stubs\MessagingPipeline\NoobotContainerStub.cs" />
   </ItemGroup>
@@ -124,10 +98,6 @@
     <ProjectReference Include="..\Noobot.Core\Noobot.Core.csproj">
       <Project>{20c88122-7ba3-4380-89fc-350f9d5b94dc}</Project>
       <Name>Noobot.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Noobot.Toolbox\Noobot.Toolbox.csproj">
-      <Project>{5794b29f-234c-4b12-aae4-b31363f78c8d}</Project>
-      <Name>Noobot.Toolbox</Name>
     </ProjectReference>
     <ProjectReference Include="..\Noobot.Runner\Noobot.Runner.csproj">
       <Project>{fc387cb5-8b7f-4873-8a14-8337682d2c73}</Project>
