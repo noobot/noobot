@@ -1,4 +1,5 @@
 ﻿using Noobot.Core.MessagingPipeline.Response;
+using System.Collections.Generic;
 
 namespace Noobot.Core.MessagingPipeline.Request
 {
@@ -70,7 +71,19 @@ namespace Noobot.Core.MessagingPipeline.Request
         /// </summary>
         public ResponseMessage ReplyToChannel(string text, Attachment attachment = null)
         {
-            return ResponseMessage.ChannelMessage(Channel, text, attachment);
+            if (attachment == null)
+                return ResponseMessage.ChannelMessage(Channel, text, attachments: null);
+    
+             var attachments = new List<Attachment> { attachment };
+             return ReplyToChannel(text, attachments);
+        }
+        
+        /// <summary>
+        /// Will generate a message to be sent the current channel the message arrived from
+        /// </summary>
+        public ResponseMessage ReplyToChannel(string text, List<Attachment> attachments)
+        {
+            return ResponseMessage.ChannelMessage(Channel, text, attachments);
         }
 
         /// <summary>
@@ -86,7 +99,7 @@ namespace Noobot.Core.MessagingPipeline.Request
         /// </summary>
         public ResponseMessage IndicateTypingOnChannel()
         {
-            return ResponseMessage.ChannelMessage(Channel, string.Empty, null, new TypingIndicatorMessage());
+            return ResponseMessage.ChannelMessage(Channel, string.Empty, attachments: null, message: new TypingIndicatorMessage());
         }
 
         /// <summary>
