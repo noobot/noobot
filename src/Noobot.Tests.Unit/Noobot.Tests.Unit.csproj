@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Noobot.Tests.Unit</RootNamespace>
     <AssemblyName>Noobot.Tests.Unit</AssemblyName>
-    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -31,6 +31,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Castle.Core, Version=3.3.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Castle.Core.3.3.3\lib\net45\Castle.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Common.Logging, Version=3.3.1.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Common.Logging.3.3.1\lib\net40\Common.Logging.dll</HintPath>
       <Private>True</Private>
@@ -39,60 +43,32 @@
       <HintPath>..\..\packages\Common.Logging.Core.3.3.1\lib\net40\Common.Logging.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="ExpectedObjects, Version=1.1.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ExpectedObjects.1.1.1\lib\net40\ExpectedObjects.dll</HintPath>
+    <Reference Include="ExpectedObjects, Version=1.2.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ExpectedObjects.1.2.3\lib\net40\ExpectedObjects.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="FlatFile.Core, Version=0.2.16.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\FlatFile.Core.0.2.16\lib\net45\FlatFile.Core.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="FlatFile.Core.Attributes, Version=0.2.16.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\FlatFile.Core.Attributes.0.2.16\lib\net45\FlatFile.Core.Attributes.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="FlatFile.Delimited, Version=0.2.16.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\FlatFile.Delimited.0.2.16\lib\net45\FlatFile.Delimited.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="FlatFile.Delimited.Attributes, Version=0.2.16.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\FlatFile.Delimited.Attributes.0.2.16\lib\net45\FlatFile.Delimited.Attributes.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="FlatFile.FixedLength, Version=0.2.16.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\FlatFile.FixedLength.0.2.16\lib\net45\FlatFile.FixedLength.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="FlatFile.FixedLength.Attributes, Version=0.2.16.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\FlatFile.FixedLength.Attributes.0.2.16\lib\net45\FlatFile.FixedLength.Attributes.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Moq, Version=4.2.1507.118, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Moq.4.2.1507.0118\lib\net40\Moq.dll</HintPath>
+    <Reference Include="Moq, Version=4.5.30.0, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Moq.4.5.30\lib\net45\Moq.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="nunit.framework, Version=2.6.4.14350, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
+    <Reference Include="nunit.framework, Version=3.6.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\NUnit.3.6.0\lib\net45\nunit.framework.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Should, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Should.1.1.20\lib\Should.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="SpecsFor, Version=4.3.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\SpecsFor.4.3.2\lib\net40\SpecsFor.dll</HintPath>
+    <Reference Include="SpecsFor, Version=5.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\SpecsFor.5.0.0\lib\net40\SpecsFor.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="StructureMap, Version=4.4.1.451, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\StructureMap.4.4.1\lib\net45\StructureMap.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="StructureMap.AutoMocking.Moq, Version=3.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\structuremap.automocking.moq.3.1.0.133\lib\net40\StructureMap.AutoMocking.Moq.dll</HintPath>
+    <Reference Include="StructureMap, Version=4.4.2.472, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\StructureMap.4.4.2\lib\net45\StructureMap.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -107,8 +83,6 @@
   <ItemGroup>
     <Compile Include="Core\Configuration\ConfigReaderTests.cs" />
     <Compile Include="Core\Slack\SlackConnectorTests.cs" />
-    <Compile Include="Core\Storage\StoragePluginTests.cs" />
-    <Compile Include="Core\Storage\StorageObject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Stubs\MessagingPipeline\NoobotContainerStub.cs" />
   </ItemGroup>
@@ -124,10 +98,6 @@
     <ProjectReference Include="..\Noobot.Core\Noobot.Core.csproj">
       <Project>{20c88122-7ba3-4380-89fc-350f9d5b94dc}</Project>
       <Name>Noobot.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Noobot.Toolbox\Noobot.Toolbox.csproj">
-      <Project>{5794b29f-234c-4b12-aae4-b31363f78c8d}</Project>
-      <Name>Noobot.Toolbox</Name>
     </ProjectReference>
     <ProjectReference Include="..\Noobot.Runner\Noobot.Runner.csproj">
       <Project>{fc387cb5-8b7f-4873-8a14-8337682d2c73}</Project>

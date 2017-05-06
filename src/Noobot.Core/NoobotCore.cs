@@ -117,6 +117,7 @@ namespace Noobot.Core
                 FullText = message.Text,
                 UserId = message.User.Id,
                 Username = GetUsername(message),
+                UserEmail = message.User.Email,
                 Channel = message.ChatHub.Id,
                 ChannelType = message.ChatHub.Type == SlackChatHubType.DM ? ResponseType.DirectMessage : ResponseType.Channel,
                 UserChannel = await GetUserChannel(message),
@@ -167,7 +168,7 @@ namespace Noobot.Core
                     {
                         ChatHub = chatHub,
                         Text = responseMessage.Text,
-                        Attachments = GetAttachments(responseMessage.Attachment)
+                        Attachments = GetAttachments(responseMessage.Attachments)
                     };
 
                     string textTrimmed = botMessage.Text.Length > 50 ? botMessage.Text.Substring(0, 50) + "..." : botMessage.Text;
@@ -181,26 +182,29 @@ namespace Noobot.Core
             }
         }
 
-        private IList<SlackAttachment> GetAttachments(Attachment attachment)
+        private IList<SlackAttachment> GetAttachments(List<Attachment> attachments)
         {
-            var attachments = new List<SlackAttachment>();
+            var slackAttachments = new List<SlackAttachment>();
 
-            if (attachment != null)
+            if (attachments != null)
             {
-                attachments.Add(new SlackAttachment
+                foreach (var attachment in attachments)
                 {
-                    Text = attachment.Text,
-                    Title = attachment.Title,
-                    Fallback = attachment.Fallback,
-                    ImageUrl = attachment.ImageUrl,
-                    ThumbUrl = attachment.ThumbUrl,
-                    AuthorName = attachment.AuthorName,
-                    ColorHex = attachment.Color,
-                    Fields = GetAttachmentFields(attachment)
-                });
+                    slackAttachments.Add(new SlackAttachment
+                    {
+                        Text = attachment.Text,
+                        Title = attachment.Title,
+                        Fallback = attachment.Fallback,
+                        ImageUrl = attachment.ImageUrl,
+                        ThumbUrl = attachment.ThumbUrl,
+                        AuthorName = attachment.AuthorName,
+                        ColorHex = attachment.Color,
+                        Fields = GetAttachmentFields(attachment)
+                    });
+                }
             }
 
-            return attachments;
+            return slackAttachments;
         }
 
         private IList<SlackAttachmentField> GetAttachmentFields(Attachment attachment)
