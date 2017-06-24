@@ -68,14 +68,12 @@ namespace Noobot.Toolbox.Pipeline.Middleware
 
         private IEnumerable<ResponseMessage> ListHandlerForChannel(IncomingMessage message, string matchedHandle)
         {
-            SchedulePlugin.ScheduleEntry[] schedules = _schedulePlugin.ListSchedulesForChannel(message.Channel);
+            var schedules = _schedulePlugin.ListSchedulesForChannel(message.Channel);
 
             if (schedules.Any())
             {
-                yield return message.ReplyToChannel("Schedules for channel:");
-
-                string[] scheduleStrings = schedules.Select((x, i) => x.ToString(i)).ToArray();
-                yield return message.ReplyToChannel(">>>" + string.Join("\n", scheduleStrings));
+                yield return message.ReplyToChannel("Schedules for channel: \n" +
+                    ">>>" + string.Join("\n", schedules.Select((x, i) => x.ToString(i))));
             }
             else
             {
@@ -87,37 +85,25 @@ namespace Noobot.Toolbox.Pipeline.Middleware
         {
             string idString = message.TargetedText.Substring(matchedHandle.Length).Trim();
 
-            int? id = ConvertToInt(idString);
+            int id;
 
-            if (id.HasValue)
+            if (int.TryParse(idString, out id))
             {
-                SchedulePlugin.ScheduleEntry[] schedules = _schedulePlugin.ListSchedulesForChannel(message.Channel);
+                var schedules = _schedulePlugin.ListSchedulesForChannel(message.Channel);
 
-                if (id < 0 || id > (schedules.Length - 1))
+                if (id < 0 || id > schedules.Length - 1)
                 {
-                    yield return message.ReplyToChannel($"Woops, unable to delete schedule with id of `{id.Value}`");
+                    yield return message.ReplyToChannel($"Whoops, unable to delete schedule with id of `{id}`");
                 }
                 else
                 {
-                    _schedulePlugin.DeleteSchedule(schedules[id.Value]);
-                    yield return message.ReplyToChannel($"Removed schedule: {schedules[id.Value]}");
+                    _schedulePlugin.DeleteSchedule(schedules[id]);
+                    yield return message.ReplyToChannel($"Removed schedule: {schedules[id]}");
                 }
             }
             else
             {
                 yield return message.ReplyToChannel($"Invalid id entered. Try using `schedule list`. ({idString})");
-            }
-        }
-
-        private static int? ConvertToInt(string value)
-        {
-            try
-            {
-                return Convert.ToInt32(value);
-            }
-            catch (FormatException)
-            {
-                return null;
             }
         }
 
@@ -131,7 +117,7 @@ namespace Noobot.Toolbox.Pipeline.Middleware
                 RunEvery = timeSpan,
                 UserId = message.UserId,
                 UserName = message.Username,
-                LastRun = DateTime.Now,
+                LastRun = null,
                 RunOnlyAtNight = runOnlyAtNight
             };
 
@@ -139,11 +125,9 @@ namespace Noobot.Toolbox.Pipeline.Middleware
             {
                 return message.ReplyToChannel("Please enter a command to be scheduled.");
             }
-            else
-            {
-                _schedulePlugin.AddSchedule(schedule);
-                return message.ReplyToChannel($"Schedule created for command '{schedule.Command}'.");
-            }
+
+            _schedulePlugin.AddSchedule(schedule);
+            return message.ReplyToChannel($"Schedule created for command '{schedule.Command}'.");
         }
     }
 }
