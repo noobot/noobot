@@ -7,6 +7,7 @@ namespace Noobot.Toolbox.Plugins
 {
     internal class AdminPlugin : IPlugin
     {
+        private const string ADMINPIN_CONFIGENTRY = "adminPin";
         private readonly IConfigReader _configReader;
         private readonly ILog _log;
         private readonly HashSet<string> _admins = new HashSet<string>();
@@ -21,43 +22,32 @@ namespace Noobot.Toolbox.Plugins
 
         public void Start()
         {
-            _adminPin = _configReader.GetConfigEntry<int?>("adminPin");
+            _adminPin = _configReader.GetConfigEntry<int?>(ADMINPIN_CONFIGENTRY);
 
             if (_adminPin.HasValue)
             {
                 _log.Info($"Admin pin is '{_adminPin.Value}'");
             }
+            else
             {
                 _log.Info("No admin pin detected. Admin mode deactivated.");
             }
         }
 
-        public void Stop()
-        { }
+        public void Stop() { }
 
-        public bool AdminModeEnabled()
-        {
-            return _adminPin.HasValue;
-        }
+        public bool AdminModeEnabled() => _adminPin.HasValue;
 
         public bool AuthoriseUser(string userId, int pin)
         {
-            bool authorised = false;
+            if(pin != _adminPin)
+                return false; // Keep the users away from the key section, exit early.
 
-            if (_adminPin.HasValue)
+            lock (_lock)
             {
-                authorised = pin == _adminPin.Value;
-
-                if (authorised)
-                {
-                    lock (_lock)
-                    {
-                        _admins.Add(userId);
-                    }
-                }
+                _admins.Add(userId);
+                return true;
             }
-
-            return authorised;
         }
 
         public bool AuthenticateUser(string userId)
