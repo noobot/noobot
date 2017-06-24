@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net;
+
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+
 using Noobot.Core.MessagingPipeline.Middleware;
 using Noobot.Core.MessagingPipeline.Request;
 using Noobot.Core.MessagingPipeline.Response;
 using Noobot.Core.Plugins.StandardPlugins;
+
 using RestSharp;
 
 namespace Noobot.Toolbox.Pipeline.Middleware
@@ -18,39 +22,41 @@ namespace Noobot.Toolbox.Pipeline.Middleware
         {
             _statsPlugin = statsPlugin;
             HandlerMappings = new[]
-            {
-                new HandlerMapping
-                {
-                    ValidHandles = new [] { "joke", "tell me a joke"},
-                    Description = "Tells a random joke",
-                    EvaluatorFunc = JokeHandler
-                }
-            };
+                              {
+                                  new HandlerMapping
+                                  {
+                                      ValidHandles = new[] {"joke", "tell me a joke"},
+                                      Description = "Tells a random joke",
+                                      EvaluatorFunc = JokeHandler
+                                  }
+                              };
         }
 
         private IEnumerable<ResponseMessage> JokeHandler(IncomingMessage message, string matchedHandle)
         {
             yield return message.IndicateTypingOnChannel();
 
-            IRestResponse jokeResponse = new Random().Next(0, 100) < 80 ? GetTambalJoke() : GetMommaJoke();
+            IRestResponse jokeResponse = new Random().Next(0, 9) % 2 == 0 ? GetChuckNorrisJoke() : GetMommaJoke();
             if (jokeResponse.StatusCode == HttpStatusCode.OK)
             {
                 _statsPlugin.IncrementState("Jokes:Told");
-                var joke = JsonConvert.DeserializeObject<JokeContainer>(jokeResponse.Content);
+                var jokeObject = JObject.Parse(jokeResponse.Content);
+                var jokeString = $"{{ {jokeObject.SelectToken("$..joke").Parent} }}";
+                var joke = JsonConvert.DeserializeObject<JokeContainer>(jokeString);
 
                 yield return message.ReplyToChannel(joke.Joke);
             }
             else
             {
                 _statsPlugin.IncrementState("Jokes:Failed");
-                yield return message.ReplyToChannel($"Dam, I can't think of one. [{jokeResponse.StatusCode}]");
+                yield return message.ReplyToChannel($"Damn, I can't think of one. [{jokeResponse.StatusCode}]");
             }
         }
 
-        private IRestResponse GetTambalJoke()
+        private IRestResponse GetChuckNorrisJoke()
         {
-            var client = new RestClient("http://tambal.azurewebsites.net");
-            var request = new RestRequest("/joke/random", Method.GET);
+            var client = new RestClient("http://api.icndb.com");
+            var request = new RestRequest("/jokes/random", Method.GET);
             return client.Execute(request);
         }
 
@@ -63,6 +69,7 @@ namespace Noobot.Toolbox.Pipeline.Middleware
 
         private class JokeContainer
         {
+            [JsonProperty("joke", Required = Required.Always)]
             public string Joke { get; set; }
         }
     }
