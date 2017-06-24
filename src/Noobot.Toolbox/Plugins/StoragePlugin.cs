@@ -13,6 +13,7 @@ namespace Noobot.Toolbox.Plugins
 {
     public class StoragePlugin : IPlugin
     {
+        private const string DATA_DIRECTORY = "data";
         private readonly ILog _log;
         private string _directory;
 
@@ -23,15 +24,14 @@ namespace Noobot.Toolbox.Plugins
 
         public void Start()
         {
-            _directory = Path.Combine(Environment.CurrentDirectory, "data");
+            _directory = Path.Combine(Environment.CurrentDirectory, DATA_DIRECTORY);
             if (!Directory.Exists(_directory))
             {
                 Directory.CreateDirectory(_directory);
             }
         }
 
-        public void Stop()
-        { }
+        public void Stop() { }
 
         public T[] ReadFile<T>(string fileName) where T : class, new()
         {
@@ -41,16 +41,11 @@ namespace Noobot.Toolbox.Plugins
                 File.Create(filePath).Dispose();
             }
 
-            IFlatFileEngine engine = GetFlatFileEngine<T>();
-            MethodInfo decorateMethod = engine.GetType().GetMethod("Read");
-            MethodInfo generic = decorateMethod.MakeGenericMethod(typeof(T));
-
             try
             {
                 using (var stream = new FileStream(filePath, FileMode.Open))
                 {
-                    var results = generic.Invoke(engine, new object[] { stream }) as IEnumerable<T>;
-                    return results?.ToArray();
+                    return GetFlatFileEngine<T>().Read<T>(stream)?.ToArray();
                 }
             }
             catch (FormatException ex)
@@ -69,22 +64,8 @@ namespace Noobot.Toolbox.Plugins
 
             using (var stream = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.Write))
             {
-                IFlatFileEngine engine = GetFlatFileEngine<T>();
-
-                MethodInfo decorateMethod = engine.GetType().GetMethod("Write");
-                MethodInfo generic = decorateMethod.MakeGenericMethod(typeof(T));
-                generic.Invoke(engine, new object[] { stream, objects });
+                GetFlatFileEngine<T>().Write(stream, objects);
             }
-        }
-
-        private static IFlatFileEngine GetFlatFileEngine<T>() where T : class, new()
-        {
-            var factory = new DelimitedFileEngineFactory();
-
-            MethodInfo method = typeof(FlatFileEngineFactoryExtensions).GetMethod("GetEngine");
-
-            MethodInfo generic = method.MakeGenericMethod(typeof(T));
-            return generic.Invoke(factory, new object[] { factory, null }) as IFlatFileEngine;
         }
 
         public void DeleteFile(string fileName)
@@ -96,9 +77,10 @@ namespace Noobot.Toolbox.Plugins
             }
         }
 
-        private string GetFilePath(string fileName)
-        {
-            return Path.Combine(_directory, fileName + ".txt");
-        }
+        private static IFlatFileEngine GetFlatFileEngine<T>() where T : class, new() => 
+            new DelimitedFileEngineFactory().GetEngine<T>();
+
+        private string GetFilePath(string fileName) => 
+            Path.Combine(_directory, fileName + ".txt");
     }
 }
