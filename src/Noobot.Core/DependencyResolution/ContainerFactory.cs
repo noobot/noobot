@@ -2,36 +2,33 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+
 using Common.Logging;
+
 using Noobot.Core.Configuration;
-using Noobot.Core.Logging;
 using Noobot.Core.MessagingPipeline.Middleware;
 using Noobot.Core.MessagingPipeline.Middleware.StandardMiddleware;
 using Noobot.Core.Plugins.StandardPlugins;
+
 using StructureMap;
-using StructureMap.Graph;
 using StructureMap.Pipeline;
 
 namespace Noobot.Core.DependencyResolution
 {
     public class ContainerFactory : IContainerFactory
     {
-        private readonly IConfiguration _configuration;
         private readonly IConfigReader _configReader;
+        private readonly IConfiguration _configuration;
         private readonly ILog _logger;
 
         private readonly Type[] _singletons =
         {
             typeof(INoobotCore),
             typeof(NoobotCore),
-            typeof(IConfigReader),
+            typeof(IConfigReader)
         };
 
-        public ContainerFactory(IConfiguration configuration, IConfigReader configReader)
-            : this(configuration, configReader, null)
-        { }
-
-        public ContainerFactory(IConfiguration configuration, IConfigReader configReader, ILog logger)
+        public ContainerFactory(IConfiguration configuration, IConfigReader configReader, ILog logger = null)
         {
             _configuration = configuration;
             _configReader = configReader;
@@ -101,9 +98,14 @@ namespace Noobot.Core.DependencyResolution
 
             registry.For<IMiddleware>().Use<UnhandledMessageMiddleware>();
 
-            // defined here so they can be overridden
-            registry.For<IMiddleware>().DecorateAllWith<AboutMiddleware>();
-            registry.For<IMiddleware>().DecorateAllWith<StatsMiddleware>();
+            if (_configReader.AboutEnabled)
+            {
+                registry.For<IMiddleware>().DecorateAllWith<AboutMiddleware>();
+            }
+            if (_configReader.StatsEnabled)
+            {
+                registry.For<IMiddleware>().DecorateAllWith<StatsMiddleware>();
+            }
 
             while (pipeline.Any())
             {
@@ -116,7 +118,7 @@ namespace Noobot.Core.DependencyResolution
                 generic.Invoke(nextDeclare, new object[] { null });
             }
 
-            if (_configReader.HelpEnabled())
+            if (_configReader.HelpEnabled)
             {
                 registry.For<IMiddleware>().DecorateAllWith<HelpMiddleware>();
             }
@@ -139,10 +141,10 @@ namespace Noobot.Core.DependencyResolution
         private Type[] SetupPlugins(Registry registry)
         {
             var pluginTypes = new List<Type>
-            {
-                typeof (StatsPlugin),
-                typeof (ConnectionPlugin)
-            };
+                              {
+                                  typeof(StatsPlugin),
+                                  typeof(ConnectionPlugin)
+                              };
 
             Type[] customPlugins = _configuration.ListPluginTypes() ?? new Type[0];
             pluginTypes.AddRange(customPlugins);
