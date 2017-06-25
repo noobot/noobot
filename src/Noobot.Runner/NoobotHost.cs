@@ -15,6 +15,11 @@ namespace Noobot.Runner
         private readonly ILog _logger;
         private INoobotCore _noobotCore;
 
+        /// <summary>
+        /// Default constructor will use the default ConfigReader from Core.Configuration 
+        /// and look for the configuration file at .\configuration\config.json
+        /// </summary>
+        public NoobotHost() : this(new ConfigReader()) { }
         public NoobotHost(IConfigReader configReader)
         {
             _configReader = configReader;
