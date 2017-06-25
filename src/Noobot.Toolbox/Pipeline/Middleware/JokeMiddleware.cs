@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net;
-
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-
 using Noobot.Core.MessagingPipeline.Middleware;
 using Noobot.Core.MessagingPipeline.Request;
 using Noobot.Core.MessagingPipeline.Response;
 using Noobot.Core.Plugins.StandardPlugins;
-
 using RestSharp;
 
 namespace Noobot.Toolbox.Pipeline.Middleware
