@@ -11,6 +11,18 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Noobot.Tests.Unit", "src\No
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{CED3B884-FB67-458E-A558-FA9BA57E99DD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Noobot.Toolbox", "src\Noobot.Toolbox\Noobot.Toolbox.csproj", "{5794B29F-234C-4B12-AAE4-B31363F78C8D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C48D2C86-75FC-4AB6-8FEF-77FCC32DF0D7}"
+	ProjectSection(SolutionItems) = preProject
+		.gitattributes = .gitattributes
+		.gitignore = .gitignore
+		build.ps1 = build.ps1
+		install-as-service.ps1 = install-as-service.ps1
+		LICENSE = LICENSE
+		README.md = README.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,6 +41,10 @@ Global
 		{37E2E8FC-64CD-48D0-8784-BCA21D58DFA4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{37E2E8FC-64CD-48D0-8784-BCA21D58DFA4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{37E2E8FC-64CD-48D0-8784-BCA21D58DFA4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5794B29F-234C-4B12-AAE4-B31363F78C8D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5794B29F-234C-4B12-AAE4-B31363F78C8D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5794B29F-234C-4B12-AAE4-B31363F78C8D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5794B29F-234C-4B12-AAE4-B31363F78C8D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
