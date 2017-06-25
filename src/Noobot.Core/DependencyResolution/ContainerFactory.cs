@@ -2,14 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-
 using Common.Logging;
-
 using Noobot.Core.Configuration;
 using Noobot.Core.MessagingPipeline.Middleware;
 using Noobot.Core.MessagingPipeline.Middleware.StandardMiddleware;
 using Noobot.Core.Plugins.StandardPlugins;
-
 using StructureMap;
 using StructureMap.Pipeline;
 
