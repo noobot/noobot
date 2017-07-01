@@ -18,14 +18,21 @@ namespace Noobot.Core.MessagingPipeline.Middleware.StandardMiddleware
             {
                 new HandlerMapping
                 {
-                    ValidHandles = new []{ "stats" },
+                    ValidHandles = new []
+                    {
+                        new ValidHandle
+                        {
+                            MatchType = ValidHandle.ValidHandleMatchType.StartsWith,
+                            MatchText = "stats"
+                        }
+                    },
                     Description = "Returns interesting stats about your noobot installation",
                     EvaluatorFunc = StatsHandler
                 }
             };
         }
 
-        private IEnumerable<ResponseMessage> StatsHandler(IncomingMessage message, string matchedHandle)
+        private IEnumerable<ResponseMessage> StatsHandler(IncomingMessage message, ValidHandle matchedHandle)
         {
             string textMessage = string.Join(Environment.NewLine, _statsPlugin.GetStats().OrderBy(x => x));
 

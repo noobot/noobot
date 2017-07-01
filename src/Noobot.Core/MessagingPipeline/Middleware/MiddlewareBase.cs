@@ -26,15 +26,38 @@ namespace Noobot.Core.MessagingPipeline.Middleware
         {
             foreach (var handlerMapping in HandlerMappings)
             {
-                foreach (string map in handlerMapping.ValidHandles)
+                foreach (ValidHandle map in handlerMapping.ValidHandles)
                 {
-                    string text = message.FullText;
+
+                    //check the handler type, and then match the text in the appropriate fashion
+                    string messageText = message.FullText;
                     if (handlerMapping.MessageShouldTargetBot)
                     {
-                        text = message.TargetedText;
+                        messageText = message.TargetedText;
                     }
 
-                    if (text.StartsWith(map, StringComparison.InvariantCultureIgnoreCase))
+                    //check the handler type, and then match the text in the appropriate fashion
+                    bool isMatch = false;
+                    switch (map.MatchType) {
+                        case ValidHandle.ValidHandleMatchType.ProcessAll:
+                            isMatch = true;
+                            break;
+                        case ValidHandle.ValidHandleMatchType.ExactMatch:
+                            isMatch = messageText.Equals(map.MatchText, StringComparison.InvariantCultureIgnoreCase);
+                            break;
+                        case ValidHandle.ValidHandleMatchType.StartsWith:
+                            isMatch = messageText.StartsWith(map.MatchText, StringComparison.InvariantCultureIgnoreCase);
+                            break;
+                        case ValidHandle.ValidHandleMatchType.Contains:
+                            isMatch = messageText.IndexOf(map.MatchText, StringComparison.InvariantCultureIgnoreCase) >= 0;
+                            break;
+                        case ValidHandle.ValidHandleMatchType.RegEx:
+                            isMatch = System.Text.RegularExpressions.Regex.IsMatch(messageText, map.MatchText, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+                            break;
+                    }
+
+
+                    if (isMatch)
                     {
                         //TODO: How to do this
                         //_log.Log($"Matched '{map}' on '{this.GetType().Name}'");

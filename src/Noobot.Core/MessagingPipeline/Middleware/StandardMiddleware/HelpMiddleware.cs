@@ -18,14 +18,26 @@ namespace Noobot.Core.MessagingPipeline.Middleware.StandardMiddleware
             {
                 new HandlerMapping
                 {
-                    ValidHandles = new[] {"help", "yo tell me more"},
+                    ValidHandles = new []
+                    {
+                        new ValidHandle
+                        {
+                            MatchType = ValidHandle.ValidHandleMatchType.StartsWith,
+                            MatchText = "help"
+                        },
+                        new ValidHandle
+                        {
+                            MatchType = ValidHandle.ValidHandleMatchType.ExactMatch,
+                            MatchText = "yo tell me more"
+                        }
+                    },
                     Description = "Returns supported commands and descriptions of how to use them",
                     EvaluatorFunc = HelpHandler
                 }
             };
         }
 
-        private IEnumerable<ResponseMessage> HelpHandler(IncomingMessage message, string matchedHandle)
+        private IEnumerable<ResponseMessage> HelpHandler(IncomingMessage message, ValidHandle matchedHandle)
         {
             var builder = new StringBuilder();
             builder.Append(">>>");

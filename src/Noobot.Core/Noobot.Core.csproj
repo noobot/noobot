@@ -87,6 +87,7 @@
     <Compile Include="MessagingPipeline\Middleware\StandardMiddleware\StatsMiddleware.cs" />
     <Compile Include="MessagingPipeline\Middleware\StandardMiddleware\AboutMiddleware.cs" />
     <Compile Include="MessagingPipeline\Middleware\StandardMiddleware\HelpMiddleware.cs" />
+    <Compile Include="MessagingPipeline\Middleware\ValidHandle.cs" />
     <Compile Include="MessagingPipeline\Request\Extensions\IncomingMessageExtensions.cs" />
     <Compile Include="MessagingPipeline\Request\IncomingMessage.cs" />
     <Compile Include="MessagingPipeline\Middleware\MiddlewareBase.cs" />
