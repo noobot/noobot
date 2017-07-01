@@ -13,7 +13,17 @@
         /// <summary>
         /// Should the "help" middleware be used?
         /// </summary>
-        bool HelpEnabled();
+        bool HelpEnabled { get; }
+
+        /// <summary>
+        /// Should the "stats" middleware be used?
+        /// </summary>
+        bool StatsEnabled { get; }
+
+        /// <summary>
+        /// Should the "about" middleware be used?
+        /// </summary>
+        bool AboutEnabled { get; }
 
         /// <summary>
         /// Should return any other configuration values you need within your middleware/plugins.
