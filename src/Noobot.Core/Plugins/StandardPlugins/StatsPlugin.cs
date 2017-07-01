@@ -86,8 +86,7 @@ namespace Noobot.Core.Plugins.StandardPlugins
 
         public void Stop()
         {
-            _log.Info("End stats:");
-            _log.Info(string.Join(Environment.NewLine + "   ", GetStats()));
+            _log.Info($"End stats: {Environment.NewLine}\t{string.Join(Environment.NewLine + "\t", GetStats())}");
         }
     }
 }

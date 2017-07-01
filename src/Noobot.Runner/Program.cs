@@ -1,19 +1,15 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
-using Noobot.Core.Configuration;
-using Noobot.Runner.Configuration;
 using Topshelf;
 
 namespace Noobot.Runner
 {
     public class Program
     {
-        private static readonly IConfigReader ConfigReader = new ConfigReader();
-
         public static void Main(string[] args)
         {
-            Directory.SetCurrentDirectory(System.AppDomain.CurrentDomain.BaseDirectory);
+            Directory.SetCurrentDirectory(AppDomain.CurrentDomain.BaseDirectory);
 
             Console.WriteLine($"Noobot assembly version: {Assembly.GetExecutingAssembly().GetName().Version}");
 
@@ -21,13 +17,19 @@ namespace Noobot.Runner
             {
                 x.Service<NoobotHost>(s =>
                 {
-                    s.ConstructUsing(name => new NoobotHost(ConfigReader));
+                    // EXAMPLE: Simple construction using default values:
+                    //s.ConstructUsing(_ => new NoobotHost());
 
-                    s.WhenStarted(n =>
-                    {
-                        n.Start();
-                    });
+                    // EXAMPLE: Construction with customised values:
+                    //s.ConstructUsing(_ => new NoobotHost(new ConfigReader(@"configuration\config.json")
+                    //{
+                    //    AboutEnabled = true,
+                    //    HelpEnabled = true,
+                    //    StatsEnabled = true
+                    //}));
 
+                    s.ConstructUsing(_ => new NoobotHost());
+                    s.WhenStarted(n => n.Start());
                     s.WhenStopped(n => n.Stop());
                 });
 

@@ -8,7 +8,7 @@
         /// <summary>
         /// Should return the API key required to connect to your team.
         /// </summary>
-        string SlackApiKey();
+        string SlackApiKey { get; }
 
         /// <summary>
         /// Should the "help" middleware be used?

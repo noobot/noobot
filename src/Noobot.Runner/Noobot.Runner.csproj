@@ -67,7 +67,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Configuration\ConfigReader.cs" />
     <Compile Include="NoobotHost.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
