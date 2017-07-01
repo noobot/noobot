@@ -15,6 +15,7 @@ namespace Noobot.Toolbox.Plugins
     internal class SchedulePlugin : IPlugin
     {
         private string FileName { get; } = "schedules";
+
         private readonly StoragePlugin _storagePlugin;
         private readonly INoobotCore _noobotCore;
         private readonly StatsPlugin _statsPlugin;
@@ -22,6 +23,8 @@ namespace Noobot.Toolbox.Plugins
         private readonly object _lock = new object();
         private readonly List<ScheduleEntry> _schedules = new List<ScheduleEntry>();
         private readonly Timer _timer = new Timer(TimeSpan.FromSeconds(10).TotalMilliseconds);
+
+        private static bool IsCurrentlyNight() => DateTime.Now.TimeOfDay > TimeSpan.FromHours(20) || DateTime.Now.TimeOfDay < TimeSpan.FromHours(5);
 
         public SchedulePlugin(StoragePlugin storagePlugin, INoobotCore noobotCore, StatsPlugin statsPlugin, ILog log)
         {
@@ -35,8 +38,7 @@ namespace Noobot.Toolbox.Plugins
         {
             lock (_lock)
             {
-                ScheduleEntry[] schedules = _storagePlugin.ReadFile<ScheduleEntry>(FileName);
-                _schedules.AddRange(schedules);
+                _schedules.AddRange(_storagePlugin.ReadFile<ScheduleEntry>(FileName));
 
                 _timer.Elapsed += RunSchedules;
                 _timer.Start();
@@ -46,7 +48,6 @@ namespace Noobot.Toolbox.Plugins
         public void Stop()
         {
             _timer.Stop();
-            Save();
         }
 
         public void AddSchedule(ScheduleEntry schedule)
@@ -63,13 +64,12 @@ namespace Noobot.Toolbox.Plugins
         {
             lock (_lock)
             {
-                ScheduleEntry[] schedules = _schedules
-                                                .Where(x => x.Channel == channel)
-                                                .OrderBy(x => x.RunEvery)
-                                                .ThenByDescending(x => x.LastRun)
-                                                .ThenBy(x => x.Command)
-                                                .ToArray();
-                return schedules;
+                return _schedules
+                    .Where(x => x.Channel == channel)
+                    .OrderBy(x => x.RunEvery)
+                    .ThenByDescending(x => x.LastRun)
+                    .ThenBy(x => x.Command)
+                    .ToArray();
             }
         }
 
@@ -77,12 +77,11 @@ namespace Noobot.Toolbox.Plugins
         {
             lock (_lock)
             {
-                ScheduleEntry[] schedules = _schedules
-                                                .OrderBy(x => x.RunEvery)
-                                                .ThenByDescending(x => x.LastRun)
-                                                .ThenBy(x => x.Command)
-                                                .ToArray();
-                return schedules;
+                return _schedules
+                    .OrderBy(x => x.RunEvery)
+                    .ThenByDescending(x => x.LastRun)
+                    .ThenBy(x => x.Command)
+                    .ToArray();
             }
         }
 
@@ -116,8 +115,6 @@ namespace Noobot.Toolbox.Plugins
                     ExecuteSchedule(schedule);
                 }
             }
-
-            Save();
         }
 
         private void ExecuteSchedule(ScheduleEntry schedule)
@@ -154,17 +151,12 @@ namespace Noobot.Toolbox.Plugins
                 shouldRun = true;
             }
 
-            if (shouldRun & schedule.RunOnlyAtNight)
+            if (shouldRun && schedule.RunOnlyAtNight)
             {
                 shouldRun = IsCurrentlyNight();
             }
 
             return shouldRun;
-        }
-
-        private static bool IsCurrentlyNight()
-        {
-            return DateTime.Now.TimeOfDay > new TimeSpan(20, 00, 00) || DateTime.Now.TimeOfDay < TimeSpan.FromHours(5);
         }
 
         private void Save()
@@ -196,14 +188,9 @@ namespace Noobot.Toolbox.Plugins
             [DelimitedField(8)]
             public bool RunOnlyAtNight { get; set; }
 
-            public override string ToString()
-            {
-                return $"Running command `'{Command}'` every `'{RunEvery}'`. Last run at `'{LastRun}'`. Runs only at night: `{RunOnlyAtNight}`.";
-            }
-            public string ToString(int id)
-            {
-                return $"Id: `{id}`. {this}";
-            }
+            public override string ToString() => $"Running command `'{Command}'` every `'{RunEvery}'`. Last run at `'{LastRun}'`. Runs only at night: `{RunOnlyAtNight}`.";
+
+            public string ToString(int id) => $"Id: `{id}`. {this}";
         }
     }
 }
