@@ -17,24 +17,19 @@ namespace Noobot.Core.MessagingPipeline.Middleware
             HandlerMappings = HandlerMappings ?? new HandlerMapping[0];
         }
 
-        protected IEnumerable<ResponseMessage> Next(IncomingMessage message)
-        {
-            return _next.Invoke(message);
-        }
+        protected IEnumerable<ResponseMessage> Next(IncomingMessage message) => _next.Invoke(message);
 
         public virtual IEnumerable<ResponseMessage> Invoke(IncomingMessage message)
         {
             foreach (var handlerMapping in HandlerMappings)
             {
-                foreach (string map in handlerMapping.ValidHandles)
+                foreach (var map in handlerMapping.ValidHandles)
                 {
-                    string text = message.FullText;
-                    if (handlerMapping.MessageShouldTargetBot)
-                    {
-                        text = message.TargetedText;
-                    }
-
-                    if (text.StartsWith(map, StringComparison.InvariantCultureIgnoreCase))
+                    var evaluatedText = handlerMapping.MessageShouldTargetBot 
+                        ? message.TargetedText 
+                        : message.FullText;
+                    
+                    if (evaluatedText.StartsWith(map, StringComparison.InvariantCultureIgnoreCase))
                     {
                         //TODO: How to do this
                         //_log.Log($"Matched '{map}' on '{this.GetType().Name}'");
@@ -79,5 +74,7 @@ namespace Noobot.Core.MessagingPipeline.Middleware
                 yield return commandDescription;
             }
         }
+
+        protected ResponseMessage A(IncomingMessage msg, string text) => msg.ReplyDirectlyToUser(text);
     }
 }
