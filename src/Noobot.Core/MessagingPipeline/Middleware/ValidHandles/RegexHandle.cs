@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace Noobot.Core.MessagingPipeline.Middleware.ValidHandles
 {
@@ -22,5 +23,13 @@ namespace Noobot.Core.MessagingPipeline.Middleware.ValidHandles
         }
 
         public string HandleHelpText { get; }
+
+        public static IValidHandle[] For(params string[] regexPatterns)
+        {
+            return regexPatterns
+                .Select(x => new RegexHandle(x))
+                .Cast<IValidHandle>()
+                .ToArray();
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace Noobot.Core.MessagingPipeline.Middleware.ValidHandles
 {
@@ -17,5 +18,13 @@ namespace Noobot.Core.MessagingPipeline.Middleware.ValidHandles
         }
 
         public string HandleHelpText => _containsText;
+
+        public static IValidHandle[] For(params string[] containsText)
+        {
+            return containsText
+                .Select(x => new ContainsTextHandle(x))
+                .Cast<IValidHandle>()
+                .ToArray();
+        }
     }
 }
