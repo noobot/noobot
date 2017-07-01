@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Noobot.Core.MessagingPipeline.Middleware.ValidHandles;
 using Noobot.Core.MessagingPipeline.Request;
 using Noobot.Core.MessagingPipeline.Response;
 
@@ -13,13 +14,9 @@ namespace Noobot.Core.MessagingPipeline.Middleware.StandardMiddleware
             {
                 new HandlerMapping
                 {
-                    ValidHandles = new []
+                    ValidHandles = new IValidHandle[]
                     {
-                        new ValidHandle
-                        {
-                            MatchType = ValidHandle.ValidHandleMatchType.StartsWith,
-                            MatchText = "about"
-                        }
+                        new ExactMatchHandle("about"), 
                     },
                     Description = "Tells you some stuff about this bot :-)",
                     EvaluatorFunc = AboutHandler
@@ -27,7 +24,7 @@ namespace Noobot.Core.MessagingPipeline.Middleware.StandardMiddleware
             };
         }
 
-        private IEnumerable<ResponseMessage> AboutHandler(IncomingMessage message, ValidHandle matchedHandle)
+        private IEnumerable<ResponseMessage> AboutHandler(IncomingMessage message, IValidHandle matchedHandle)
         {
             yield return message.ReplyDirectlyToUser("Noobot - Created by Simon Colmer " + DateTime.Now.Year);
             yield return message.ReplyDirectlyToUser("I am an extensible SlackBot built in C# using loads of awesome open source projects.");

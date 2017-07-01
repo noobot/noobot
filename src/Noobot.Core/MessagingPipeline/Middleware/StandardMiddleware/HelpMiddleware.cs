@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Noobot.Core.MessagingPipeline.Middleware.ValidHandles;
 using Noobot.Core.MessagingPipeline.Request;
 using Noobot.Core.MessagingPipeline.Response;
 
@@ -18,18 +19,10 @@ namespace Noobot.Core.MessagingPipeline.Middleware.StandardMiddleware
             {
                 new HandlerMapping
                 {
-                    ValidHandles = new []
+                    ValidHandles = new IValidHandle[]
                     {
-                        new ValidHandle
-                        {
-                            MatchType = ValidHandle.ValidHandleMatchType.StartsWith,
-                            MatchText = "help"
-                        },
-                        new ValidHandle
-                        {
-                            MatchType = ValidHandle.ValidHandleMatchType.ExactMatch,
-                            MatchText = "yo tell me more"
-                        }
+                        new StartsWithHandle("help"),
+                        new ExactMatchHandle("yo tell me more")
                     },
                     Description = "Returns supported commands and descriptions of how to use them",
                     EvaluatorFunc = HelpHandler
@@ -37,7 +30,7 @@ namespace Noobot.Core.MessagingPipeline.Middleware.StandardMiddleware
             };
         }
 
-        private IEnumerable<ResponseMessage> HelpHandler(IncomingMessage message, ValidHandle matchedHandle)
+        private IEnumerable<ResponseMessage> HelpHandler(IncomingMessage message, IValidHandle matchedHandle)
         {
             var builder = new StringBuilder();
             builder.Append(">>>");

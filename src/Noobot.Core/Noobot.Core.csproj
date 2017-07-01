@@ -88,6 +88,12 @@
     <Compile Include="MessagingPipeline\Middleware\StandardMiddleware\AboutMiddleware.cs" />
     <Compile Include="MessagingPipeline\Middleware\StandardMiddleware\HelpMiddleware.cs" />
     <Compile Include="MessagingPipeline\Middleware\ValidHandle.cs" />
+    <Compile Include="MessagingPipeline\Middleware\ValidHandles\AlwaysMatchHandle.cs" />
+    <Compile Include="MessagingPipeline\Middleware\ValidHandles\ContainsTextHandle.cs" />
+    <Compile Include="MessagingPipeline\Middleware\ValidHandles\ExactMatchHandle.cs" />
+    <Compile Include="MessagingPipeline\Middleware\ValidHandles\IValidHandle.cs" />
+    <Compile Include="MessagingPipeline\Middleware\ValidHandles\RegexHandle.cs" />
+    <Compile Include="MessagingPipeline\Middleware\ValidHandles\StartsWithHandle.cs" />
     <Compile Include="MessagingPipeline\Request\Extensions\IncomingMessageExtensions.cs" />
     <Compile Include="MessagingPipeline\Request\IncomingMessage.cs" />
     <Compile Include="MessagingPipeline\Middleware\MiddlewareBase.cs" />

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Noobot.Core.MessagingPipeline.Middleware.ValidHandles;
 using Noobot.Core.MessagingPipeline.Request;
 using Noobot.Core.MessagingPipeline.Response;
 using Noobot.Core.Plugins.StandardPlugins;
@@ -18,13 +19,9 @@ namespace Noobot.Core.MessagingPipeline.Middleware.StandardMiddleware
             {
                 new HandlerMapping
                 {
-                    ValidHandles = new []
+                    ValidHandles = new IValidHandle[]
                     {
-                        new ValidHandle
-                        {
-                            MatchType = ValidHandle.ValidHandleMatchType.StartsWith,
-                            MatchText = "stats"
-                        }
+                        new ExactMatchHandle("stats"), 
                     },
                     Description = "Returns interesting stats about your noobot installation",
                     EvaluatorFunc = StatsHandler
@@ -32,7 +29,7 @@ namespace Noobot.Core.MessagingPipeline.Middleware.StandardMiddleware
             };
         }
 
-        private IEnumerable<ResponseMessage> StatsHandler(IncomingMessage message, ValidHandle matchedHandle)
+        private IEnumerable<ResponseMessage> StatsHandler(IncomingMessage message, IValidHandle matchedHandle)
         {
             string textMessage = string.Join(Environment.NewLine, _statsPlugin.GetStats().OrderBy(x => x));
 
