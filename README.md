@@ -42,3 +42,6 @@ Read how to get Noobot up and running quickly on the [wiki](https://github.com/n
 
 ## How to customise
 To customise Noobot please have a look at our [wiki: https://github.com/noobot/noobot/wiki](https://github.com/noobot/noobot/wiki)
+
+## Toolbox
+You can find the ToolBox nuget package [here](https://github.com/noobot/Noobot.Toolbox)
