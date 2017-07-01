@@ -1,6 +1,6 @@
 ﻿using Noobot.Core;
+using Noobot.Core.Configuration;
 using Noobot.Core.Logging;
-using Noobot.Runner.Configuration;
 using Noobot.Tests.Unit.Stubs.MessagingPipeline;
 using NUnit.Framework;
 

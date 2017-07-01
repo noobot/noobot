@@ -36,7 +36,7 @@ namespace Noobot.Core
 
         public async Task Connect()
         {
-            string slackKey = _configReader.SlackApiKey();
+            string slackKey = _configReader.SlackApiKey;
 
             var connector = new SlackConnector.SlackConnector();
             _connection = await connector.Connect(slackKey);

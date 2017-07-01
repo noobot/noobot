@@ -1,5 +1,4 @@
 ﻿using Noobot.Core.Configuration;
-using Noobot.Runner.Configuration;
 using NUnit.Framework;
 using Should;
 
@@ -15,7 +14,7 @@ namespace Noobot.Tests.Unit.Core.Configuration
             var reader = new ConfigReader();
 
             // when
-            string slackKey = reader.SlackApiKey();
+            string slackKey = reader.SlackApiKey;
 
             // then
             slackKey.ShouldNotBeNull();
