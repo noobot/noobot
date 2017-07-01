@@ -1,6 +1,4 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Noobot.Core;
 using Noobot.Core.Configuration;
 using Noobot.Core.Logging;
