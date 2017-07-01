@@ -23,9 +23,12 @@ namespace Noobot.Core.Configuration
         public bool StatsEnabled { get; set; } = true;
         public bool AboutEnabled { get; set; } = true;
 
-        public string SlackApiKey => GetConfigEntry<JObject>(SLACKAPI_CONFIGVALUE).Value<string>();
+        public string SlackApiKey => GetConfigEntry<string>(SLACKAPI_CONFIGVALUE);
 
-        public T GetConfigEntry<T>(string entryName) => GetJObject().Value<T>(entryName);
+        public T GetConfigEntry<T>(string entryName)
+        {
+            return GetJObject().Value<T>(entryName);
+        }
 
         private JObject GetJObject()
         {

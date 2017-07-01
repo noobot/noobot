@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Noobot.Core.MessagingPipeline.Middleware.ValidHandles;
 using Noobot.Core.MessagingPipeline.Request;
 using Noobot.Core.MessagingPipeline.Response;
 
@@ -9,15 +10,15 @@ namespace Noobot.Core.MessagingPipeline.Middleware
     {
         public HandlerMapping()
         {
-            ValidHandles = new string[0];
+            ValidHandles = new IValidHandle[0];
             MessageShouldTargetBot = true;
             VisibleInHelp = true;
         }
 
         /// <summary>
-        /// What the text should start with inorder to execute handler.
+        /// The various handles of different types
         /// </summary>
-        public string[] ValidHandles { get; set; }
+        public IValidHandle[] ValidHandles { get; set; }
 
         /// <summary>
         /// Description of what this handle does. This appears in the "help" function.
@@ -27,7 +28,7 @@ namespace Noobot.Core.MessagingPipeline.Middleware
         /// <summary>
         /// This is what code is run when a handle has been matched.
         /// </summary>
-        public Func<IncomingMessage, string, IEnumerable<ResponseMessage>> EvaluatorFunc { get; set; }
+        public Func<IncomingMessage, IValidHandle, IEnumerable<ResponseMessage>> EvaluatorFunc { get; set; }
 
         /// <summary>
         /// Defaults to "False". If set to True then the pipeline isn't interupted if a match occurs here. This is good for logging.

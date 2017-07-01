@@ -82,6 +82,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\Configuration\ConfigReaderTests.cs" />
+    <Compile Include="Core\MessagingPipeline\ValidHandles\AlwaysMatchHandleTests.cs" />
+    <Compile Include="Core\MessagingPipeline\ValidHandles\StartsWithHandleTests.cs" />
+    <Compile Include="Core\MessagingPipeline\ValidHandles\RegexHandleTests.cs" />
+    <Compile Include="Core\MessagingPipeline\ValidHandles\ExactMatchHandleTests.cs" />
+    <Compile Include="Core\MessagingPipeline\ValidHandles\ContainsTextHandleTests.cs" />
     <Compile Include="Core\Slack\SlackConnectorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Stubs\MessagingPipeline\NoobotContainerStub.cs" />
@@ -92,6 +97,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="app.config" />
+    <None Include="Configuration\config.default.json" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

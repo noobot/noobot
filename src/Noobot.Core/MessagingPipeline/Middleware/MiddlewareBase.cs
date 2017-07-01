@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Noobot.Core.MessagingPipeline.Middleware.ValidHandles;
 using Noobot.Core.MessagingPipeline.Request;
 using Noobot.Core.MessagingPipeline.Response;
 
@@ -26,20 +27,24 @@ namespace Noobot.Core.MessagingPipeline.Middleware
         {
             foreach (var handlerMapping in HandlerMappings)
             {
-                foreach (string map in handlerMapping.ValidHandles)
+                foreach (IValidHandle handle in handlerMapping.ValidHandles)
                 {
-                    string text = message.FullText;
+
+                    //check the handler type, and then match the text in the appropriate fashion
+                    string messageText = message.FullText;
                     if (handlerMapping.MessageShouldTargetBot)
                     {
-                        text = message.TargetedText;
+                        messageText = message.TargetedText;
                     }
-
-                    if (text.StartsWith(map, StringComparison.InvariantCultureIgnoreCase))
+                    
+                    bool isMatch = handle.IsMatch(messageText);
+                    
+                    if (isMatch)
                     {
                         //TODO: How to do this
                         //_log.Log($"Matched '{map}' on '{this.GetType().Name}'");
 
-                        foreach (var responseMessage in handlerMapping.EvaluatorFunc(message, map))
+                        foreach (var responseMessage in handlerMapping.EvaluatorFunc(message, handle))
                         {
                             yield return responseMessage;
                         }
@@ -69,7 +74,7 @@ namespace Noobot.Core.MessagingPipeline.Middleware
 
                 yield return new CommandDescription
                 {
-                    Command = string.Join(" | ", handlerMapping.ValidHandles.Select(x => $"`{x}`").OrderBy(x => x)),
+                    Command = string.Join(" | ", handlerMapping.ValidHandles.Select(x => $"`{x.HandleHelpText}`").OrderBy(x => x)),
                     Description = handlerMapping.Description
                 };
             }
