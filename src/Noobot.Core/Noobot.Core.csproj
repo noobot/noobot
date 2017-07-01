@@ -87,7 +87,6 @@
     <Compile Include="MessagingPipeline\Middleware\StandardMiddleware\StatsMiddleware.cs" />
     <Compile Include="MessagingPipeline\Middleware\StandardMiddleware\AboutMiddleware.cs" />
     <Compile Include="MessagingPipeline\Middleware\StandardMiddleware\HelpMiddleware.cs" />
-    <Compile Include="MessagingPipeline\Middleware\ValidHandle.cs" />
     <Compile Include="MessagingPipeline\Middleware\ValidHandles\AlwaysMatchHandle.cs" />
     <Compile Include="MessagingPipeline\Middleware\ValidHandles\ContainsTextHandle.cs" />
     <Compile Include="MessagingPipeline\Middleware\ValidHandles\ExactMatchHandle.cs" />
