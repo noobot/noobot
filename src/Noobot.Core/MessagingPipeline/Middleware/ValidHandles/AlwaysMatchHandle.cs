@@ -7,6 +7,6 @@
             return true;
         }
 
-        public string HandleHelpText => "<anything>";
+        public string HandleHelpText => string.Empty;
     }
 }
