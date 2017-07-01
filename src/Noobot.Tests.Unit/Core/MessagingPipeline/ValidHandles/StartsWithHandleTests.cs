@@ -24,7 +24,7 @@ namespace Noobot.Tests.Unit.Core.MessagingPipeline.ValidHandles
         public void should_return_false_when_message_doesnt_contains_text(string exactText, string message)
         {
             // given
-            var handle = new ExactMatchHandle(exactText);
+            var handle = new StartsWithHandle(exactText);
 
             // when
             bool isMatch = handle.IsMatch(message);
