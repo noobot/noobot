@@ -60,7 +60,10 @@ namespace Noobot.Core
 
             if (_connection != null && _connection.IsConnected)
             {
-                _connection.Disconnect();
+                _connection
+                    .Close()
+                    .GetAwaiter()
+                    .GetResult();
             }
         }
 
