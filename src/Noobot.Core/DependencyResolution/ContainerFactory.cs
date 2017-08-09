@@ -138,10 +138,9 @@ namespace Noobot.Core.DependencyResolution
         private Type[] SetupPlugins(Registry registry)
         {
             var pluginTypes = new List<Type>
-                              {
-                                  typeof(StatsPlugin),
-                                  typeof(ConnectionPlugin)
-                              };
+            {
+                typeof(StatsPlugin)
+            };
 
             Type[] customPlugins = _configuration.ListPluginTypes() ?? new Type[0];
             pluginTypes.AddRange(customPlugins);
