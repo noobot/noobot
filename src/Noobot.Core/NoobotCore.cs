@@ -232,13 +232,13 @@ namespace Noobot.Core
 
         public string GetUserIdForUsername(string username)
         {
-            var user = _connection.UserCache.FirstOrDefault(x => x.Value.Name.Equals(username, StringComparison.InvariantCultureIgnoreCase));
+            var user = _connection.UserCache.FirstOrDefault(x => x.Value.Name.Equals(username, StringComparison.OrdinalIgnoreCase));
             return string.IsNullOrEmpty(user.Key) ? string.Empty : user.Key;
         }
 
         public string GetChannelId(string channelName)
         {
-            var channel = _connection.ConnectedChannels().FirstOrDefault(x => x.Name.Equals(channelName, StringComparison.InvariantCultureIgnoreCase));
+            var channel = _connection.ConnectedChannels().FirstOrDefault(x => x.Name.Equals(channelName, StringComparison.OrdinalIgnoreCase));
             return channel != null ? channel.Id : string.Empty;
         }
 
@@ -292,7 +292,7 @@ namespace Noobot.Core
             if (_connection.UserCache.ContainsKey(userId))
             {
                 string username = "@" + _connection.UserCache[userId].Name;
-                chatHub = _connection.ConnectedDMs().FirstOrDefault(x => x.Name.Equals(username, StringComparison.InvariantCultureIgnoreCase));
+                chatHub = _connection.ConnectedDMs().FirstOrDefault(x => x.Name.Equals(username, StringComparison.OrdinalIgnoreCase));
             }
 
             if (chatHub == null && joinChannel)

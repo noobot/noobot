@@ -48,7 +48,7 @@ namespace Noobot.Core.Configuration
 
         private string AssemblyLocation()
         {
-            var assembly = Assembly.GetExecutingAssembly();
+            var assembly = Assembly.GetEntryAssembly();
             var codebase = new Uri(assembly.CodeBase);
             var path = Path.GetDirectoryName(codebase.LocalPath);
             return path;
