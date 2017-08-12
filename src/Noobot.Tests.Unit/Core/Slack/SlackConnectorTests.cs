@@ -3,14 +3,13 @@ using Noobot.Core;
 using Noobot.Core.Configuration;
 using Noobot.Core.Logging;
 using Noobot.Tests.Unit.Stubs.MessagingPipeline;
-using NUnit.Framework;
+using Xunit;
 
 namespace Noobot.Tests.Unit.Core.Slack
 {
-    [TestFixture]
     public class SlackConnectorTests
     {
-        [Test]
+        [Fact]
         public async Task should_connect_as_expected()
         {
             // given

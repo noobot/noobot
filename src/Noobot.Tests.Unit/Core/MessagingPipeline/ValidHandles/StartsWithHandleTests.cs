@@ -1,12 +1,14 @@
 ﻿using Noobot.Core.MessagingPipeline.Middleware.ValidHandles;
-using NUnit.Framework;
+using Should;
+using Xunit;
 
 namespace Noobot.Tests.Unit.Core.MessagingPipeline.ValidHandles
 {
     public class StartsWithHandleTests
     {
-        [TestCase("I am", "i am lord bucket head")]
-        [TestCase("what", "what should I do next?")]
+        [Theory]
+        [InlineData("I am", "i am lord bucket head")]
+        [InlineData("what", "what should I do next?")]
         public void should_return_true_when_message_contains_text(string startsWith, string message)
         {
             // given
@@ -16,11 +18,12 @@ namespace Noobot.Tests.Unit.Core.MessagingPipeline.ValidHandles
             bool isMatch = handle.IsMatch(message);
 
             // then
-            Assert.That(isMatch, Is.True);
+            isMatch.ShouldBeTrue();
         }
 
-        [TestCase("simon", "PAUL")]
-        [TestCase("something else", "who wants lunch?")]
+        [Theory]
+        [InlineData("simon", "PAUL")]
+        [InlineData("something else", "who wants lunch?")]
         public void should_return_false_when_message_doesnt_contains_text(string exactText, string message)
         {
             // given
@@ -30,7 +33,7 @@ namespace Noobot.Tests.Unit.Core.MessagingPipeline.ValidHandles
             bool isMatch = handle.IsMatch(message);
 
             // then
-            Assert.That(isMatch, Is.False);
+            isMatch.ShouldBeFalse();
         }
     }
 }
