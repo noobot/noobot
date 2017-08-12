@@ -1,13 +1,12 @@
 ﻿using Noobot.Core.Configuration;
-using NUnit.Framework;
 using Should;
+using Xunit;
 
 namespace Noobot.Tests.Unit.Core.Configuration
 {
-    [TestFixture]
     public class ConfigReaderTests
     {
-        [Test]
+        [Fact]
         public void should_read_config()
         {
             // given
