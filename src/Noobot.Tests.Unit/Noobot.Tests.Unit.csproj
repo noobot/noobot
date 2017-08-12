@@ -175,8 +175,8 @@
     <Reference Include="xunit.execution.desktop, Version=2.2.0.3545, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
       <HintPath>..\..\packages\xunit.extensibility.execution.2.2.0\lib\net452\xunit.execution.desktop.dll</HintPath>
     </Reference>
-    <Reference Include="xunit.should, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\xunit.should.1.1\lib\net35\xunit.should.dll</HintPath>
+    <Reference Include="XunitShouldExtension, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Xunit.Should.Extension.1.0.1\lib\XunitShouldExtension.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -197,7 +197,9 @@
     </None>
     <None Include="app.config" />
     <None Include="Configuration\config.default.json" />
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Noobot.Core\Noobot.Core.csproj">
