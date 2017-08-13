@@ -2,7 +2,6 @@
 using Should;
 using Xunit;
 
-
 namespace Noobot.Tests.Unit.Core.MessagingPipeline.ValidHandles
 {
     public class RegexHandleTests
