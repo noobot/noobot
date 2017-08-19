@@ -42,12 +42,8 @@ namespace Noobot.Core
             _connection = await connector.Connect(slackKey);
             _connection.OnMessageReceived += MessageReceived;
             _connection.OnDisconnect += OnDisconnect;
-            _connection.OnReconnect += () =>
-            {
-                _log.Info("Connection Restored!");
-                _container.GetPlugin<StatsPlugin>().IncrementState("ConnectionsRestored");
-                return Task.CompletedTask;
-            };
+            _connection.OnReconnecting += OnReconnecting;
+            _connection.OnReconnect += OnReconnect;
 
             _log.Info("Connected!");
             _log.Info($"Bots Name: {_connection.Self.Name}");
@@ -57,6 +53,20 @@ namespace Noobot.Core
             _container.GetPlugin<StatsPlugin>()?.RecordStat("Response:Average", _averageResponse);
 
             StartPlugins();
+        }
+
+        private Task OnReconnect()
+        {
+            _log.Info("Connection Restored!");
+            _container.GetPlugin<StatsPlugin>().IncrementState("ConnectionsRestored");
+            return Task.CompletedTask;
+        }
+
+        private Task OnReconnecting()
+        {
+            _log.Info("Attempting to reconnect to Slack...");
+            _container.GetPlugin<StatsPlugin>().IncrementState("Reconnecting");
+            return Task.CompletedTask;
         }
 
         private bool _isDisconnecting;
