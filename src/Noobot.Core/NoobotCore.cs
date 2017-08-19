@@ -42,6 +42,12 @@ namespace Noobot.Core
             _connection = await connector.Connect(slackKey);
             _connection.OnMessageReceived += MessageReceived;
             _connection.OnDisconnect += OnDisconnect;
+            _connection.OnReconnect += () =>
+            {
+                _log.Info("Connection Restored!");
+                _container.GetPlugin<StatsPlugin>().IncrementState("ConnectionsRestored");
+                return Task.CompletedTask;
+            };
 
             _log.Info("Connected!");
             _log.Info($"Bots Name: {_connection.Self.Name}");
