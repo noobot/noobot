@@ -3,15 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26730.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Noobot.Runner", "src\Noobot.Runner\Noobot.Runner.csproj", "{FC387CB5-8B7F-4873-8A14-8337682D2C73}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Noobot.Core", "src\Noobot.Core\Noobot.Core.csproj", "{20C88122-7BA3-4380-89FC-350F9D5B94DC}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{CED3B884-FB67-458E-A558-FA9BA57E99DD}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Noobot.Tests.Unit", "tests\Noobot.Tests.Unit\Noobot.Tests.Unit.csproj", "{26BEBC81-8E0D-4416-BE82-B3E73371DA7A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Noobot.Console", "src\Noobot.Console\Noobot.Console.csproj", "{1D96ECC7-47A3-4A43-9552-E2C180DD7CAE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Noobot.Console", "src\Noobot.Console\Noobot.Console.csproj", "{1D96ECC7-47A3-4A43-9552-E2C180DD7CAE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,10 +17,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{FC387CB5-8B7F-4873-8A14-8337682D2C73}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FC387CB5-8B7F-4873-8A14-8337682D2C73}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FC387CB5-8B7F-4873-8A14-8337682D2C73}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FC387CB5-8B7F-4873-8A14-8337682D2C73}.Release|Any CPU.Build.0 = Release|Any CPU
 		{20C88122-7BA3-4380-89FC-350F9D5B94DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{20C88122-7BA3-4380-89FC-350F9D5B94DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{20C88122-7BA3-4380-89FC-350F9D5B94DC}.Release|Any CPU.ActiveCfg = Release|Any CPU

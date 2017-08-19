@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using Common.Logging;
@@ -19,9 +18,7 @@ namespace Noobot.Console
         {
             System.Console.WriteLine("Starting Noobot...");
             AppDomain.CurrentDomain.ProcessExit += ProcessExitHandler; // closing the window doesn't hit this in Windows
-            AppDomain.CurrentDomain.DomainUnload += CurrentDomainOnDomainUnload;
             System.Console.CancelKeyPress += ConsoleOnCancelKeyPress;
-
 
             RunNoobot()
                 .GetAwaiter()
@@ -45,26 +42,15 @@ namespace Noobot.Console
 
         private static void ConsoleOnCancelKeyPress(object sender, ConsoleCancelEventArgs consoleCancelEventArgs)
         {
-            Close();
+            _quitEvent.Set();
+            consoleCancelEventArgs.Cancel = true;
         }
 
         // not hit
         private static void ProcessExitHandler(object sender, EventArgs e)
         {
-            Close();
-        }
-
-        // not hit
-        private static void CurrentDomainOnDomainUnload(object sender, EventArgs eventArgs)
-        {
-            Close();
-        }
-
-        private static void Close()
-        {
             System.Console.WriteLine("Disconnecting...");
             _noobotCore?.Disconnect();
-            _quitEvent.Set();
         }
     }
 }
