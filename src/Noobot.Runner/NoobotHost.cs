@@ -17,7 +17,7 @@ namespace Noobot.Runner
 
         /// <summary>
         /// Default constructor will use the default ConfigReader from Core.Configuration 
-        /// and look for the config.json file inside a sub directory called 'configuration' with the current directory. 
+        /// and look for the configuration file at .\configuration\config.json
         /// </summary>
         public NoobotHost() : this(new ConfigReader()) { }
         public NoobotHost(IConfigReader configReader)
