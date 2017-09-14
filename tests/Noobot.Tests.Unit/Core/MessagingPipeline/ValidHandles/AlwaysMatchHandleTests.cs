@@ -1,6 +1,6 @@
 ﻿using System;
 using Noobot.Core.MessagingPipeline.Middleware.ValidHandles;
-using Should;
+using PowerAssert;
 using Xunit;
 
 namespace Noobot.Tests.Unit.Core.MessagingPipeline.ValidHandles
@@ -18,7 +18,7 @@ namespace Noobot.Tests.Unit.Core.MessagingPipeline.ValidHandles
             bool isMatch = handle.IsMatch(message);
 
             // then
-            isMatch.ShouldBeTrue();
+            PAssert.IsTrue(() => isMatch);
         }
     }
 }
