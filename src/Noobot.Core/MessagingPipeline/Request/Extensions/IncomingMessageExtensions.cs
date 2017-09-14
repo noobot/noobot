@@ -21,7 +21,7 @@ namespace Noobot.Core.MessagingPipeline.Request.Extensions
                 $"@{incomingMessage.BotName}",
             };
 
-            string handle = myNames.FirstOrDefault(x => messageText.StartsWith(x, StringComparison.InvariantCultureIgnoreCase));
+            string handle = myNames.FirstOrDefault(x => messageText.StartsWith(x, StringComparison.OrdinalIgnoreCase));
             if (string.IsNullOrEmpty(handle) && !isOnPrivateChannel)
             {
                 return string.Empty;
