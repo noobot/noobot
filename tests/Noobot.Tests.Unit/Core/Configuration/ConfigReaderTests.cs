@@ -1,5 +1,5 @@
 ﻿using Noobot.Core.Configuration;
-using Should;
+using PowerAssert;
 using Xunit;
 
 namespace Noobot.Tests.Unit.Core.Configuration
@@ -16,7 +16,7 @@ namespace Noobot.Tests.Unit.Core.Configuration
             string slackKey = reader.SlackApiKey;
 
             // then
-            slackKey.ShouldNotBeNull();
+            PAssert.IsTrue(() => slackKey != null);
         }
     }
 }
