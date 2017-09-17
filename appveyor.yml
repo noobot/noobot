@@ -21,13 +21,13 @@ build:
   include_nuget_references: true
   verbosity: minimal
 
-after_build:
+before_package:
 - ps: >-
      Push-Location "src\Noobot.Console\"
      dotnet publish -c Release -r win-x64 -f netcoreapp2.0
      Pop-Location
      
-before_package:
+after_build:
 - ps: >-
     Push-Location "src\Noobot.Console\"
 
