@@ -22,21 +22,12 @@ build:
   verbosity: minimal
 
 before_package:
-- ps: >-
-    Push-Location "src\Noobot.Console\"
-
-    dotnet publish -c "Release" -r "win-x64" -f "netcoreapp2.0"
-
-    Pop-Location
+- cmd: dotnet publish ".\src\Noobot.Console\Noobot.Console.csproj" -c "Release" -r "win-x64" -f "netcoreapp2.0"
 after_build:
 - ps: >-
-    Push-Location "src\Noobot.Console\"
+    $buildPath = Resolve-Path ".\bin\Release\*\win-x64\publish"
 
-    $buildPath = Resolve-Path ".\bin\Release\*\win-x64"
-    Remove-Item "$buildPath\*.pdb"
-    Remove-Item "$buildPath\publish" -Recurse -Force
-
-    Pop-Location
+    Write-Host "Zipping $buildPath"
 
     7z a noobot.zip "$buildPath\*"
 
