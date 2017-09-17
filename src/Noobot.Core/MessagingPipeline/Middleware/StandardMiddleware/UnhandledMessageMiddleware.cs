@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-
 using Common.Logging;
 using Noobot.Core.MessagingPipeline.Request;
 using Noobot.Core.MessagingPipeline.Response;

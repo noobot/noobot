@@ -32,7 +32,7 @@ namespace Noobot.Core.Logging
                 if (_log.Any())
                 {
                     double total = _log.Sum(x => x);
-                    value = $"{Math.Round(total/_log.Count)} {_unitName}";
+                    value = $"{Math.Round(total / _log.Count)} {_unitName}";
                 }
             }
 

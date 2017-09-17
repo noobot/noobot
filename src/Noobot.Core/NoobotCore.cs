@@ -230,7 +230,7 @@ namespace Noobot.Core
         {
             var attachmentFields = new List<SlackAttachmentField>();
 
-            if (attachment != null && attachment.AttachmentFields != null)
+            if (attachment?.AttachmentFields != null)
             {
                 foreach (var attachmentField in attachment.AttachmentFields)
                 {

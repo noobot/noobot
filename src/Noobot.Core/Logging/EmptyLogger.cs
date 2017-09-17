@@ -10,8 +10,6 @@ namespace Noobot.Core.Logging
         { }
 
         protected override void WriteInternal(LogLevel level, object message, Exception exception)
-        {
-
-        }
+        { }
     }
 }
