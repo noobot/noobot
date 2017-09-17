@@ -20,11 +20,16 @@ build:
   publish_nuget: true
   include_nuget_references: true
   verbosity: minimal
-after_build:
+
+before_package:
+- ps: >-
+     Push-Location "src\Noobot.Console\"
+     dotnet publish -c Release -r win-x64 -f netcoreapp2.0
+     Pop-Location
+     
+after_package:
 - ps: >-
     Push-Location "src\Noobot.Console\"
-
-    dotnet publish -c Release -r win-x64 -f netcoreapp2.0
 
     $buildPath = Resolve-Path ".\bin\Release\*\win-x64"
     Remove-Item "$buildPath\*.pdb"
