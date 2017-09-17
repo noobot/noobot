@@ -5,6 +5,9 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <StartupObject>Noobot.Console.Program</StartupObject>
     <ApplicationIcon />
+    <AssemblyVersion>1.0.0.1</AssemblyVersion>
+    <FileVersion>1.0.0.1</FileVersion>
+    <Version>1.0.1</Version>
   </PropertyGroup>
 
   <ItemGroup>
