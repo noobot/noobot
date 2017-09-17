@@ -21,13 +21,19 @@ build:
   include_nuget_references: true
   verbosity: minimal
 after_build:
-- cmd: >-
-    del %APPVEYOR_BUILD_FOLDER%\src\Noobot.Console\bin\Release\*.pdb
+- ps: >-
+    Push-Location "%APPVEYOR_BUILD_FOLDER%\src\Noobot.Console\"
 
-    del %APPVEYOR_BUILD_FOLDER%\src\Noobot.Console\bin\Release\*.xml
+    dotnet publish -c Release -r win-x64 -f netcoreapp2.0
 
+    $buildPath = Resolve-Path ".\bin\Release\*\win-x64"
+    Remove-Item "$buildPath\*.pdb"
+    Remove-Item "$buildPath\publish" -Recurse -Force
 
-    7z a noobot.zip %APPVEYOR_BUILD_FOLDER%\src\Noobot.Console\bin\Release\*
+    Pop-Location
+
+    7z a noobot.zip "$buildPath\*"
+
 test: off
 artifacts:
 - path: noobot.zip
