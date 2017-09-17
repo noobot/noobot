@@ -55,13 +55,11 @@ namespace Noobot.Core.Plugins.StandardPlugins
 
         public string[] GetStats()
         {
-            var list = new List<string>(_stats.Count);
-
+            var list = new List<string>();
             lock (_lock)
             {
                 list.AddRange(_stats.Keys.Select(key => $"{key}: {_stats[key]}"));
             }
-
             return list.ToArray();
         }
 

@@ -99,6 +99,7 @@ namespace Noobot.Core.DependencyResolution
             {
                 registry.For<IMiddleware>().DecorateAllWith<AboutMiddleware>();
             }
+
             if (_configReader.StatsEnabled)
             {
                 registry.For<IMiddleware>().DecorateAllWith<StatsMiddleware>();
@@ -119,6 +120,7 @@ namespace Noobot.Core.DependencyResolution
             {
                 registry.For<IMiddleware>().DecorateAllWith<HelpMiddleware>();
             }
+
             registry.For<IMiddleware>().DecorateAllWith<BeginMessageMiddleware>();
         }
 

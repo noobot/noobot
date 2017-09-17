@@ -20,9 +20,9 @@ Noobot is available as a Nuget package or standalone Console/Windows Service app
 
 ## Features
 
+ - Available as a Nuget package to integrate into your apps (See [examples](https://github.com/noobot/noobot.examples))
  - Is super extensible
  - DI support out of the box
- - Is super easy to install as a [Windows Service](https://github.com/noobot/noobot/wiki/Install-as-Windows-Service) (thanks to [TopShelf](https://github.com/Topshelf/Topshelf))
  - Automatically builds up `help` text with all supported commands
  - Middleware can send multiple messages for each message received
  - Supports long running processes (async)
@@ -44,4 +44,4 @@ Read how to get Noobot up and running quickly on the [wiki](https://github.com/n
 To customise Noobot please have a look at our [wiki: https://github.com/noobot/noobot/wiki](https://github.com/noobot/noobot/wiki)
 
 ## Toolbox
-You can find the ToolBox nuget package [here](https://github.com/noobot/Noobot.Toolbox)
+You can find the ToolBox nuget package [here](https://github.com/noobot/Noobot.Toolbox) which contains lots of handy middleware ready to be plumbed into your bot such as Flickr support, jokes, schedules and more.

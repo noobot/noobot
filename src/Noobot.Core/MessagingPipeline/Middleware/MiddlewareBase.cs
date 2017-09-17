@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Noobot.Core.MessagingPipeline.Middleware.ValidHandles;
 using Noobot.Core.MessagingPipeline.Request;
@@ -18,9 +17,9 @@ namespace Noobot.Core.MessagingPipeline.Middleware
             HandlerMappings = HandlerMappings ?? new HandlerMapping[0];
         }
 
-        protected IEnumerable<ResponseMessage> Next(IncomingMessage message)
+        protected internal IEnumerable<ResponseMessage> Next(IncomingMessage message)
         {
-            return _next.Invoke(message);
+            return _next?.Invoke(message) ?? new ResponseMessage[0];
         }
 
         public virtual IEnumerable<ResponseMessage> Invoke(IncomingMessage message)
@@ -29,21 +28,14 @@ namespace Noobot.Core.MessagingPipeline.Middleware
             {
                 foreach (IValidHandle handle in handlerMapping.ValidHandles)
                 {
-
-                    //check the handler type, and then match the text in the appropriate fashion
                     string messageText = message.FullText;
                     if (handlerMapping.MessageShouldTargetBot)
                     {
                         messageText = message.TargetedText;
                     }
                     
-                    bool isMatch = handle.IsMatch(messageText);
-                    
-                    if (isMatch)
+                    if (handle.IsMatch(messageText))
                     {
-                        //TODO: How to do this
-                        //_log.Log($"Matched '{map}' on '{this.GetType().Name}'");
-
                         foreach (var responseMessage in handlerMapping.EvaluatorFunc(message, handle))
                         {
                             yield return responseMessage;

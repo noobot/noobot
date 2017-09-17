@@ -19,10 +19,7 @@ namespace Noobot.Core.MessagingPipeline.Middleware.StandardMiddleware
             {
                 new HandlerMapping
                 {
-                    ValidHandles = new IValidHandle[]
-                    {
-                        new ExactMatchHandle("stats"), 
-                    },
+                    ValidHandles = ExactMatchHandle.For("stats"),
                     Description = "Returns interesting stats about your noobot installation",
                     EvaluatorFunc = StatsHandler
                 }
