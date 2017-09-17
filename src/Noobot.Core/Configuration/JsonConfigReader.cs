@@ -5,7 +5,7 @@ using Newtonsoft.Json.Linq;
 
 namespace Noobot.Core.Configuration
 {
-    public class ConfigReader : IConfigReader
+    public class JsonConfigReader : IConfigReader
     {
         private JObject _currentJObject;
         private readonly string _configLocation;
@@ -13,8 +13,8 @@ namespace Noobot.Core.Configuration
         private static readonly string DEFAULT_LOCATION = Path.Combine("configuration", "config.json");
         private const string SLACKAPI_CONFIGVALUE = "slack:apiToken";
 
-        public ConfigReader() : this(DEFAULT_LOCATION) { }
-        public ConfigReader(string configurationFile)
+        public JsonConfigReader() : this(DEFAULT_LOCATION) { }
+        public JsonConfigReader(string configurationFile)
         {
             _configLocation = configurationFile;
         }
@@ -48,7 +48,7 @@ namespace Noobot.Core.Configuration
 
         private string AssemblyLocation()
         {
-            var assembly = typeof(ConfigReader).GetTypeInfo().Assembly;
+            var assembly = typeof(JsonConfigReader).GetTypeInfo().Assembly;
             var codebase = new Uri(assembly.CodeBase);
             var path = Path.GetDirectoryName(codebase.LocalPath);
             return path;

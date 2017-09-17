@@ -31,13 +31,18 @@ namespace Noobot.Console
         {
             var containerFactory = new ContainerFactory(
                 new ConfigurationBase(),
-                new ConfigReader(),
-                new ConsoleOutLogger("Noobot", LogLevel.All, true, true, false, "yyyy/MM/dd HH:mm:ss:fff"));
+                new JsonConfigReader(),
+                GetLogger());
 
             INoobotContainer container = containerFactory.CreateContainer();
             _noobotCore = container.GetNoobotCore();
 
             await _noobotCore.Connect();
+        }
+
+        private static ConsoleOutLogger GetLogger()
+        {
+            return new ConsoleOutLogger("Noobot", LogLevel.All, true, true, false, "yyyy/MM/dd HH:mm:ss:fff");
         }
 
         private static void ConsoleOnCancelKeyPress(object sender, ConsoleCancelEventArgs consoleCancelEventArgs)
