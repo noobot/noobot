@@ -1,5 +1,6 @@
 ﻿using Noobot.Core.MessagingPipeline.Response;
 using System.Collections.Generic;
+using SlackConnector.Models;
 
 namespace Noobot.Core.MessagingPipeline.Request
 {
@@ -69,19 +70,19 @@ namespace Noobot.Core.MessagingPipeline.Request
         /// <summary>
         /// Will generate a message to be sent the current channel the message arrived from
         /// </summary>
-        public ResponseMessage ReplyToChannel(string text, Attachment attachment = null)
+        public ResponseMessage ReplyToChannel(string text, SlackAttachment attachment = null)
         {
             if (attachment == null)
                 return ResponseMessage.ChannelMessage(Channel, text, attachments: null);
     
-             var attachments = new List<Attachment> { attachment };
+             var attachments = new List<SlackAttachment> { attachment };
              return ReplyToChannel(text, attachments);
         }
         
         /// <summary>
         /// Will generate a message to be sent the current channel the message arrived from
         /// </summary>
-        public ResponseMessage ReplyToChannel(string text, List<Attachment> attachments)
+        public ResponseMessage ReplyToChannel(string text, List<SlackAttachment> attachments)
         {
             return ResponseMessage.ChannelMessage(Channel, text, attachments);
         }

@@ -187,7 +187,7 @@ namespace Noobot.Core
                     {
                         ChatHub = chatHub,
                         Text = responseMessage.Text,
-                        Attachments = GetAttachments(responseMessage.Attachments)
+                        Attachments = responseMessage.Attachments
                     };
 
                     string textTrimmed = botMessage.Text.Length > 50 ? botMessage.Text.Substring(0, 50) + "..." : botMessage.Text;
@@ -199,51 +199,6 @@ namespace Noobot.Core
             {
                 _log.Error($"Unable to find channel for message '{responseMessage.Text}'. Message not sent");
             }
-        }
-
-        private IList<SlackAttachment> GetAttachments(List<Attachment> attachments)
-        {
-            var slackAttachments = new List<SlackAttachment>();
-
-            if (attachments != null)
-            {
-                foreach (var attachment in attachments)
-                {
-                    slackAttachments.Add(new SlackAttachment
-                    {
-                        Text = attachment.Text,
-                        Title = attachment.Title,
-                        Fallback = attachment.Fallback,
-                        ImageUrl = attachment.ImageUrl,
-                        ThumbUrl = attachment.ThumbUrl,
-                        AuthorName = attachment.AuthorName,
-                        ColorHex = attachment.Color,
-                        Fields = GetAttachmentFields(attachment)
-                    });
-                }
-            }
-
-            return slackAttachments;
-        }
-
-        private IList<SlackAttachmentField> GetAttachmentFields(Attachment attachment)
-        {
-            var attachmentFields = new List<SlackAttachmentField>();
-
-            if (attachment?.AttachmentFields != null)
-            {
-                foreach (var attachmentField in attachment.AttachmentFields)
-                {
-                    attachmentFields.Add(new SlackAttachmentField
-                    {
-                        Title = attachmentField.Title,
-                        Value = attachmentField.Value,
-                        IsShort = attachmentField.IsShort
-                    });
-                }
-            }
-
-            return attachmentFields;
         }
 
         public string GetUserIdForUsername(string username)
