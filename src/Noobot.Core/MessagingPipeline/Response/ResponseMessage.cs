@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using SlackConnector.Models;
 
 namespace Noobot.Core.MessagingPipeline.Response
 {
@@ -8,7 +9,7 @@ namespace Noobot.Core.MessagingPipeline.Response
         public string Channel { get; set; }
         public string UserId { get; set; }
         public ResponseType ResponseType { get; set; }
-        public List<Attachment> Attachments { get; set; }
+        public List<SlackAttachment> Attachments { get; set; }
 
         public static ResponseMessage DirectUserMessage(string userId, string text, ResponseMessage message = null)
         {
@@ -28,16 +29,16 @@ namespace Noobot.Core.MessagingPipeline.Response
             return message;
         }
 
-        public static ResponseMessage ChannelMessage(string channel, string text, Attachment attachment, ResponseMessage message = null)
+        public static ResponseMessage ChannelMessage(string channel, string text, SlackAttachment attachment, ResponseMessage message = null)
         {
-            List<Attachment> attachments = null;
+            List<SlackAttachment> attachments = null;
             if (attachment != null)
-                attachments = new List<Attachment> { attachment };
+                attachments = new List<SlackAttachment> { attachment };
 
             return ChannelMessage(channel, text, attachments, message);
         }
 
-        public static ResponseMessage ChannelMessage(string channel, string text, List<Attachment> attachments, ResponseMessage message = null)
+        public static ResponseMessage ChannelMessage(string channel, string text, List<SlackAttachment> attachments, ResponseMessage message = null)
         {
             if (message == null)
                 message = new ResponseMessage();
