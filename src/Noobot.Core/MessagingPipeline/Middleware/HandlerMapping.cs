@@ -8,17 +8,10 @@ namespace Noobot.Core.MessagingPipeline.Middleware
 {
     public class HandlerMapping
     {
-        public HandlerMapping()
-        {
-            ValidHandles = new IValidHandle[0];
-            MessageShouldTargetBot = true;
-            VisibleInHelp = true;
-        }
-
         /// <summary>
-        /// The various handles of different types
+        /// Valid handles to match on for incomming text, e.g. match exactly on "Hello"
         /// </summary>
-        public IValidHandle[] ValidHandles { get; set; }
+        public IValidHandle[] ValidHandles { get; set; } = new IValidHandle[0];
 
         /// <summary>
         /// Description of what this handle does. This appears in the "help" function.
@@ -26,7 +19,7 @@ namespace Noobot.Core.MessagingPipeline.Middleware
         public string Description { get; set; }
 
         /// <summary>
-        /// This is what code is run when a handle has been matched.
+        /// The function that is evaluated on a matched handle
         /// </summary>
         public Func<IncomingMessage, IValidHandle, IEnumerable<ResponseMessage>> EvaluatorFunc { get; set; }
 
@@ -38,11 +31,11 @@ namespace Noobot.Core.MessagingPipeline.Middleware
         /// <summary>
         /// Defaults to "True". If set to false then any message is considered, even if it isn't targeted at the bot. e.g. @noobot or a private channel
         /// </summary>
-        public bool MessageShouldTargetBot { get; set; }
+        public bool MessageShouldTargetBot { get; set; } = true;
 
         /// <summary>
         /// Defaults to "True". Set to false to hide these commands in the help command.
         /// </summary>
-        public bool VisibleInHelp { get; set; }
+        public bool VisibleInHelp { get; set; } = true;
     }
 }
