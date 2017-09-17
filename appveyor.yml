@@ -23,10 +23,11 @@ build:
 
 before_package:
 - ps: >-
-     Push-Location "src\Noobot.Console\"
-     dotnet publish -c Release -r win-x64 -f netcoreapp2.0
-     Pop-Location
-     
+    Push-Location "src\Noobot.Console\"
+
+    dotnet publish -c "Release" -r "win-x64" -f "netcoreapp2.0"
+
+    Pop-Location
 after_build:
 - ps: >-
     Push-Location "src\Noobot.Console\"
