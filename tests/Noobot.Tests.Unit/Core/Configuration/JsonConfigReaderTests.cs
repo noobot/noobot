@@ -1,16 +1,16 @@
 ﻿using Noobot.Core.Configuration;
-using Should;
+using Shouldly;
 using Xunit;
 
 namespace Noobot.Tests.Unit.Core.Configuration
 {
-    public class ConfigReaderTests
+    public class JsonConfigReaderTests
     {
         [Fact]
         public void should_read_config()
         {
             // given
-            var reader = new ConfigReader();
+            var reader = new JsonConfigReader();
 
             // when
             string slackKey = reader.SlackApiKey;

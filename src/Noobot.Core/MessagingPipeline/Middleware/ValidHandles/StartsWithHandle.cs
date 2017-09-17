@@ -14,7 +14,7 @@ namespace Noobot.Core.MessagingPipeline.Middleware.ValidHandles
 
         public bool IsMatch(string message)
         {
-            return (message ?? string.Empty).StartsWith(_messageStartsWith, StringComparison.InvariantCultureIgnoreCase);
+            return (message ?? string.Empty).StartsWith(_messageStartsWith, StringComparison.OrdinalIgnoreCase);
         }
 
         public string HandleHelpText => _messageStartsWith;

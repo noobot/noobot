@@ -14,10 +14,7 @@ namespace Noobot.Core.MessagingPipeline.Middleware.StandardMiddleware
             {
                 new HandlerMapping
                 {
-                    ValidHandles = new IValidHandle[]
-                    {
-                        new ExactMatchHandle("about"), 
-                    },
+                    ValidHandles = ExactMatchHandle.For("about"),
                     Description = "Tells you some stuff about this bot :-)",
                     EvaluatorFunc = AboutHandler
                 }
