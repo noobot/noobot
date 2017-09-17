@@ -1,6 +1,6 @@
 ﻿using System;
 using Noobot.Core.MessagingPipeline.Middleware.ValidHandles;
-using Should;
+using Shouldly;
 using Xunit;
 
 namespace Noobot.Tests.Unit.Core.MessagingPipeline.ValidHandles

@@ -1,5 +1,5 @@
 ﻿using Noobot.Core.Configuration;
-using Should;
+using Shouldly;
 using Xunit;
 
 namespace Noobot.Tests.Unit.Core.Configuration
