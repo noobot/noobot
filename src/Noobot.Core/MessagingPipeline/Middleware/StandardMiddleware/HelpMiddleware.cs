@@ -21,8 +21,7 @@ namespace Noobot.Core.MessagingPipeline.Middleware.StandardMiddleware
                 {
                     ValidHandles = new IValidHandle[]
                     {
-                        new StartsWithHandle("help"),
-                        new ExactMatchHandle("yo tell me more")
+                        new StartsWithHandle("help")
                     },
                     Description = "Returns supported commands and descriptions of how to use them",
                     EvaluatorFunc = HelpHandler
