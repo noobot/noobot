@@ -10,7 +10,7 @@ namespace Noobot.Core
         Task Connect();
         void Disconnect();
         Task MessageReceived(SlackMessage message);
-        Task<SlackChatHub> SendMessage(ResponseMessage responseMessage);
+        Task SendMessage(ResponseMessage responseMessage);
         string GetUserIdForUsername(string username);
         string GetUserIdForUserEmail(string email);
         string GetChannelId(string channelName);
