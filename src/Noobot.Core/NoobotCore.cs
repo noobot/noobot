@@ -254,7 +254,7 @@ namespace Noobot.Core
 
         public string GetUserIdForUserEmail(string email)
         {
-            var user = _connection.UserCache.FirstOrDefault(x => x.Value.Email.Equals(email, StringComparison.OrdinalIgnoreCase));
+            var user = _connection.UserCache.Where(x => x.Value.Email != null).FirstOrDefault(x => x.Value.Email.Equals(email, StringComparison.OrdinalIgnoreCase));
             return string.IsNullOrEmpty(user.Key) ? string.Empty : user.Key;
         }
 
