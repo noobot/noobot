@@ -48,6 +48,7 @@ namespace Noobot.Core
             _log.Info("Connected!");
             _log.Info($"Bots Name: {_connection.Self.Name}");
             _log.Info($"Team Name: {_connection.Team.Name}");
+            _log.Info($"Id for user: {GetUserIdForUserEmail("zimny.jot@gmail.com")}");
 
             _container.GetPlugin<StatsPlugin>()?.RecordStat("Connected:Since", DateTime.Now.ToString("G"));
             _container.GetPlugin<StatsPlugin>()?.RecordStat("Response:Average", _averageResponse);
@@ -254,8 +255,8 @@ namespace Noobot.Core
 
         public string GetUserIdForUserEmail(string email)
         {
-            var user = _connection.UserCache.Where(x => x.Value.Email != null).FirstOrDefault(x => x.Value.Email.Equals(email, StringComparison.OrdinalIgnoreCase));
-            return string.IsNullOrEmpty(user.Key) ? string.Empty : user.Key;
+            var user = _connection.UserCache.WithEmailSet().FindByEmail(email);
+            return user?.Id ?? string.Empty;
         }
 
         public string GetChannelId(string channelName)
