@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Common.Logging;
 using Noobot.Core.Configuration;
 using Noobot.Core.DependencyResolution;
+using Noobot.Core.Extensions;
 using Noobot.Core.Logging;
 using Noobot.Core.MessagingPipeline.Middleware;
 using Noobot.Core.MessagingPipeline.Request;

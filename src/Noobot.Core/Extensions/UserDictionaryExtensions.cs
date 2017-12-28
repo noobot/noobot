@@ -1,11 +1,11 @@
-﻿using SlackConnector.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using SlackConnector.Models;
 
-namespace Noobot.Core
+namespace Noobot.Core.Extensions
 {
-    public static class Extensions
+    internal static class UserDictionaryExtensions
     {
         public static IReadOnlyDictionary<string, SlackUser> WithEmailSet(
             this IReadOnlyDictionary<string, SlackUser> userCache)

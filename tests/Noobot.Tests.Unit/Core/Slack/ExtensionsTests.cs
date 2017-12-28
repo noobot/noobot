@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
-using Noobot.Core;
+using Noobot.Core.Extensions;
 using Shouldly;
 
 namespace Noobot.Tests.Unit.Core.Slack
@@ -29,8 +29,7 @@ namespace Noobot.Tests.Unit.Core.Slack
             {
                 { slackUser.Id, slackUser }
             });
-
-
+            
             // when
             var result = userCache.WithEmailSet();
 
