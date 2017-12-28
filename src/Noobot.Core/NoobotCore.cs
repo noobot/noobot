@@ -252,6 +252,12 @@ namespace Noobot.Core
             return string.IsNullOrEmpty(user.Key) ? string.Empty : user.Key;
         }
 
+        public string GetUserIdForUserEmail(string email)
+        {
+            var user = _connection.UserCache.WithEmailSet().FindByEmail(email);
+            return user?.Id ?? string.Empty;
+        }
+
         public string GetChannelId(string channelName)
         {
             var channel = _connection.ConnectedChannels().FirstOrDefault(x => x.Name.Equals(channelName, StringComparison.OrdinalIgnoreCase));

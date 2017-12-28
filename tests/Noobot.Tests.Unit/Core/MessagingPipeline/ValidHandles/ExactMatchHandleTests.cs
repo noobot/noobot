@@ -20,6 +20,7 @@ namespace Noobot.Tests.Unit.Core.MessagingPipeline.ValidHandles
             // then
             isMatch.ShouldBeTrue();
         }
+
         [Theory]
         [InlineData("i love geoffs", "i love geoff")]
         [InlineData("DINNER", "who wants lunch?")]

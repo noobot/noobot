@@ -12,6 +12,7 @@ namespace Noobot.Core
         Task MessageReceived(SlackMessage message);
         Task SendMessage(ResponseMessage responseMessage);
         string GetUserIdForUsername(string username);
+        string GetUserIdForUserEmail(string email);
         string GetChannelId(string channelName);
         string GetBotUserName();
         Dictionary<string, string> ListChannels();
