@@ -18,7 +18,7 @@ namespace Noobot.Tests.Unit.Core.Slack
         [Fact]
         public void FindByEmail_WithEmailSetExtension_ReturnsOnlyRecordsWithEmailSet()
         {
-            //Arrange
+            // given
             var slackUser = new SlackUser()
             {
                 Id = "ABC",
@@ -31,17 +31,17 @@ namespace Noobot.Tests.Unit.Core.Slack
             });
 
 
-            //Act
+            // when
             var result = userCache.WithEmailSet();
 
-            //Assert
+            // then
             result.First().Value.Email.ShouldNotBeNull();
         }
 
         [Fact]
         public void FindByEmail_WithoutEmailSet_DoesNotReturnUser()
         {
-            //Arrange
+            // given
             var slackUser = new SlackUser()
             {
                 Id = "ABC",
@@ -53,17 +53,17 @@ namespace Noobot.Tests.Unit.Core.Slack
             });
 
 
-            //Act
+            // when
             var result = userCache.WithEmailSet();
 
-            //Assert
+            // then
             result.ShouldBeEmpty();
         }
 
         [Fact]
         public void GetUserIdForEmail_WithEmailSet_ReturnsId()
         {
-            //Arrange
+            // given
             var slackUser = new SlackUser()
             {
                 Id = "ABC",
@@ -76,17 +76,17 @@ namespace Noobot.Tests.Unit.Core.Slack
             });
 
 
-            //Act
+            // when
             var result = userCache.FindByEmail("john.doe@microsoft.com");
 
-            //Assert
+            // then
             result.Id.ShouldBe("ABC");
         }
 
         [Fact]
         public void GetUserIdForEmail_WithoutEmailSet_ReturnsNull()
         {
-            //Arrange
+            // given
             var slackUser = new SlackUser()
             {
                 Id = "ABC"
@@ -98,17 +98,17 @@ namespace Noobot.Tests.Unit.Core.Slack
             });
 
 
-            //Act
+            // when
             var result = userCache.FindByEmail("john.doe@microsoft.com");
 
-            //Assert
+            // then
             result.ShouldBeNull();
         }
 
         [Fact]
         public void GetUserIdForEmail_MultipleUsersWithEmailSet_ReturnsCorrectUser()
         {
-            //Arrange
+            // given
             var slackUser1 = new SlackUser()
             {
                 Id = "ABC",
@@ -133,10 +133,10 @@ namespace Noobot.Tests.Unit.Core.Slack
             });
 
 
-            //Act
+            // when
             var result = userCache.FindByEmail("john.doe@microsoft.com");
 
-            //Assert
+            // then
             result.Id.ShouldBe("ABC");
         }
     }
