@@ -48,7 +48,6 @@ namespace Noobot.Core
             _log.Info("Connected!");
             _log.Info($"Bots Name: {_connection.Self.Name}");
             _log.Info($"Team Name: {_connection.Team.Name}");
-            _log.Info($"Id for user: {GetUserIdForUserEmail("zimny.jot@gmail.com")}");
 
             _container.GetPlugin<StatsPlugin>()?.RecordStat("Connected:Since", DateTime.Now.ToString("G"));
             _container.GetPlugin<StatsPlugin>()?.RecordStat("Response:Average", _averageResponse);
