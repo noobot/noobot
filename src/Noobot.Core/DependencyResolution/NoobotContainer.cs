@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using LetsAgree.IOC;
 using Noobot.Core.MessagingPipeline.Middleware;
 using Noobot.Core.Plugins;
-using StructureMap;
 
 namespace Noobot.Core.DependencyResolution
 {
-    internal class NoobotContainer : INoobotContainer
+    internal class NoobotContainer<T> : INoobotContainer
+        where T : IBasicContainer, IGenericContainer
     {
-        private Container _container;
+        private T _container;
         private readonly Type[] _pluginTypes;
 
         public NoobotContainer(Type[] pluginTypes)
@@ -16,14 +17,14 @@ namespace Noobot.Core.DependencyResolution
             _pluginTypes = pluginTypes;
         }
 
-        public void Initialise(Registry registry)
+        public void Initialise(T container)
         {
-            _container = new Container(registry);
+            _container = container;
         }
 
         public INoobotCore GetNoobotCore()
         {
-            return _container.GetInstance<INoobotCore>();
+            return _container.Resolve<INoobotCore>();
         }
 
         private IPlugin[] _plugins;
@@ -35,7 +36,7 @@ namespace Noobot.Core.DependencyResolution
 
                 foreach (Type pluginType in _pluginTypes)
                 {
-                    IPlugin plugin = _container.GetInstance(pluginType) as IPlugin;
+                    IPlugin plugin = _container.Resolve(pluginType) as IPlugin;
                     if (plugin == null)
                     {
                         throw new NullReferenceException($"Plugin failed to build {pluginType}");
@@ -50,19 +51,15 @@ namespace Noobot.Core.DependencyResolution
             return _plugins;
         }
 
-        public T GetPlugin<T>() where T : class, IPlugin
+        public P GetPlugin<P>() where P : class, IPlugin
         {
-            return _container.TryGetInstance(typeof(T)) as T;
+            return _container.TryResolve(out P r) ? r : null;
         }
 
         public IMiddleware GetMiddlewarePipeline()
         {
-            return _container.GetInstance<IMiddleware>();
+            return _container.Resolve<IMiddleware>();
         }
 
-        public IContainer GetStructuremapContainer()
-        {
-            return _container;
-        }
     }
 }

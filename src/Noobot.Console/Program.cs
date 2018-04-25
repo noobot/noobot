@@ -29,9 +29,10 @@ namespace Noobot.Console
         
         private static async Task RunNoobot()
         {
-            var containerFactory = new ContainerFactory(
+            var containerFactory = ContainerFactoryCreator.Create(
                 new ConfigurationBase(),
                 new JsonConfigReader(),
+                new LetsAgree.IOC.StructureMapShim.StructureMapShim(),
                 GetLogger());
 
             INoobotContainer container = containerFactory.CreateContainer();

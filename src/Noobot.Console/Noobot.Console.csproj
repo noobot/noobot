@@ -11,6 +11,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="LetsAgree.IOC.StructureMapShim" Version="1.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Noobot.Core\Noobot.Core.csproj" />
   </ItemGroup>
 

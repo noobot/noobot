@@ -1,6 +1,5 @@
 ﻿using Noobot.Core.MessagingPipeline.Middleware;
 using Noobot.Core.Plugins;
-using StructureMap;
 
 namespace Noobot.Core.DependencyResolution
 {
@@ -10,6 +9,5 @@ namespace Noobot.Core.DependencyResolution
         IPlugin[] GetPlugins();
         T GetPlugin<T>() where T : class, IPlugin;
         IMiddleware GetMiddlewarePipeline();
-        IContainer GetStructuremapContainer();
     }
 }

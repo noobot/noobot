@@ -3,125 +3,99 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Common.Logging;
+using LetsAgree.IOC;
 using Noobot.Core.Configuration;
 using Noobot.Core.MessagingPipeline.Middleware;
 using Noobot.Core.MessagingPipeline.Middleware.StandardMiddleware;
 using Noobot.Core.Plugins.StandardPlugins;
-using StructureMap;
-using StructureMap.Pipeline;
 
 namespace Noobot.Core.DependencyResolution
 {
-    public class ContainerFactory : IContainerFactory
+    class ContainerFactory<C,R,T> : IContainerFactory
+        where R : IBasicRegistration<C, T>, IGenericRegistration<C, T>, IScanningRegistraction<C, T>
+        where C : ISingletonConfig, IDecoratorConfig
+        where T : IBasicContainer, IGenericContainer
     {
         private readonly IConfigReader _configReader;
         private readonly IConfiguration _configuration;
         private readonly ILog _logger;
+        private readonly IRegistryCreator<C, R, T> _registryCreator;
 
-        private readonly Type[] _singletons =
+        public ContainerFactory(IConfiguration configuration, IConfigReader configReader, IRegistryCreator<C, R, T> registryCreator,  ILog logger = null)
         {
-            typeof(INoobotCore),
-            typeof(NoobotCore),
-            typeof(IConfigReader)
-        };
-
-        public ContainerFactory(IConfiguration configuration, IConfigReader configReader, ILog logger = null)
-        {
+            _registryCreator = registryCreator;
             _configuration = configuration;
             _configReader = configReader;
             _logger = logger;
         }
 
-        public INoobotContainer CreateContainer()
+        public INoobotContainer CreateContainer()            
         {
-            Registry registry = CreateRegistry();
+            var registry = CreateRegistry();
 
-            SetupSingletons(registry);
             SetupMiddlewarePipeline(registry);
             Type[] pluginTypes = SetupPlugins(registry);
 
-            registry.For<INoobotCore>().Use(x => x.GetInstance<NoobotCore>());
-            registry.For<ILog>().Use(() => _logger);
-            registry.For<IConfigReader>().Use(() => _configReader);
+            registry.Register<INoobotCore, NoobotCore>().AsSingleton();
+            registry.Register(() => _logger).AsSingleton();
+            registry.Register(() => _configReader).AsSingleton();
 
             INoobotContainer container = CreateContainer(pluginTypes, registry);
             return container;
         }
 
-        private static Registry CreateRegistry()
+        private R CreateRegistry()
         {
-            var registry = new Registry();
+            var registry = _registryCreator.GenerateRegistry();
 
             // setups DI for everything in Noobot.Core
-            registry.Scan(x =>
-            {
-                x.TheCallingAssembly();
-                x.WithDefaultConventions();
-            });
+            registry.RegisterAssembly(GetType().Assembly);
 
             return registry;
         }
 
-        private static INoobotContainer CreateContainer(Type[] pluginTypes, Registry registry)
+        private static INoobotContainer CreateContainer(Type[] pluginTypes, R registry)
         {
-            var container = new NoobotContainer(pluginTypes);
-            registry.For<INoobotContainer>().Use(x => container);
-            container.Initialise(registry);
+            var container = new NoobotContainer<T>(pluginTypes);
+            registry.Register<INoobotContainer>(() => container).AsSingleton();
+            container.Initialise(registry.GenerateContainer());
             return container;
         }
 
-        private void SetupSingletons(Registry registry)
+        private void SetupMiddlewarePipeline(R registry)
         {
-            foreach (Type type in _singletons)
+            var pipeline = GetPipelineStack();
+            var pipelineAssemblies = pipeline.Select(x => x.Assembly)
+                                             .Distinct();
+
+            foreach (var pa in pipelineAssemblies)
             {
-                registry.For(type).Singleton();
+                registry.RegisterAssembly(pa);
             }
-        }
 
-        private void SetupMiddlewarePipeline(Registry registry)
-        {
-            Stack<Type> pipeline = GetPipelineStack();
-
-            registry.Scan(x =>
-            {
-                x.WithDefaultConventions();
-
-                // scan assemblies that we are loading pipelines from
-                foreach (Type middlewareType in pipeline)
-                {
-                    x.AssemblyContainingType(middlewareType);
-                }
-            });
-
-            registry.For<IMiddleware>().Use<UnhandledMessageMiddleware>();
+            registry.Register<IMiddleware, UnhandledMessageMiddleware>();
 
             if (_configReader.AboutEnabled)
             {
-                registry.For<IMiddleware>().DecorateAllWith<AboutMiddleware>();
+                registry.Register<IMiddleware, AboutMiddleware>().AsDecorator();
             }
 
             if (_configReader.StatsEnabled)
             {
-                registry.For<IMiddleware>().DecorateAllWith<StatsMiddleware>();
+                registry.Register<IMiddleware, StatsMiddleware>().AsDecorator();
             }
 
             while (pipeline.Any())
             {
-                Type nextType = pipeline.Pop();
-                var nextDeclare = registry.For<IMiddleware>();
-
-                // using reflection as Structuremap doesn't allow passing types in at the moment :-(
-                MethodInfo decorateMethod = nextDeclare.GetType().GetMethod("DecorateAllWith", new[] { typeof(Func<Instance, bool>) });
-                MethodInfo generic = decorateMethod.MakeGenericMethod(nextType);
-                generic.Invoke(nextDeclare, new object[] { null });
+                registry.Register(typeof(IMiddleware), pipeline.Pop()).AsDecorator();
             }
 
             if (_configReader.HelpEnabled)
             {
-                registry.For<IMiddleware>().DecorateAllWith<HelpMiddleware>();
+                registry.Register<IMiddleware, HelpMiddleware>().AsDecorator();
             }
 
-            registry.For<IMiddleware>().DecorateAllWith<BeginMessageMiddleware>();
+            registry.Register<IMiddleware,BeginMessageMiddleware>().AsDecorator();
         }
 
         private Stack<Type> GetPipelineStack()
@@ -137,7 +111,7 @@ namespace Noobot.Core.DependencyResolution
             return pipeline;
         }
 
-        private Type[] SetupPlugins(Registry registry)
+        private Type[] SetupPlugins(R registry)
         {
             var pluginTypes = new List<Type>
             {
@@ -147,22 +121,19 @@ namespace Noobot.Core.DependencyResolution
             Type[] customPlugins = _configuration.ListPluginTypes() ?? new Type[0];
             pluginTypes.AddRange(customPlugins);
 
-            registry.Scan(x =>
+            var pluginAssemblies = pluginTypes.Select(x => x.Assembly)
+                                              .Distinct();
+
+            foreach (var assembly in pluginAssemblies)
             {
-                // scan assemblies that we are loading pipelines from
-                foreach (Type pluginType in pluginTypes)
-                {
-                    x.AssemblyContainingType(pluginType);
-                    x.WithDefaultConventions();
-                }
-            });
+                registry.RegisterAssembly(assembly);
+            }
 
             // make all plugins singletons
             foreach (Type pluginType in pluginTypes)
             {
-                registry
-                    .For(pluginType)
-                    .Singleton();
+                registry.Register(pluginType, pluginType)
+                        .AsSingleton();
             }
 
             return pluginTypes.ToArray();
