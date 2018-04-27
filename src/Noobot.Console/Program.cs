@@ -47,7 +47,9 @@ namespace Noobot.Console
 
         private static void ConsoleOnCancelKeyPress(object sender, ConsoleCancelEventArgs consoleCancelEventArgs)
         {
-            _quitEvent.Release();
+            // single threaded i hope
+            if(_quitEvent.CurrentCount == 0)
+                _quitEvent.Release();
             consoleCancelEventArgs.Cancel = true;
         }
 
