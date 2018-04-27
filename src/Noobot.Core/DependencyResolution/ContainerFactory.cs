@@ -11,17 +11,18 @@ using Noobot.Core.Plugins.StandardPlugins;
 
 namespace Noobot.Core.DependencyResolution
 {
-    class ContainerFactory<C,R,T> : IContainerFactory
-        where R : IBasicRegistration<C, T>, IGenericRegistration<C, T>, IScanningRegistraction<C, T>
+    public class ContainerFactory<C,Cl,R,T> : IContainerFactory
+        where R : IDynamicRegistration<C>, IGenericRegistration<C>, IScanningRegistraction<C>, IGenericLocatorRegistration<Cl>, IContainerGeneration<T>
         where C : ISingletonConfig, IDecoratorConfig
+        where Cl : ISingletonConfig
         where T : IBasicContainer, IGenericContainer
     {
         private readonly IConfigReader _configReader;
         private readonly IConfiguration _configuration;
         private readonly ILog _logger;
-        private readonly IRegistryCreator<C, R, T> _registryCreator;
+        private readonly Func<R> _registryCreator;
 
-        public ContainerFactory(IConfiguration configuration, IConfigReader configReader, IRegistryCreator<C, R, T> registryCreator,  ILog logger = null)
+        public ContainerFactory(IConfiguration configuration, IConfigReader configReader, Func<R> registryCreator,  ILog logger = null)
         {
             _registryCreator = registryCreator;
             _configuration = configuration;
@@ -46,7 +47,7 @@ namespace Noobot.Core.DependencyResolution
 
         private R CreateRegistry()
         {
-            var registry = _registryCreator.GenerateRegistry();
+            var registry = _registryCreator();
 
             // setups DI for everything in Noobot.Core
             registry.RegisterAssembly(GetType().Assembly);

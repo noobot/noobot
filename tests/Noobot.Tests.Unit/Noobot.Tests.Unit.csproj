@@ -20,10 +20,4 @@
     <ProjectReference Include="..\..\src\Noobot.Core\Noobot.Core.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Update="Configuration\config.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
 </Project>

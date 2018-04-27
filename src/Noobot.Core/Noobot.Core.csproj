@@ -11,7 +11,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="LetsAgree.IOC" Version="1.0.0" />
+    <PackageReference Include="LetsAgree.IOC" Version="1.0.2" />
     <PackageReference Include="SlackConnector" Version="4.1.48" />
     <PackageReference Include="Common.Logging" Version="3.4.1" />
   </ItemGroup>

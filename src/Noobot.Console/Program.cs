@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Common.Logging;
+using LetsAgree.IOC.StructureMapShim;
 using Noobot.Console.Logging;
 using Noobot.Core;
 using Noobot.Core.Configuration;
@@ -12,27 +13,25 @@ namespace Noobot.Console
     public class Program
     {
         private static INoobotCore _noobotCore;
-        private static readonly ManualResetEvent _quitEvent = new ManualResetEvent(false);
+        private static readonly SemaphoreSlim _quitEvent = new SemaphoreSlim(0,1);
 
-        static void Main(string[] args)
+
+        static async Task Main(string[] args)
         {
             System.Console.WriteLine("Starting Noobot...");
             AppDomain.CurrentDomain.ProcessExit += ProcessExitHandler; // closing the window doesn't hit this in Windows
             System.Console.CancelKeyPress += ConsoleOnCancelKeyPress;
 
-            RunNoobot()
-                .GetAwaiter()
-                .GetResult();
-
-            _quitEvent.WaitOne();
+            await RunNoobot();
+            await _quitEvent.WaitAsync();
         }
         
         private static async Task RunNoobot()
         {
-            var containerFactory = ContainerFactoryCreator.Create(
+            var containerFactory = new ContainerFactory<IConfigSpec, ILocatorConfigSpec, IRegSpec,  IContainerSpec>(
                 new ConfigurationBase(),
                 new JsonConfigReader(),
-                new LetsAgree.IOC.StructureMapShim.StructureMapShim(),
+                ()=> new SMRegistry(),
                 GetLogger());
 
             INoobotContainer container = containerFactory.CreateContainer();
@@ -48,7 +47,7 @@ namespace Noobot.Console
 
         private static void ConsoleOnCancelKeyPress(object sender, ConsoleCancelEventArgs consoleCancelEventArgs)
         {
-            _quitEvent.Set();
+            _quitEvent.Release();
             consoleCancelEventArgs.Cancel = true;
         }
 

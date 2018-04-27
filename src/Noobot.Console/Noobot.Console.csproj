@@ -10,8 +10,12 @@
     <Version>1.0.1</Version>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
   <ItemGroup>
-    <PackageReference Include="LetsAgree.IOC.StructureMapShim" Version="1.0.0" />
+    <PackageReference Include="LetsAgree.IOC.StructureMapShim" Version="1.0.3" />
   </ItemGroup>
 
   <ItemGroup>
