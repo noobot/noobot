@@ -12,7 +12,7 @@ using Noobot.Core.Plugins.StandardPlugins;
 namespace Noobot.Core.DependencyResolution
 {
     public class ContainerFactory<C,Cl,R,T> : IContainerFactory
-        where R : IDynamicRegistration<C>, IGenericRegistration<C>, IScanningRegistraction<C>, IGenericLocatorRegistration<Cl>, IContainerGeneration<T>
+        where R : IDynamicRegistration<C>, IGenericRegistration<C>, IScanningRegistraction<INoConfig>, IGenericLocatorRegistration<Cl>, IContainerGeneration<T>
         where C : ISingletonConfig, IDecoratorConfig
         where Cl : ISingletonConfig
         where T : IBasicContainer, IGenericContainer
