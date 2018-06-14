@@ -26,6 +26,9 @@
     <None Update="Configuration\config.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Configuration\config.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Configuration\config.default.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

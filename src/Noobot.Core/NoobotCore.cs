@@ -39,7 +39,7 @@ namespace Noobot.Core
         {
             string slackKey = _configReader.SlackApiKey;
 
-            var connector = new SlackConnector.SlackConnector();
+            var connector = _configReader.MockEnabled ? FakeSlack.Instance : new SlackConnector.SlackConnector();
             _connection = await connector.Connect(slackKey);
             _connection.OnMessageReceived += MessageReceived;
             _connection.OnDisconnect += OnDisconnect;

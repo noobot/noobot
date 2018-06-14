@@ -30,7 +30,7 @@ namespace Noobot.Console
         {
             var containerFactory = new ContainerFactory<IConfigSpec, ILocatorConfigSpec, IRegSpec,  IContainerSpec>(
                 new ConfigurationBase(),
-                new JsonConfigReader(),
+                new JsonConfigReader() { MockEnabled=true },
                 ()=> new SMRegistry(),
                 GetLogger());
 

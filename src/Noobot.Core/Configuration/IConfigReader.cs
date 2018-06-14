@@ -6,6 +6,11 @@
     public interface IConfigReader
     {
         /// <summary>
+        /// Mock the slack connection for testing purposes
+        /// </summary>
+        bool MockEnabled { get; }
+
+        /// <summary>
         /// Should return the API key required to connect to your team.
         /// </summary>
         string SlackApiKey { get; }
