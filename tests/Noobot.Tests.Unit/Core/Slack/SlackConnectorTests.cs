@@ -1,8 +1,10 @@
 ﻿using System.Threading.Tasks;
+using Common.Logging;
+using LetsAgree.IOC.StructureMapShim;
 using Noobot.Core;
 using Noobot.Core.Configuration;
+using Noobot.Core.DependencyResolution;
 using Noobot.Core.Logging;
-using Noobot.Tests.Unit.Stubs.MessagingPipeline;
 using Xunit;
 
 namespace Noobot.Tests.Unit.Core.Slack
@@ -13,14 +15,22 @@ namespace Noobot.Tests.Unit.Core.Slack
         public async Task should_connect_as_expected()
         {
             // given
-            var configReader = new JsonConfigReader();
-            var containerStub = new NoobotContainerStub();
-            var connector = new NoobotCore(configReader, new EmptyLogger(), containerStub);
+            var registry = new SMRegistry();
+
+            registry.Register<ILog, EmptyLogger>();
+            registry.Register<IConfigReader, JsonConfigReader>();
+
+            CompositionRoot<IConfigSpec, ILocatorConfigSpec, IRegSpec, IContainerSpec>
+                .Compose(registry);
+
+            var container = registry.GenerateContainer();
+            var noobotCore = container.Resolve<INoobotCore>();
 
             // when
-            await connector.Connect();
+            await noobotCore.Connect();
 
             // then
+
         }
     }
 }

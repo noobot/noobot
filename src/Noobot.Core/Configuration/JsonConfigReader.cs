@@ -22,7 +22,6 @@ namespace Noobot.Core.Configuration
         public bool HelpEnabled { get; set; } = true;
         public bool StatsEnabled { get; set; } = true;
         public bool AboutEnabled { get; set; } = true;
-        public bool MockEnabled { get; set; } = false;
 
         public string SlackApiKey => GetConfigEntry<string>(SLACKAPI_CONFIGVALUE);
 

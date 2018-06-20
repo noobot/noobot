@@ -28,14 +28,16 @@ namespace Noobot.Console
         
         private static async Task RunNoobot()
         {
-            var containerFactory = new ContainerFactory<IConfigSpec, ILocatorConfigSpec, IRegSpec,  IContainerSpec>(
-                new ConfigurationBase(),
-                new JsonConfigReader() { MockEnabled=true },
-                ()=> new SMRegistry(),
-                GetLogger());
+            var registry = new SMRegistry();
 
-            INoobotContainer container = containerFactory.CreateContainer();
-            _noobotCore = container.GetNoobotCore();
+            registry.Register<ILog>(GetLogger);
+            registry.Register<IConfigReader, JsonConfigReader>();
+
+            CompositionRoot<IConfigSpec, ILocatorConfigSpec, IRegSpec, IContainerSpec>
+                .Compose(registry);
+
+            var container = registry.GenerateContainer();
+            _noobotCore = container.Resolve<INoobotCore>();
 
             await _noobotCore.Connect();
         }
