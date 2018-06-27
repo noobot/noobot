@@ -18,7 +18,7 @@ namespace Noobot.Tests.Unit.Core.Slack
             var registry = new SMRegistry();
 
             registry.Register<ILog, EmptyLogger>();
-            registry.Register<IConfigReader, JsonConfigReader>();
+            registry.Register<IConfigReader>(() => new JsonConfigReader());
 
             CompositionRoot<IConfigSpec, ILocatorConfigSpec, IRegSpec, IContainerSpec>
                 .Compose(registry);

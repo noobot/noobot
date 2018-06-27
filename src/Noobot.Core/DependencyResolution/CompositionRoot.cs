@@ -14,16 +14,13 @@ using SlackConnector;
 namespace Noobot.Core.DependencyResolution
 {
     public static class CompositionRoot<C, Cl, R, T>
-        where R : IDynamicRegistration<C>, IGenericRegistration<C>, IScanningRegistraction<INoConfig>, IGenericLocatorRegistration<Cl>, IContainerGeneration<T>
-        where C : ISingletonConfig, IDecoratorConfig
-        where Cl : ISingletonConfig
-        where T : IBasicContainer, IGenericContainer
+        where R : IGenericRegistration<C>, IGenericLocatorRegistration<Cl>, IContainerGeneration<T>
+        where C : ISingletonConfig<C>, ICollectionConfig<C>, IDecoratorConfig<C>
+        where Cl : ISingletonConfig<Cl>
+        where T : IGenericContainer
     {
         public static void Compose(R registry, Action<R> composeMiddlewares = null)
         {
-            // TODO used structuremap Scan WithDefaultConventions.  idk what those are.
-            registry.RegisterAssembly(typeof(CompositionRoot<,,,>).Assembly);
-
             // Container used to get config etc
             var configContainer = registry.GenerateContainer();
 
@@ -60,8 +57,7 @@ namespace Noobot.Core.DependencyResolution
         }
         static void ComposePlugins(R registry)
         {
-            // TODO Register stats plugin, there will be more, the ioc needs to resolve IPlugin[], is this automatic or should it be explicit?
-            registry.Register<IPlugin, StatsPlugin>().AsSingleton();
+            registry.Register<IPlugin, StatsPlugin>().AsCollection().AsSingleton();
         }
         static void ComposeNoobotCore(R registry, IGenericContainer configContainer)
         {
