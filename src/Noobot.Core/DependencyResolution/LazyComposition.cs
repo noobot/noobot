@@ -19,7 +19,7 @@ namespace Noobot.Core.DependencyResolution
         public LazyComposition(IGenericContainer container)
         {
             middleware = new Lazy<IMiddleware>(() => container.Resolve<IMiddleware>());
-            plugins = new Lazy<IPlugin[]>(() => container.Resolve<IEnumerable<IPlugin>>().ToArray());
+            plugins = new Lazy<IPlugin[]>(() => container.Resolve<IPlugin[]>());
         }
     }
 }

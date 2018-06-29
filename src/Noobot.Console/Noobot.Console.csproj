@@ -15,7 +15,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="LetsAgree.IOC.StructureMapShim" Version="0.1.5" />
+    <PackageReference Include="LetsAgree.IOC.StructureMapShim" Version="1.37.0" />
   </ItemGroup>
 
   <ItemGroup>

@@ -57,6 +57,7 @@ namespace Noobot.Core.DependencyResolution
         }
         static void ComposePlugins(R registry)
         {
+            registry.Register<StatsPlugin, StatsPlugin>().AsSingleton();
             registry.Register<IPlugin, StatsPlugin>().AsCollection().AsSingleton();
         }
         static void ComposeNoobotCore(R registry, IGenericContainer configContainer)
