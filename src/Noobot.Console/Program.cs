@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Common.Logging;
-using LetsAgree.IOC.StructureMapShim;
+using System.IoC.StructureMapShim;
 using Noobot.Console.Logging;
 using Noobot.Core;
 using Noobot.Core.Configuration;

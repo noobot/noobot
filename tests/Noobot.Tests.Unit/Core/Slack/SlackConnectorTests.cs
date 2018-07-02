@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Common.Logging;
-using LetsAgree.IOC.StructureMapShim;
+using System.IoC.StructureMapShim;
 using Noobot.Core;
 using Noobot.Core.Configuration;
 using Noobot.Core.DependencyResolution;

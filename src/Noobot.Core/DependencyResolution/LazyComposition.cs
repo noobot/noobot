@@ -1,4 +1,4 @@
-﻿using LetsAgree.IOC;
+﻿using System.IoC;
 using Noobot.Core.MessagingPipeline.Middleware;
 using Noobot.Core.Plugins;
 using System;

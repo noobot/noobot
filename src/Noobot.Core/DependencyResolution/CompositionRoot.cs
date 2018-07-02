@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Common.Logging;
-using LetsAgree.IOC;
+using System.IoC;
 using Noobot.Core.Configuration;
 using Noobot.Core.MessagingPipeline.Middleware;
 using Noobot.Core.MessagingPipeline.Middleware.StandardMiddleware;
