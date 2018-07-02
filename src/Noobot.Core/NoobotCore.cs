@@ -23,24 +23,28 @@ namespace Noobot.Core
     {
         private readonly IConfigReader _configReader;
         private readonly ILog _log;
-        private readonly INoobotContainer _container;
         private readonly AverageStat _averageResponse;
+        private readonly ISlackConnector _connector;
         private ISlackConnection _connection;
 
-        public NoobotCore(IConfigReader configReader, ILog log, INoobotContainer container)
+        private readonly LazyComposition _lazyComposition;
+
+        public NoobotCore(IConfigReader configReader, ILog log, ISlackConnector connector, LazyComposition extensions)
         {
+            _lazyComposition = extensions;
+            _connector = connector;
             _configReader = configReader;
             _log = log;
-            _container = container;
             _averageResponse = new AverageStat("milliseconds");
         }
+
+        StatsPlugin Stats => _lazyComposition.Plugins.Where(x => x is StatsPlugin).Single() as StatsPlugin;
 
         public async Task Connect()
         {
             string slackKey = _configReader.SlackApiKey;
 
-            var connector = new SlackConnector.SlackConnector();
-            _connection = await connector.Connect(slackKey);
+            _connection = await _connector.Connect(slackKey);
             _connection.OnMessageReceived += MessageReceived;
             _connection.OnDisconnect += OnDisconnect;
             _connection.OnReconnecting += OnReconnecting;
@@ -50,8 +54,8 @@ namespace Noobot.Core
             _log.Info($"Bots Name: {_connection.Self.Name}");
             _log.Info($"Team Name: {_connection.Team.Name}");
 
-            _container.GetPlugin<StatsPlugin>()?.RecordStat("Connected:Since", DateTime.Now.ToString("G"));
-            _container.GetPlugin<StatsPlugin>()?.RecordStat("Response:Average", _averageResponse);
+            Stats.RecordStat("Connected:Since", DateTime.Now.ToString("G"));
+            Stats.RecordStat("Response:Average", _averageResponse);
 
             StartPlugins();
         }
@@ -59,14 +63,14 @@ namespace Noobot.Core
         private Task OnReconnect()
         {
             _log.Info("Connection Restored!");
-            _container.GetPlugin<StatsPlugin>().IncrementState("ConnectionsRestored");
+            Stats.IncrementState("ConnectionsRestored");
             return Task.CompletedTask;
         }
 
         private Task OnReconnecting()
         {
             _log.Info("Attempting to reconnect to Slack...");
-            _container.GetPlugin<StatsPlugin>().IncrementState("Reconnecting");
+            Stats.IncrementState("Reconnecting");
             return Task.CompletedTask;
         }
 
@@ -116,7 +120,7 @@ namespace Noobot.Core
                     if (task.IsCompleted && !task.IsCanceled && !task.IsFaulted)
                     {
                         _log.Info("Connection restored.");
-                        _container.GetPlugin<StatsPlugin>().IncrementState("ConnectionsRestored");
+                        Stats.IncrementState("ConnectionsRestored");
                     }
                     else
                     {
@@ -130,7 +134,6 @@ namespace Noobot.Core
             Stopwatch stopwatch = Stopwatch.StartNew();
             _log.Info($"[Message found from '{message.User.Name}']");
 
-            IMiddleware pipeline = _container.GetMiddlewarePipeline();
             var incomingMessage = new IncomingMessage
             {
                 RawText = message.Text,
@@ -150,7 +153,7 @@ namespace Noobot.Core
 
             try
             {
-                foreach (ResponseMessage responseMessage in pipeline.Invoke(incomingMessage))
+                foreach (ResponseMessage responseMessage in _lazyComposition.Middleware.Invoke(incomingMessage))
                 {
                     await SendMessage(responseMessage);
                 }
@@ -331,8 +334,7 @@ namespace Noobot.Core
         /// </summary>
         private void StartPlugins()
         {
-            IPlugin[] plugins = _container.GetPlugins();
-            foreach (IPlugin plugin in plugins)
+            foreach (IPlugin plugin in _lazyComposition.Plugins)
             {
                 plugin.Start();
             }
@@ -343,8 +345,7 @@ namespace Noobot.Core
         /// </summary>
         private void StopPlugins()
         {
-            IPlugin[] plugins = _container.GetPlugins();
-            foreach (IPlugin plugin in plugins)
+            foreach (IPlugin plugin in _lazyComposition.Plugins)
             {
                 plugin.Stop();
             }

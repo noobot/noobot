@@ -25,6 +25,7 @@ namespace Noobot.Core.Configuration
 
         public string SlackApiKey => GetConfigEntry<string>(SLACKAPI_CONFIGVALUE);
 
+
         public T GetConfigEntry<T>(string entryName)
         {
             return GetJObject().Value<T>(entryName);
