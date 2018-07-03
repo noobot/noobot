@@ -46,7 +46,8 @@ namespace Noobot.Core.DependencyResolution
         }
         static void ComposePlugins(IServiceCollection serviceCollection)
         {
-            serviceCollection.AddSingleton<IPlugin, StatsPlugin>();
+            serviceCollection.AddSingleton<StatsPlugin>();
+            serviceCollection.AddSingleton<IPlugin>(s => s.GetService<StatsPlugin>());
         }
         static void ComposeNoobotCore(IServiceCollection serviceProvider)
         {
