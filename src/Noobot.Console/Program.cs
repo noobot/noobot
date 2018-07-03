@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Common.Logging;
-using System.IoC.StructureMapShim;
+using Microsoft.Extensions.DependencyInjection;
 using Noobot.Console.Logging;
 using Noobot.Core;
 using Noobot.Core.Configuration;
@@ -28,16 +28,15 @@ namespace Noobot.Console
         
         private static async Task RunNoobot()
         {
-            var registry = new SMRegistry();
+            var registry = new ServiceCollection();
 
-            registry.Register<ILog>(GetLogger);
-            registry.Register<IConfigReader, JsonConfigReader>();
+            registry.AddSingleton<ILog>(s => GetLogger());
+            registry.AddSingleton<IConfigReader, JsonConfigReader>();
 
-            CompositionRoot<IConfigSpec, ILocatorConfigSpec, IRegSpec, IContainerSpec>
-                .Compose(registry);
+            CompositionRoot.Compose(registry);
 
-            var container = registry.GenerateContainer();
-            _noobotCore = container.Resolve<INoobotCore>();
+            var container = registry.BuildServiceProvider();
+            _noobotCore = container.GetService<INoobotCore>();
 
             await _noobotCore.Connect();
         }

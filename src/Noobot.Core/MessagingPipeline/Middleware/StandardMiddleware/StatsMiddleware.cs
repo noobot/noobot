@@ -12,7 +12,7 @@ namespace Noobot.Core.MessagingPipeline.Middleware.StandardMiddleware
     {
         private readonly StatsPlugin _statsPlugin;
 
-        public StatsMiddleware(IMiddleware next, StatsPlugin statsPlugin) : base(next)
+        public StatsMiddleware(StatsPlugin statsPlugin)
         {
             _statsPlugin = statsPlugin;
             HandlerMappings = new[]

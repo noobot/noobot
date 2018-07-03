@@ -3,78 +3,65 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Common.Logging;
-using System.IoC;
 using Noobot.Core.Configuration;
 using Noobot.Core.MessagingPipeline.Middleware;
 using Noobot.Core.MessagingPipeline.Middleware.StandardMiddleware;
 using Noobot.Core.Plugins;
 using Noobot.Core.Plugins.StandardPlugins;
 using SlackConnector;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Noobot.Core.DependencyResolution
 {
-    public static class CompositionRoot<C, Cl, R, T>
-        where R : IGenericRegistration<C>, IGenericLocatorRegistration<Cl>, IContainerGeneration<T>
-        where C : ISingletonConfig<C>, ICollectionConfig<C>, IDecoratorConfig<C>
-        where Cl : ISingletonConfig<Cl>
-        where T : IGenericContainer
+    public static class CompositionRoot
     {
-        public static void Compose(R registry, Action<R> composeMiddlewares = null)
+        public static void Compose(IServiceCollection serviceCollection)
         {
             // Container used to get config etc
-            var configContainer = registry.GenerateContainer();
-
-            ComposeMiddleware(registry, composeMiddlewares, configContainer);
+            ComposeMiddleware(serviceCollection);
             
-            ComposePlugins(registry);
+            ComposePlugins(serviceCollection);
 
-            ComposeNoobotCore(registry, configContainer);
+            ComposeNoobotCore(serviceCollection);
         }
-        static void ComposeMiddleware(R registry, Action<R> configureMiddleware, IGenericContainer configContainer)
+        static void ComposeMiddleware(IServiceCollection registry)
         {
-            var configReader = configContainer.Resolve<IConfigReader>();
-
-            registry.Register<IMiddleware, UnhandledMessageMiddleware>();
+            var configProvider = registry.BuildServiceProvider();
+            var configReader = configProvider.GetRequiredService<IConfigReader>();
 
             if (configReader.AboutEnabled)
             {
-                registry.Register<IMiddleware, AboutMiddleware>().AsDecorator();
+                registry.AddSingleton<IMiddleware, AboutMiddleware>();
             }
 
             if (configReader.StatsEnabled)
             {
-                registry.Register<IMiddleware, StatsMiddleware>().AsDecorator();
+                registry.AddSingleton<IMiddleware, StatsMiddleware>();
             }
-
-            configureMiddleware?.Invoke(registry);
 
             if (configReader.HelpEnabled)
             {
-                registry.Register<IMiddleware, HelpMiddleware>().AsDecorator();
+                registry.AddSingleton<IMiddleware, HelpMiddleware>();
             }
-
-            registry.Register<IMiddleware, BeginMessageMiddleware>().AsDecorator();
         }
-        static void ComposePlugins(R registry)
+        static void ComposePlugins(IServiceCollection serviceCollection)
         {
-            registry.Register<StatsPlugin, StatsPlugin>().AsSingleton();
-            registry.Register<IPlugin, StatsPlugin>().AsCollection().AsSingleton();
+            serviceCollection.AddSingleton<IPlugin, StatsPlugin>();
         }
-        static void ComposeNoobotCore(R registry, IGenericContainer configContainer)
+        static void ComposeNoobotCore(IServiceCollection serviceProvider)
         {
-            registry.Register(() => new LazyComposition(registry.GenerateContainer()));
-
-            if (!configContainer.TryResolve<ILog>(out var log))
+            serviceProvider.AddSingleton<LazyComposition>(s => new LazyComposition(s));
+            if (!serviceProvider.Any(x=>x.ServiceType == typeof(ILog)))
             {
-                registry.Register<ILog>(() => null).AsSingleton();
+                serviceProvider.AddSingleton<ILog>(s => null);
             }
 
-            if(!configContainer.TryResolve<ISlackConnector>(out var slackConnector))
+            if (!serviceProvider.Any(x => x.ServiceType == typeof(ISlackConnector)))
             {
-                registry.Register<ISlackConnector,SlackConnector.SlackConnector>().AsSingleton();
+                serviceProvider.AddSingleton<ISlackConnector,SlackConnector.SlackConnector>();
             }
 
-            registry.Register<INoobotCore, NoobotCore>().AsSingleton();
+            serviceProvider.AddSingleton<INoobotCore, NoobotCore>();
         }
     }
 }

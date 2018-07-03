@@ -6,20 +6,14 @@ using Noobot.Core.MessagingPipeline.Response;
 
 namespace Noobot.Core.MessagingPipeline.Middleware
 {
+
     public abstract class MiddlewareBase : IMiddleware
     {
         protected HandlerMapping[] HandlerMappings;
-        private readonly IMiddleware _next;
 
-        protected MiddlewareBase(IMiddleware next)
+        protected MiddlewareBase()
         {
-            _next = next;
             HandlerMappings = HandlerMappings ?? new HandlerMapping[0];
-        }
-
-        protected internal IEnumerable<ResponseMessage> Next(IncomingMessage message)
-        {
-            return _next?.Invoke(message) ?? new ResponseMessage[0];
         }
 
         public virtual IEnumerable<ResponseMessage> Invoke(IncomingMessage message)
@@ -43,15 +37,11 @@ namespace Noobot.Core.MessagingPipeline.Middleware
 
                         if (!handlerMapping.ShouldContinueProcessing)
                         {
-                            yield break;
+                            yield return MiddlewareSingals.StopProcessing;
+                            // TODO: Assert.Fail() here?
                         }
                     }
                 }
-            }
-
-            foreach (ResponseMessage responseMessage in Next(message))
-            {
-                yield return responseMessage;
             }
         }
 
@@ -69,11 +59,6 @@ namespace Noobot.Core.MessagingPipeline.Middleware
                     Command = string.Join(" | ", handlerMapping.ValidHandles.Select(x => $"`{x.HandleHelpText}`").OrderBy(x => x)),
                     Description = handlerMapping.Description
                 };
-            }
-
-            foreach (var commandDescription in _next.GetSupportedCommands())
-            {
-                yield return commandDescription;
             }
         }
     }

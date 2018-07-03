@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Common.Logging;
-using System.IoC.StructureMapShim;
+using Microsoft.Extensions.DependencyInjection;
 using Noobot.Core;
 using Noobot.Core.Configuration;
 using Noobot.Core.DependencyResolution;
@@ -15,16 +15,15 @@ namespace Noobot.Tests.Unit.Core.Slack
         public async Task should_connect_as_expected()
         {
             // given
-            var registry = new SMRegistry();
+            var registry = new ServiceCollection();
 
-            registry.Register<ILog, EmptyLogger>();
-            registry.Register<IConfigReader>(() => new JsonConfigReader());
+            registry.AddSingleton<ILog, EmptyLogger>();
+            registry.AddSingleton<IConfigReader>(s => new JsonConfigReader());
 
-            CompositionRoot<IConfigSpec, ILocatorConfigSpec, IRegSpec, IContainerSpec>
-                .Compose(registry);
+            CompositionRoot.Compose(registry);
 
-            var container = registry.GenerateContainer();
-            var noobotCore = container.Resolve<INoobotCore>();
+            var container = registry.BuildServiceProvider();
+            var noobotCore = container.GetService<INoobotCore>();
 
             // when
             await noobotCore.Connect();

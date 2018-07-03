@@ -26,19 +26,20 @@ namespace Noobot.Core
         private readonly AverageStat _averageResponse;
         private readonly ISlackConnector _connector;
         private ISlackConnection _connection;
+        private readonly StatsPlugin _stats;
 
         private readonly LazyComposition _lazyComposition;
 
-        public NoobotCore(IConfigReader configReader, ILog log, ISlackConnector connector, LazyComposition extensions)
+        public NoobotCore(IConfigReader configReader, ILog log, ISlackConnector connector, LazyComposition extensions, StatsPlugin stats)
         {
+            _stats = stats;
             _lazyComposition = extensions;
             _connector = connector;
             _configReader = configReader;
             _log = log;
-            _averageResponse = new AverageStat("milliseconds");
+            _averageResponse = new AverageStat("miconds");
         }
 
-        StatsPlugin Stats => _lazyComposition.Plugins.Where(x => x is StatsPlugin).Single() as StatsPlugin;
 
         public async Task Connect()
         {
@@ -54,8 +55,8 @@ namespace Noobot.Core
             _log.Info($"Bots Name: {_connection.Self.Name}");
             _log.Info($"Team Name: {_connection.Team.Name}");
 
-            Stats.RecordStat("Connected:Since", DateTime.Now.ToString("G"));
-            Stats.RecordStat("Response:Average", _averageResponse);
+            _stats.RecordStat("Connected:Since", DateTime.Now.ToString("G"));
+            _stats.RecordStat("Response:Average", _averageResponse);
 
             StartPlugins();
         }
@@ -63,14 +64,14 @@ namespace Noobot.Core
         private Task OnReconnect()
         {
             _log.Info("Connection Restored!");
-            Stats.IncrementState("ConnectionsRestored");
+            _stats.IncrementState("ConnectionsRestored");
             return Task.CompletedTask;
         }
 
         private Task OnReconnecting()
         {
             _log.Info("Attempting to reconnect to Slack...");
-            Stats.IncrementState("Reconnecting");
+            _stats.IncrementState("Reconnecting");
             return Task.CompletedTask;
         }
 
@@ -120,7 +121,7 @@ namespace Noobot.Core
                     if (task.IsCompleted && !task.IsCanceled && !task.IsFaulted)
                     {
                         _log.Info("Connection restored.");
-                        Stats.IncrementState("ConnectionsRestored");
+                        _stats.IncrementState("ConnectionsRestored");
                     }
                     else
                     {
@@ -153,7 +154,7 @@ namespace Noobot.Core
 
             try
             {
-                foreach (ResponseMessage responseMessage in _lazyComposition.Middleware.Invoke(incomingMessage))
+                foreach (ResponseMessage responseMessage in _lazyComposition.InvokePipeline(incomingMessage))
                 {
                     await SendMessage(responseMessage);
                 }
@@ -334,7 +335,7 @@ namespace Noobot.Core
         /// </summary>
         private void StartPlugins()
         {
-            foreach (IPlugin plugin in _lazyComposition.Plugins)
+            foreach (IPlugin plugin in _lazyComposition.GetPlugins())
             {
                 plugin.Start();
             }
@@ -345,7 +346,7 @@ namespace Noobot.Core
         /// </summary>
         private void StopPlugins()
         {
-            foreach (IPlugin plugin in _lazyComposition.Plugins)
+            foreach (IPlugin plugin in _lazyComposition.GetPlugins())
             {
                 plugin.Stop();
             }
