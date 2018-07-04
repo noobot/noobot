@@ -51,7 +51,7 @@ namespace Noobot.Core.DependencyResolution
         }
         static void ComposeNoobotCore(IServiceCollection serviceProvider)
         {
-            serviceProvider.AddSingleton<LazyComposition>(s => new LazyComposition(s));
+            serviceProvider.AddSingleton(s => new LazyComposition(s));
             if (!serviceProvider.Any(x=>x.ServiceType == typeof(ILog)))
             {
                 serviceProvider.AddSingleton<ILog>(s => null);
