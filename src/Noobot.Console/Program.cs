@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Common.Logging;
+using Microsoft.Extensions.DependencyInjection;
 using Noobot.Console.Logging;
 using Noobot.Core;
 using Noobot.Core.Configuration;
@@ -12,30 +13,30 @@ namespace Noobot.Console
     public class Program
     {
         private static INoobotCore _noobotCore;
-        private static readonly ManualResetEvent _quitEvent = new ManualResetEvent(false);
+        private static readonly SemaphoreSlim _quitEvent = new SemaphoreSlim(0,1);
 
-        static void Main(string[] args)
+
+        static async Task Main(string[] args)
         {
             System.Console.WriteLine("Starting Noobot...");
             AppDomain.CurrentDomain.ProcessExit += ProcessExitHandler; // closing the window doesn't hit this in Windows
             System.Console.CancelKeyPress += ConsoleOnCancelKeyPress;
 
-            RunNoobot()
-                .GetAwaiter()
-                .GetResult();
-
-            _quitEvent.WaitOne();
+            await RunNoobot();
+            await _quitEvent.WaitAsync();
         }
         
         private static async Task RunNoobot()
         {
-            var containerFactory = new ContainerFactory(
-                new ConfigurationBase(),
-                new JsonConfigReader(),
-                GetLogger());
+            var registry = new ServiceCollection();
 
-            INoobotContainer container = containerFactory.CreateContainer();
-            _noobotCore = container.GetNoobotCore();
+            registry.AddSingleton<ILog>(s => GetLogger());
+            registry.AddSingleton<IConfigReader, JsonConfigReader>();
+
+            CompositionRoot.Compose(registry);
+
+            var container = registry.BuildServiceProvider();
+            _noobotCore = container.GetService<INoobotCore>();
 
             await _noobotCore.Connect();
         }
@@ -47,7 +48,9 @@ namespace Noobot.Console
 
         private static void ConsoleOnCancelKeyPress(object sender, ConsoleCancelEventArgs consoleCancelEventArgs)
         {
-            _quitEvent.Set();
+            // single threaded i hope
+            if(_quitEvent.CurrentCount == 0)
+                _quitEvent.Release();
             consoleCancelEventArgs.Cancel = true;
         }
 

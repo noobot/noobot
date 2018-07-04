@@ -8,7 +8,7 @@ namespace Noobot.Core.MessagingPipeline.Middleware.StandardMiddleware
 {
     internal class AboutMiddleware : MiddlewareBase
     {
-        public AboutMiddleware(IMiddleware next) : base(next)
+        public AboutMiddleware() 
         {
             HandlerMappings = new[]
             {

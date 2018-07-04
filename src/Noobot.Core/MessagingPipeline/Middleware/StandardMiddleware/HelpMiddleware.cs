@@ -11,7 +11,7 @@ namespace Noobot.Core.MessagingPipeline.Middleware.StandardMiddleware
     {
         private readonly INoobotCore _noobotCore;
 
-        public HelpMiddleware(IMiddleware next, INoobotCore noobotCore) : base(next)
+        public HelpMiddleware(INoobotCore noobotCore)
         {
             _noobotCore = noobotCore;
 
