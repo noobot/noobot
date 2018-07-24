@@ -21,6 +21,7 @@ namespace Noobot.Tests.Unit.Core.MessagingPipeline.ValidHandles
             isMatch.ShouldBeTrue();
         }
 
+        [Theory]
         [InlineData("simon", "PAUL")]
         [InlineData(@"^\d$", "who wants lunch?")]
         public void should_return_false_when_message_doesnt_contains_text(string exactText, string message)
