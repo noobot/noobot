@@ -10,7 +10,7 @@ namespace Noobot.Tests.Unit.Core.Configuration
         public void should_read_config()
         {
             // given
-            var reader = new JsonConfigReader();
+            var reader = JsonConfigReader.DefaultLocation();
 
             // when
             string slackKey = reader.SlackApiKey;
