@@ -10,13 +10,15 @@ namespace Noobot.Core.Configuration
         private JObject _currentJObject;
         private readonly string _configLocation;
         private readonly object _lock = new object();
+        private static bool _externalConfigPath = false;
         private static readonly string DEFAULT_LOCATION = Path.Combine("configuration", "config.json");
         private const string SLACKAPI_CONFIGVALUE = "slack:apiToken";
 
-        public JsonConfigReader() : this(DEFAULT_LOCATION) { }
-        public JsonConfigReader(string configurationFile)
+        public JsonConfigReader() : this(DEFAULT_LOCATION, true) { }
+        public JsonConfigReader(string configurationFile, bool isDefault = false)
         {
             _configLocation = configurationFile;
+            _externalConfigPath = !isDefault;
         }
 
         public bool HelpEnabled { get; set; } = true;
@@ -36,8 +38,7 @@ namespace Noobot.Core.Configuration
             {
                 if (_currentJObject == null)
                 {
-                    string assemblyLocation = AssemblyLocation();
-                    string fileName = Path.Combine(assemblyLocation, _configLocation);
+                    string fileName = _externalConfigPath ? _configLocation : Path.Combine(AssemblyLocation(), _configLocation);
                     string json = File.ReadAllText(fileName);
                     _currentJObject = JObject.Parse(json);
                 }
