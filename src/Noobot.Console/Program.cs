@@ -31,7 +31,7 @@ namespace Noobot.Console
         {
             var containerFactory = new ContainerFactory(
                 new ConfigurationBase(),
-                new JsonConfigReader(),
+                JsonConfigReader.DefaultLocation(),
                 GetLogger());
 
             INoobotContainer container = containerFactory.CreateContainer();
