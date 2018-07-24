@@ -5,18 +5,19 @@ using Newtonsoft.Json.Linq;
 
 namespace Noobot.Core.Configuration
 {
+    /// <summary>
+    /// Use static helper methods to construct
+    /// </summary>
     public class JsonConfigReader : IConfigReader
     {
         private JObject _currentJObject;
-        private readonly string _configLocation;
         private readonly object _lock = new object();
-        private static readonly string DEFAULT_LOCATION = Path.Combine("configuration", "config.json");
+        private readonly string _absoluteFileName;
         private const string SLACKAPI_CONFIGVALUE = "slack:apiToken";
 
-        public JsonConfigReader() : this(DEFAULT_LOCATION) { }
-        public JsonConfigReader(string configurationFile)
+        private JsonConfigReader(string absoluteFileName)
         {
-            _configLocation = configurationFile;
+            _absoluteFileName = absoluteFileName;
         }
 
         public bool HelpEnabled { get; set; } = true;
@@ -36,9 +37,7 @@ namespace Noobot.Core.Configuration
             {
                 if (_currentJObject == null)
                 {
-                    string assemblyLocation = AssemblyLocation();
-                    string fileName = Path.Combine(assemblyLocation, _configLocation);
-                    string json = File.ReadAllText(fileName);
+                    string json = File.ReadAllText(_absoluteFileName);
                     _currentJObject = JObject.Parse(json);
                 }
             }
@@ -46,7 +45,27 @@ namespace Noobot.Core.Configuration
             return _currentJObject;
         }
 
-        private string AssemblyLocation()
+        public static JsonConfigReader DefaultLocation()
+        {
+            return ForRelativePath();
+        }
+
+        public static JsonConfigReader ForAbsolutePath(string absolutePath)
+        {
+            return new JsonConfigReader(absolutePath);
+        }
+
+        public static JsonConfigReader ForRelativePath(string customRelativePath = null)
+        {
+            var path = string.IsNullOrEmpty(customRelativePath)
+                ? Path.Combine("configuration", "config.json")
+                : customRelativePath;
+
+            var fullPath = Path.Combine(AssemblyLocation(), path);
+            return new JsonConfigReader(fullPath);
+        }
+
+        private static string AssemblyLocation()
         {
             var assembly = typeof(JsonConfigReader).GetTypeInfo().Assembly;
             var codebase = new Uri(assembly.CodeBase);

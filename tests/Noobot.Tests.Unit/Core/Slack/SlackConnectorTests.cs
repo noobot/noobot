@@ -13,7 +13,7 @@ namespace Noobot.Tests.Unit.Core.Slack
         public async Task should_connect_as_expected()
         {
             // given
-            var configReader = new JsonConfigReader();
+            var configReader = JsonConfigReader.DefaultLocation();
             var containerStub = new NoobotContainerStub();
             var connector = new NoobotCore(configReader, new EmptyLogger(), containerStub);
 
