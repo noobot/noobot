@@ -22,7 +22,7 @@ build:
   verbosity: minimal
 
 before_package:
-- cmd: dotnet publish ".\src\Noobot.Console\Noobot.Console.csproj" -c "Release" -r "win-x64" -f "netcoreapp2.0" -p:TargetLatestRuntimePatch=true
+- cmd: dotnet publish ".\src\Noobot.Console\Noobot.Console.csproj" -c "Release" -r "win-x64" -f "netcoreapp2.0"
 after_build:
 - ps: >-
     $buildPath = Resolve-Path ".\src\Noobot.Console\bin\Release\*\*\publish"
@@ -40,5 +40,11 @@ deploy:
     secure: 8t4+xbVlkXA/FY3516ThrMibGxfCT7ZcSwyZw7KNwUlCH08KMPtznY2QphEn1n/z
   artifact: noobot.zip,/.*\.nupkg/
   draft: true
+  on:
+    branch: master
+- provider: NuGet
+  api_key:
+    secure: +bNHXHWX2y+EBQkScaN17HTMq0XvzQWbG5CXT6KM+Bnj50x5MGbM9LMr6gWTtOVO
+  skip_symbols: false
   on:
     branch: master
