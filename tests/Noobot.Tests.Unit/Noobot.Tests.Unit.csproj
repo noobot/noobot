@@ -11,7 +11,7 @@
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.8.0" />
     <PackageReference Include="Moq" Version="4.9.0" />
     <PackageReference Include="shouldly" Version="3.0.0" />
-    <PackageReference Include="SlackConnector" Version="4.1.48" />
+    <PackageReference Include="SlackConnector" Version="4.2.65" />
     <PackageReference Include="xunit" Version="2.4.0" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.0" />
   </ItemGroup>
