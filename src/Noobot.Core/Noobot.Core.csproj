@@ -15,6 +15,6 @@
   <ItemGroup>
     <PackageReference Include="SlackConnector" Version="4.2.65" />
     <PackageReference Include="Common.Logging" Version="3.4.1" />
-    <PackageReference Include="StructureMap" Version="4.5.2" />
+    <PackageReference Include="StructureMap" Version="4.7.0" />
   </ItemGroup>
 </Project>
