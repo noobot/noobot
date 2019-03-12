@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-using Common.Logging;
+using Microsoft.Extensions.Logging;
 using Noobot.Core.Configuration;
 using Noobot.Core.DependencyResolution;
 using Noobot.Core.Extensions;
@@ -22,15 +22,15 @@ namespace Noobot.Core
     internal class NoobotCore : INoobotCore
     {
         private readonly IConfigReader _configReader;
-        private readonly ILog _log;
+        private readonly ILogger _logger;
         private readonly INoobotContainer _container;
         private readonly AverageStat _averageResponse;
         private ISlackConnection _connection;
 
-        public NoobotCore(IConfigReader configReader, ILog log, INoobotContainer container)
+        public NoobotCore(IConfigReader configReader, ILogger logger, INoobotContainer container)
         {
             _configReader = configReader;
-            _log = log;
+            _logger = logger;
             _container = container;
             _averageResponse = new AverageStat("milliseconds");
         }
@@ -46,9 +46,9 @@ namespace Noobot.Core
             _connection.OnReconnecting += OnReconnecting;
             _connection.OnReconnect += OnReconnect;
 
-            _log.Info("Connected!");
-            _log.Info($"Bots Name: {_connection.Self.Name}");
-            _log.Info($"Team Name: {_connection.Team.Name}");
+            _logger.LogInformation("Connected!");
+            _logger.LogInformation($"Bots Name: {_connection.Self.Name}");
+            _logger.LogInformation($"Team Name: {_connection.Team.Name}");
 
             _container.GetPlugin<StatsPlugin>()?.RecordStat("Connected:Since", DateTime.Now.ToString("G"));
             _container.GetPlugin<StatsPlugin>()?.RecordStat("Response:Average", _averageResponse);
@@ -58,14 +58,14 @@ namespace Noobot.Core
 
         private Task OnReconnect()
         {
-            _log.Info("Connection Restored!");
+            _logger.LogInformation("Connection Restored!");
             _container.GetPlugin<StatsPlugin>().IncrementState("ConnectionsRestored");
             return Task.CompletedTask;
         }
 
         private Task OnReconnecting()
         {
-            _log.Info("Attempting to reconnect to Slack...");
+            _logger.LogInformation("Attempting to reconnect to Slack...");
             _container.GetPlugin<StatsPlugin>().IncrementState("Reconnecting");
             return Task.CompletedTask;
         }
@@ -90,18 +90,18 @@ namespace Noobot.Core
 
             if (_isDisconnecting)
             {
-                _log.Info("Disconnected.");
+                _logger.LogInformation("Disconnected.");
             }
             else
             {
-                _log.Info("Disconnected from server, attempting to reconnect...");
+                _logger.LogInformation("Disconnected from server, attempting to reconnect...");
                 Reconnect();
             }
         }
 
         internal void Reconnect()
         {
-            _log.Info("Reconnecting...");
+            _logger.LogInformation("Reconnecting...");
             if (_connection != null)
             {
                 _connection.OnMessageReceived -= MessageReceived;
@@ -115,12 +115,12 @@ namespace Noobot.Core
                 {
                     if (task.IsCompleted && !task.IsCanceled && !task.IsFaulted)
                     {
-                        _log.Info("Connection restored.");
+                        _logger.LogInformation("Connection restored.");
                         _container.GetPlugin<StatsPlugin>().IncrementState("ConnectionsRestored");
                     }
                     else
                     {
-                        _log.Info($"Error while reconnecting: {task.Exception}");
+                        _logger.LogInformation($"Error while reconnecting: {task.Exception}");
                     }
                 });
         }
@@ -128,7 +128,7 @@ namespace Noobot.Core
         public async Task MessageReceived(SlackMessage message)
         {
             Stopwatch stopwatch = Stopwatch.StartNew();
-            _log.Info($"[Message found from '{message.User.Name}']");
+            _logger.LogInformation($"[Message found from '{message.User.Name}']");
 
             IMiddleware pipeline = _container.GetMiddlewarePipeline();
             var incomingMessage = new IncomingMessage
@@ -157,12 +157,12 @@ namespace Noobot.Core
             }
             catch (Exception ex)
             {
-                _log.Error($"ERROR WHILE PROCESSING MESSAGE: {ex}");
+                _logger.LogError($"ERROR WHILE PROCESSING MESSAGE: {ex}");
             }
 
             stopwatch.Stop();
 
-            _log.Info($"[Message ended - Took {stopwatch.ElapsedMilliseconds} milliseconds]");
+            _logger.LogInformation($"[Message ended - Took {stopwatch.ElapsedMilliseconds} milliseconds]");
             _averageResponse.Log(stopwatch.ElapsedMilliseconds);
         }
 
@@ -179,7 +179,7 @@ namespace Noobot.Core
             {
                 if (responseMessage is TypingIndicatorMessage)
                 {
-                    _log.Info($"Indicating typing on channel '{chatHub.Name}'");
+                    _logger.LogInformation($"Indicating typing on channel '{chatHub.Name}'");
                     await _connection.IndicateTyping(chatHub);
                 }
                 else
@@ -192,13 +192,13 @@ namespace Noobot.Core
                     };
 
                     string textTrimmed = botMessage.Text.Length > 50 ? botMessage.Text.Substring(0, 50) + "..." : botMessage.Text;
-                    _log.Info($"Sending message '{textTrimmed}'");
+                    _logger.LogInformation($"Sending message '{textTrimmed}'");
                     await _connection.Say(botMessage);
                 }
             }
             else
             {
-                _log.Error($"Unable to find channel for message '{responseMessage.Text}'. Message not sent");
+                _logger.LogError($"Unable to find channel for message '{responseMessage.Text}'. Message not sent");
             }
         }
 
