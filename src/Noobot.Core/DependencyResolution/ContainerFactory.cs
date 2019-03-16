@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Common.Logging;
+using Microsoft.Extensions.Logging;
 using Noobot.Core.Configuration;
 using Noobot.Core.MessagingPipeline.Middleware;
 using Noobot.Core.MessagingPipeline.Middleware.StandardMiddleware;
@@ -16,7 +16,7 @@ namespace Noobot.Core.DependencyResolution
     {
         private readonly IConfigReader _configReader;
         private readonly IConfiguration _configuration;
-        private readonly ILog _logger;
+        private readonly ILogger _logger;
 
         private readonly Type[] _singletons =
         {
@@ -25,7 +25,7 @@ namespace Noobot.Core.DependencyResolution
             typeof(IConfigReader)
         };
 
-        public ContainerFactory(IConfiguration configuration, IConfigReader configReader, ILog logger = null)
+        public ContainerFactory(IConfiguration configuration, IConfigReader configReader, ILogger logger = null)
         {
             _configuration = configuration;
             _configReader = configReader;
@@ -41,7 +41,7 @@ namespace Noobot.Core.DependencyResolution
             Type[] pluginTypes = SetupPlugins(registry);
 
             registry.For<INoobotCore>().Use(x => x.GetInstance<NoobotCore>());
-            registry.For<ILog>().Use(() => _logger);
+            registry.For<ILogger>().Use(() => _logger);
             registry.For<IConfigReader>().Use(() => _configReader);
 
             INoobotContainer container = CreateContainer(pluginTypes, registry);

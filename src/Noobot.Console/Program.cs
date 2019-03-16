@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Common.Logging;
-using Noobot.Console.Logging;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Noobot.Core;
 using Noobot.Core.Configuration;
 using Noobot.Core.DependencyResolution;
@@ -40,9 +40,15 @@ namespace Noobot.Console
             await _noobotCore.Connect();
         }
 
-        private static ConsoleOutLogger GetLogger()
+        private static ILogger GetLogger()
         {
-            return new ConsoleOutLogger("Noobot", LogLevel.All, true, true, false, "yyyy/MM/dd HH:mm:ss:fff");
+            var services = new ServiceCollection();
+            services.AddLogging(logging =>
+            {
+                logging.AddConsole();
+            });
+            var serviceProvider = services.BuildServiceProvider();
+            return serviceProvider.GetRequiredService<ILogger<Program>>();
         }
 
         private static void ConsoleOnCancelKeyPress(object sender, ConsoleCancelEventArgs consoleCancelEventArgs)

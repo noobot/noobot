@@ -1,19 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Common.Logging;
+using Microsoft.Extensions.Logging;
 
 namespace Noobot.Core.Plugins.StandardPlugins
 {
     public class StatsPlugin : IPlugin
     {
-        private readonly ILog _log;
+        private readonly ILogger _logger;
         private readonly Dictionary<string, object> _stats = new Dictionary<string, object>();
         private readonly object _lock = new object();
 
-        public StatsPlugin(ILog log)
+        public StatsPlugin(ILogger logger)
         {
-            _log = log;
+            _logger = logger;
         }
 
         /// <summary>
@@ -84,7 +84,7 @@ namespace Noobot.Core.Plugins.StandardPlugins
 
         public void Stop()
         {
-            _log.Info($"End stats: {Environment.NewLine}\t{string.Join(Environment.NewLine + "\t", GetStats())}");
+            _logger.LogInformation($"End stats: {Environment.NewLine}\t{string.Join(Environment.NewLine + "\t", GetStats())}");
         }
     }
 }
