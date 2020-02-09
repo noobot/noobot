@@ -12,8 +12,8 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\Noobot.Core\Noobot.Core.csproj" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.2.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="3.1.1" />
   </ItemGroup>
 
   <ItemGroup>
