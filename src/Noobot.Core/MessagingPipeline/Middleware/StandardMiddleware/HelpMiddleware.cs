@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using Noobot.Core.MessagingPipeline.Middleware.ValidHandles;
 using Noobot.Core.MessagingPipeline.Request;
 using Noobot.Core.MessagingPipeline.Response;
@@ -29,20 +30,21 @@ namespace Noobot.Core.MessagingPipeline.Middleware.StandardMiddleware
             };
         }
 
-        private IEnumerable<ResponseMessage> HelpHandler(IncomingMessage message, IValidHandle matchedHandle)
+        private async IAsyncEnumerable<ResponseMessage> HelpHandler(IncomingMessage message, IValidHandle matchedHandle)
         {
             var builder = new StringBuilder();
             builder.Append(">>>");
 
-            IEnumerable<CommandDescription> supportedCommands = GetSupportedCommands().OrderBy(x => x.Command);
+            var supportedCommands = GetSupportedCommands()
+                .OrderBy(x => x.Command);
 
-            foreach (CommandDescription commandDescription in supportedCommands)
+            foreach (var commandDescription in supportedCommands)
             {
-                string description = commandDescription.Description.Replace("@{bot}", $"@{_noobotCore.GetBotUserName()}");
+                var description = commandDescription.Description.Replace("@{bot}", $"@{_noobotCore.GetBotUserName()}");
                 builder.AppendFormat("{0}\t- {1}\n", commandDescription.Command, description);
             }
 
-            yield return message.ReplyToChannel(builder.ToString());
+            yield return await Task.FromResult(message.ReplyToChannel(builder.ToString()));
         }
     }
 }

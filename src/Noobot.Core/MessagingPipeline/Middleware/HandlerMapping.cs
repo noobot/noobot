@@ -21,7 +21,7 @@ namespace Noobot.Core.MessagingPipeline.Middleware
         /// <summary>
         /// The function that is evaluated on a matched handle
         /// </summary>
-        public Func<IncomingMessage, IValidHandle, IEnumerable<ResponseMessage>> EvaluatorFunc { get; set; }
+        public Func<IncomingMessage, IValidHandle, IAsyncEnumerable<ResponseMessage>> EvaluatorFunc { get; set; }
 
         /// <summary>
         /// Defaults to "False". If set to True then the pipeline isn't interupted if a match occurs here. This is good for logging.

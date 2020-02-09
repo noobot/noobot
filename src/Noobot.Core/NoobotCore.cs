@@ -150,7 +150,7 @@ namespace Noobot.Core
 
             try
             {
-                foreach (ResponseMessage responseMessage in pipeline.Invoke(incomingMessage))
+                await foreach (ResponseMessage responseMessage in pipeline.Invoke(incomingMessage))
                 {
                     await SendMessage(responseMessage);
                 }

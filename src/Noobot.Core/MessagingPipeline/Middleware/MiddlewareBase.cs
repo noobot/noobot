@@ -14,15 +14,15 @@ namespace Noobot.Core.MessagingPipeline.Middleware
         protected MiddlewareBase(IMiddleware next)
         {
             _next = next;
-            HandlerMappings = HandlerMappings ?? new HandlerMapping[0];
+            HandlerMappings ??= new HandlerMapping[0];
         }
 
-        protected internal IEnumerable<ResponseMessage> Next(IncomingMessage message)
+        protected internal IAsyncEnumerable<ResponseMessage> Next(IncomingMessage message)
         {
-            return _next?.Invoke(message) ?? new ResponseMessage[0];
+            return _next.Invoke(message);
         }
 
-        public virtual IEnumerable<ResponseMessage> Invoke(IncomingMessage message)
+        public virtual async IAsyncEnumerable<ResponseMessage> Invoke(IncomingMessage message)
         {
             foreach (var handlerMapping in HandlerMappings)
             {
@@ -36,7 +36,7 @@ namespace Noobot.Core.MessagingPipeline.Middleware
                     
                     if (handle.IsMatch(messageText))
                     {
-                        foreach (var responseMessage in handlerMapping.EvaluatorFunc(message, handle))
+                        await foreach (var responseMessage in handlerMapping.EvaluatorFunc(message, handle))
                         {
                             yield return responseMessage;
                         }
@@ -49,7 +49,7 @@ namespace Noobot.Core.MessagingPipeline.Middleware
                 }
             }
 
-            foreach (ResponseMessage responseMessage in Next(message))
+            await foreach (ResponseMessage responseMessage in Next(message))
             {
                 yield return responseMessage;
             }

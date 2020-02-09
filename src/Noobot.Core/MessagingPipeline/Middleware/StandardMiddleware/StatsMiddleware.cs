@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Noobot.Core.MessagingPipeline.Middleware.ValidHandles;
 using Noobot.Core.MessagingPipeline.Request;
 using Noobot.Core.MessagingPipeline.Response;
@@ -26,13 +27,13 @@ namespace Noobot.Core.MessagingPipeline.Middleware.StandardMiddleware
             };
         }
 
-        private IEnumerable<ResponseMessage> StatsHandler(IncomingMessage message, IValidHandle matchedHandle)
+        private async IAsyncEnumerable<ResponseMessage> StatsHandler(IncomingMessage message, IValidHandle matchedHandle)
         {
             string textMessage = string.Join(Environment.NewLine, _statsPlugin.GetStats().OrderBy(x => x));
 
             if (!string.IsNullOrEmpty(textMessage))
             {
-                yield return message.ReplyToChannel(">>>" + textMessage);
+                yield return await Task.FromResult(message.ReplyToChannel(">>>" + textMessage));
             }
             else
             {

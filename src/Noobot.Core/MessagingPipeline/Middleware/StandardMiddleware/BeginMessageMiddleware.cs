@@ -17,12 +17,12 @@ namespace Noobot.Core.MessagingPipeline.Middleware.StandardMiddleware
             _logger = logger;
         }
 
-        public override IEnumerable<ResponseMessage> Invoke(IncomingMessage message)
+        public override async IAsyncEnumerable<ResponseMessage> Invoke(IncomingMessage message)
         {
             _statsPlugin.IncrementState("Messages:Received");
             _logger.LogInformation($"Message from {message.Username}: {message.FullText}");
 
-            foreach (ResponseMessage responseMessage in Next(message))
+            await foreach (ResponseMessage responseMessage in Next(message))
             {
                 _statsPlugin.IncrementState("Messages:Sent");
                 yield return responseMessage;
