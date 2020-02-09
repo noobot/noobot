@@ -14,15 +14,13 @@ namespace Noobot.Console
         private static INoobotCore _noobotCore;
         private static readonly ManualResetEvent _quitEvent = new ManualResetEvent(false);
 
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
             System.Console.WriteLine("Starting Noobot...");
             AppDomain.CurrentDomain.ProcessExit += ProcessExitHandler; // closing the window doesn't hit this in Windows
             System.Console.CancelKeyPress += ConsoleOnCancelKeyPress;
 
-            RunNoobot()
-                .GetAwaiter()
-                .GetResult();
+            await RunNoobot();
 
             _quitEvent.WaitOne();
         }
