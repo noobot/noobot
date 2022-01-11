@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp3</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <StartupObject>Noobot.Console.Program</StartupObject>
     <ApplicationIcon />
     <AssemblyVersion>1.0.0.1</AssemblyVersion>

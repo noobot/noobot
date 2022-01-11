@@ -22,7 +22,7 @@ build:
   verbosity: minimal
 
 before_package:
-- cmd: dotnet publish ".\src\Noobot.Console\Noobot.Console.csproj" -c "Release" -r "win-x64" -f "netcoreapp3.0"
+- cmd: dotnet publish ".\src\Noobot.Console\Noobot.Console.csproj" -c "Release" -r "win-x64" -f "netcoreapp3.1"
 after_build:
 - ps: >-
     $buildPath = Resolve-Path ".\src\Noobot.Console\bin\Release\*\*\publish"
