@@ -1,6 +1,6 @@
 version: 5.0.{build}
 skip_tags: true
-image: Visual Studio 2019
+image: Visual Studio 2022
 configuration: Release
 dotnet_csproj:
   patch: true
